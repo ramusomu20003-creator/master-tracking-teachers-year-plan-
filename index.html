@@ -12,7 +12,7 @@
         .table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .table-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .bg-login-image {
-            background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(30, 27, 75, 0.4)), url('indus school1.jpeg');
+            background: linear-gradient(rgba(186, 230, 253, 0.45), rgba(125, 211, 252, 0.35)), url('indus school1.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -23,22 +23,21 @@
 
     <!-- AUTHENTICATION DIALOG INTERFACE SCREEN -->
     <div id="loginScreen" class="hidden min-h-[85vh] flex flex-col justify-center items-center md:justify-start md:items-center md:flex-row px-4 md:pl-32 w-full">
-        <div class="w-full max-w-xl bg-white/90 backdrop-blur-xl p-8 md:p-10 rounded-3xl shadow-[0_30px_70px_-15px_rgba(15,23,42,0.35)] border border-white/80 relative overflow-hidden transition-all duration-300">
+        <div class="w-full max-w-xl bg-white/95 backdrop-blur-xl p-8 md:p-10 rounded-3xl shadow-[0_30px_70px_-15px_rgba(15,23,42,0.25)] border border-white/80 relative overflow-hidden transition-all duration-300">
             
             <!-- Sleek Gradient Floating Top Ribbon Bar -->
             <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600"></div>
             
             <div class="text-center mb-8">
-                <!-- Flex layout optimized to stack the title on two explicit lines -->
-                <div class="flex items-center justify-center gap-4 max-w-full px-1">
-                    <img src="logo1.jpeg" alt="Montessori Indus Logo" class="h-12 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
-                    <h2 class="text-xl md:text-2xl font-black bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent tracking-tight leading-tight">
-                        Montessori Indus<br>
-                        <span class="text-lg md:text-xl font-extrabold opacity-95">Residential School</span>
+                <!-- Flex layout optimized to force header text onto a single line -->
+                <div class="flex items-center justify-center gap-3 max-w-full px-1">
+                    <img src="logo1.jpeg" alt="Montessori Indus Logo" class="h-8 w-auto sm:h-10 md:h-12 object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                    <h2 class="text-sm sm:text-base md:text-lg font-black bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent tracking-tight whitespace-nowrap">
+                        Montessori Indus Residential School
                     </h2>
-                    <img src="logo2.jpg" alt="Montessori Jubilee Logo" class="h-12 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                    <img src="logo2.jpg" alt="Montessori Jubilee Logo" class="h-8 w-auto sm:h-10 md:h-12 object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
                 </div>
-                <div class="inline-block mt-4 px-3 py-1 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-full border border-indigo-100 shadow-sm">
+                <div class="inline-block mt-3 px-3 py-1 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-full border border-indigo-100 shadow-sm">
                     <p class="text-[10px] text-indigo-700 font-extrabold uppercase tracking-widest">
                         Teachers Year Plan Tracker
                     </p>
@@ -92,7 +91,7 @@
             <button onclick="switchTab('register')" id="btn-register" class="px-6 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-xl hover:bg-indigo-100 font-bold transition shadow-sm">1. 📋 Register Teacher</button>
             <button onclick="switchTab('upload')" id="btn-upload" class="px-6 py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl hover:bg-emerald-100 font-bold transition shadow-sm">2. 📁 Upload Plan</button>
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm">3. 📊 Dashboard & Tracking</button>
-            <button onclick="switchTab('teacherEdit')" id="btn-teacherEdit" class="px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm">4. Update Year Plan</button>
+            <button onclick="switchTab('teacherEdit')" id="btn-teacherEdit" class="px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm">4. ✏️ Update Year Plan</button>
             <button onclick="switchTab('manageTeachers')" id="btn-manageTeachers" class="px-6 py-3 bg-orange-50 text-orange-700 border border-orange-200 rounded-xl hover:bg-orange-100 font-bold transition shadow-sm">5. 👥 Manage Teachers</button>
         </div>
 
@@ -1477,7 +1476,7 @@
             xml += '      <Font ss:Color="#1E1B4B" ss:Name="Segoe UI"/>\n';
             xml += '      <Interior ss:Color="#F5F3FF" ss:Pattern="Solid"/>\n';
             xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Top" ss:WrapText="1"/>\n';
-            xml += '    </head>\n';
+            xml += '    </Style>\n';
             xml += '    <Style ss:ID="SyllabusStyle">\n';
             xml += '      <Font ss:Color="#0F172A" ss:Name="Segoe UI"/>\n';
             xml += '      <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>\n';
