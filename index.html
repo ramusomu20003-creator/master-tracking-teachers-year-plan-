@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montessori Indus Master Tracking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        .table-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+        .table-scroll::-webkit-scrollbar-track { background: #f8fafc; border-radius: 4px; }
+        .table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .table-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .bg-login-image {
+            background: linear-gradient(rgba(241, 245, 249, 0.3), rgba(241, 245, 249, 0.15)), url('indus school1.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans p-4 md:p-8 min-h-screen" id="appBody" onload="initApp()">
+
+    <!-- AUTHENTICATION DIALOG INTERFACE SCREEN (Pushed to the left side to display background building text) -->
+    <div id="loginScreen" class="hidden min-h-[85vh] flex flex-col justify-center items-center md:justify-start md:items-center md:flex-row px-4 md:pl-32 w-full">
+        <div class="w-full max-w-xl bg-white/90 backdrop-blur-xl p-8 md:p-10 rounded-3xl shadow-[0_30px_70px_-15px_rgba(15,23,42,0.35)] border border-white/80 relative overflow-hidden transition-all duration-300">
+            
+            <!-- Sleek Gradient Floating Top Ribbon Bar -->
+            <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600"></div>
+            
+            <div class="text-center mb-8">
+                <!-- Flex layout including left logo, school name, and right logo -->
+                <div class="flex items-center justify-center gap-4 max-w-full px-1">
+                    <img src="logo1.jpeg" alt="Montessori Indus Logo" class="h-10 w-auto md:h-12 object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                    <h2 class="text-lg sm:text-xl md:text-2xl font-black bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent tracking-tight whitespace-normal">
+                        Montessori Indus Residential School
+                    </h2>
+                    <img src="logo2.jpg" alt="Montessori Jubilee Logo" class="h-10 w-auto md:h-12 object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                </div>
+                <div class="inline-block mt-3 px-3 py-1 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-full border border-indigo-100 shadow-sm">
+                    <p class="text-[10px] text-indigo-700 font-extrabold uppercase tracking-widest">
+                        Teachers Year Plan Tracker
+                    </p>
+                </div>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5 max-w-md mx-auto">
+                <div>
+                    <label class="block text-xs font-extrabold mb-1.5 text-slate-700 tracking-wider uppercase">User Name</label>
+                    <div class="relative">
+                        <input type="text" id="username" required placeholder="Enter your username" class="w-full border border-slate-200 bg-white/70 p-3 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-extrabold mb-1.5 text-slate-700 tracking-wider uppercase">Password</label>
+                    <div class="relative">
+                        <input type="password" id="password" required placeholder="••••••••" class="w-full border border-slate-200 bg-white/70 p-3 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition">
+                    </div>
+                </div>
+                
+                <div id="loginError" class="text-rose-600 text-xs font-bold hidden bg-rose-50 border border-rose-100 p-3 rounded-xl text-center shadow-sm animate-pulse">
+                    ❌ Invalid credentials provided. Please check inputs.
+                </div>
+                
+                <!-- Refined Gradient Action Button Interface -->
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-indigo-600/20 transition transform hover:-translate-y-0.5 active:translate-y-0 text-sm tracking-wide uppercase">
+                    Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTENT CONTAINER CONTROL DESK -->
+    <div id="mainAppWorkspace" class="max-w-7xl mx-auto bg-white p-6 md:p-10 rounded-2xl shadow-xl border-t-8 border-indigo-600 hidden">
+        <header class="flex flex-col md:flex-row justify-between items-center mb-10 border-b border-slate-100 pb-6 gap-4">
+            <div class="text-center md:text-left">
+                <h1 class="text-4xl font-black bg-gradient-to-r from-indigo-700 via-blue-700 to-purple-700 bg-clip-text text-transparent tracking-tight">
+                    Montessori Indus Residential School
+                </h1>
+                <h2 class="text-xl text-slate-500 mt-2 font-semibold tracking-wide uppercase text-xs">
+                    Year Plan & Workload Tracker
+                </h2>
+            </div>            <button onclick="handleLogout()" class="px-5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 rounded-xl text-xs transition shadow-sm flex items-center gap-1.5 self-center">
+                🔒 Secure Logout
+            </button>
+        </header>
+
+        <!-- COLOR CODED CORE NAVIGATION TAB BUTTONS -->
+        <div id="tabNavigationStrip" class="flex flex-wrap justify-center gap-3 mb-10">
+            <button onclick="switchTab('register')" id="btn-register" class="px-6 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-xl hover:bg-indigo-100 font-bold transition shadow-sm">1. 📋 Register Teacher</button>
+            <button onclick="switchTab('upload')" id="btn-upload" class="px-6 py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl hover:bg-emerald-100 font-bold transition shadow-sm">2. 📁 Upload year Plan</button>
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm">3. 📊 Dashboard & Tracking</button>
+            <button onclick="switchTab('teacherEdit')" id="btn-teacherEdit" class="px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm">4. ✏️ Update year Plan</button>
+            <button onclick="switchTab('manageTeachers')" id="btn-manageTeachers" class="px-6 py-3 bg-orange-50 text-orange-700 border border-orange-200 rounded-xl hover:bg-orange-100 font-bold transition shadow-sm">5. 👥 Manage Teachers</button>
+        </div>
+
+        <!-- TAB 1: REGISTER TEACHER FORM -->
+        <div id="register-section" class="hidden animate-fade-in">
+            <div class="border-l-4 border-indigo-600 pl-3 mb-4">
+                <h3 class="text-2xl font-extrabold text-indigo-950">Step 1: Register Teacher & Workload</h3>
+            </div>
+            
+            <form id="registrationForm" class="space-y-8 bg-slate-50/50 p-6 rounded-2xl border border-slate-200/60 shadow-inner mt-4">
+                <div>
+                    <label class="block font-bold mb-2 text-slate-700 text-base">Teacher Name</label>
+                    <input type="text" id="teacherName" placeholder="e.g., CP Harish" required class="w-full md:w-1/2 border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white font-semibold shadow-sm transition">
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-1 text-lg">Workload Assignments</h4>
+                    <p class="text-xs text-slate-500 mb-4">Select the operational block and mapped subject, then assign sections accordingly.</p>
+                    
+                    <div id="assignments-container" class="space-y-4"></div>
+                    
+                    <button type="button" onclick="addAssignmentRow()" class="mt-4 px-4 py-2.5 bg-indigo-50 text-indigo-700 font-bold rounded-xl border border-indigo-100 hover:bg-indigo-100 transition shadow-sm">
+                        + Add Another Block / Subject
+                    </button>
+                </div>
+
+                <button type="submit" id="regSubmitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg shadow-indigo-100 transition">Save Teacher Profile</button>
+            </form>
+            <div id="registerMsg" class="mt-4 text-center font-bold text-emerald-700 hidden bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm">Teacher profile configured successfully!</div>
+        </div>
+
+        <!-- TAB 2: UPLOAD SOURCE LESSON PLAN -->
+        <div id="upload-section" class="hidden max-w-6xl mx-auto animate-fade-in">
+            <div class="border-l-4 border-emerald-600 pl-3 mb-4">
+                <h3 class="text-2xl font-bold text-emerald-950">Step 2: Upload New Lesson Plan</h3>
+            </div>
+            
+            <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-100 mb-6 text-sm text-emerald-800 font-medium">
+                <strong>Instructions:</strong> Select a teacher, choose the operational Block, and the targeted workflow Subject. Then attach the layout parsing Excel data matrix.
+            </div>
+
+            <div class="space-y-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div>
+                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Teacher</label>
+                        <select id="uploadTeacherSelect" onchange="populateUploadBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-indigo-600 bg-white font-semibold cursor-pointer shadow-sm transition"></select>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Block</label>
+                        <select id="uploadBlockSelect" onchange="populateUploadSubjects()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-indigo-600 bg-white font-semibold cursor-pointer shadow-sm transition">
+                            <option value="" disabled selected>-- Choose Block --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Subject</label>
+                        <select id="uploadSubjectSelect" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-indigo-600 bg-white font-semibold cursor-pointer shadow-sm transition">
+                            <option value="" disabled selected>-- Choose Subject --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Class</label>
+                        <select id="uploadClassSelect" class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-indigo-600 bg-white font-semibold cursor-pointer shadow-sm transition">
+                            <option value="" disabled selected>-- Choose Class --</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="border-t pt-4 border-slate-200/60">
+                    <label class="block font-bold mb-2 text-slate-700 text-base">Select Excel Files</label>
+                    <input type="file" id="excelFile" accept=".xlsx, .xls" onchange="handleExcelUpload(event)" class="w-full border border-slate-300 p-3 rounded-xl bg-white cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200 transition shadow-sm">
+                </div>
+
+                <div id="previewContainer" class="hidden mt-6">
+                    <h4 class="font-bold text-gray-800 mb-2 text-lg">Preview & Edit Data</h4>
+                    <div class="table-scroll overflow-x-auto max-h-96 shadow-md border border-slate-200 rounded-xl">
+                       <table class="min-w-full bg-white text-left" id="editTable">
+                            <thead class="bg-slate-900 text-slate-100 sticky top-0 z-10 text-sm">
+                                <tr>
+                                    <th class="py-3 px-4 min-w-[100px] font-semibold border-r border-slate-800">Month</th>
+                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">NCERT</th>
+                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">Assessments</th>
+                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">NEET</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-1</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-2</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-3</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-4</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-5</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-6</th>
+                                    <th class="py-3 px-4 min-w-[140px] font-semibold">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="editTableBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="flex gap-4 mt-6">
+                        <button id="submitPlanBtn" onclick="saveStagedPlan()" class="flex-1 bg-emerald-600 text-white py-4 rounded-xl hover:bg-emerald-700 font-extrabold text-xl shadow-lg shadow-emerald-100 transition">Submit Plan</button>
+                        <button id="clearPlanBtn" onclick="clearStagedPlan()" class="px-6 bg-slate-200 text-slate-700 rounded-xl hover:bg-rose-600 hover:text-white font-bold shadow-md transition">Clear</button>
+                    </div>
+                </div>
+            </div>
+            <div id="uploadMsg" class="mt-4 text-center font-bold text-emerald-700 hidden bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm">Lesson plan successfully attached!</div>
+        </div>
+
+        <!-- TAB 3: DASHBOARD METRICS & TRACKING STATUS -->
+        <div id="dashboard-section" class="hidden animate-fade-in">
+            <div class="mb-8 flex flex-wrap gap-4 items-end bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="w-full md:w-1/4">
+                    <label class="block font-bold text-slate-700 text-sm mb-1">Select Teacher:</label>
+                    <select id="dashboardTeacherSelect" onchange="populateDashboardBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-lg cursor-pointer bg-white shadow-sm transition">
+                        <option value="" disabled selected>-- Choose a Teacher --</option>
+                    </select>
+                </div>
+                <div class="w-full md:w-1/4">
+                    <label class="block font-bold text-slate-700 text-sm mb-1">Filter by Block:</label>
+                    <select id="dashboardBlockSelect" onchange="renderTeacherData()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-lg cursor-pointer bg-white shadow-sm transition">
+                        <option value="All">All Blocks</option>
+                    </select>
+                </div>
+                <div class="w-full md:w-1/4">
+                    <label class="block font-bold text-slate-700 text-sm mb-1">Filter by Grade/Class:</label>
+                    <select id="dashboardGradeSelect" onchange="renderTeacherData()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-lg cursor-pointer bg-white shadow-sm transition">
+                        <option value="All">All Grades</option>
+                    </select>
+                </div>
+                <div class="flex-grow"></div>
+                <div class="w-full md:w-auto mt-4 md:mt-0 pt-2">
+                    <button onclick="exportToExcel()" class="w-full px-6 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition shadow-lg">📥 Export Filtered Excel</button>
+                </div>
+            </div>
+
+            <div id="teacher-dashboard-content" class="hidden">
+                <div class="mb-8 bg-gradient-to-br from-blue-50 to-indigo-50/50 p-6 rounded-2xl border border-blue-100 shadow-sm">
+                    <h3 class="text-xl font-bold text-blue-950 mb-3" id="workloadHeader">Teacher Workload Profile</h3>
+                    <div id="workloadDisplay" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-2xl shadow-md border border-blue-500">
+                        <h4 class="text-blue-100 font-bold uppercase tracking-wider text-xs">Filtered Lessons</h4>
+                        <p id="stat-total" class="text-4xl font-black mt-1">0</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-amber-500 to-amber-600 text-white p-6 rounded-2xl shadow-md border border-amber-400">
+                        <h4 class="text-amber-100 font-bold uppercase tracking-wider text-xs">Pending Status</h4>
+                        <p id="stat-pending" class="text-4xl font-black mt-1">0</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-6 rounded-2xl shadow-md border border-emerald-500">
+                        <h4 class="text-emerald-100 font-bold uppercase tracking-wider text-xs">Completed Status</h4>
+                        <p id="stat-completed" class="text-4xl font-black mt-1">0</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto shadow-xl rounded-2xl border border-slate-200 table-scroll">
+                    <table class="min-w-full bg-white text-left" id="planTable">
+                        <thead class="bg-slate-900 text-slate-100 text-sm">
+                            <tr>
+                                <th class="py-4 px-5 font-semibold min-w-[100px] border-r border-slate-800">Block</th>
+                                <th class="py-4 px-5 font-semibold min-w-[120px] border-r border-slate-800">Subject</th>
+                                <th class="py-4 px-5 font-semibold min-w-[110px] border-r border-slate-800">Class</th>
+                                <th class="py-4 px-5 font-semibold min-w-[100px] border-r border-slate-800">Month</th>
+                                <th class="py-4 px-6 font-semibold min-w-[240px] border-r border-slate-800">NCERT</th>
+                                <th class="py-4 px-6 font-semibold min-w-[240px] border-r border-slate-800">Assessments</th>
+                                <th class="py-4 px-6 font-semibold min-w-[240px] border-r border-slate-800">NEET</th>
+                                <th class="py-4 px-3 font-semibold text-center min-w-[130px] border-r border-slate-800">Sec-1</th>
+                                <th class="py-4 px-3 font-semibold text-center min-w-[130px] border-r border-slate-800">Sec-2</th>
+                                <th class="py-4 px-3 font-semibold text-center min-w-[130px] border-r border-slate-800">Sec-3</th>
+                                <th class="py-4 px-3 font-semibold text-center min-w-[130px] border-r border-slate-800">Sec-4</th>
+                                <th class="py-4 px-3 font-semibold text-center min-w-[130px] border-r border-slate-800">Sec-5</th>
+                                <th class="py-4 px-3 font-semibold text-center min-w-[130px] border-r border-slate-800">Sec-6</th>
+                                <th class="py-4 px-6 font-semibold min-w-[155px]">Track Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="planTableBody" class="divide-y divide-slate-200/60 text-slate-700 text-sm font-medium"></tbody>
+                    </table>
+                </div>
+                
+                <div id="noPlanMsg" class="hidden text-center py-10 bg-amber-50 text-amber-800 rounded-xl border border-amber-200 font-semibold mt-6">
+                    No lesson plans found matching filters.
+                </div>
+            </div>
+
+            <div id="noDataMsg" class="text-center py-16 bg-slate-50 rounded-2xl border border-slate-200/70 text-slate-400 font-bold text-lg">
+                👆 Select a teacher to load tracking matrix records.
+            </div>
+        </div>
+
+        <!-- TAB 4: EDIT PLAN MATRIX GRID -->
+        <div id="teacherEdit-section" class="hidden max-w-6xl mx-auto animate-fade-in">
+            <div class="border-l-4 border-purple-600 pl-3 mb-4">
+                <h3 class="text-2xl font-bold text-purple-950">Step 4: Edit Existing Lesson Plan</h3>
+            </div>
+            
+            <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 mb-6 text-sm text-purple-800 font-medium">
+                <strong>Instructions:</strong> Use this workflow interface tab configuration profile to overwrite typos or adjust curriculum cells natively.
+            </div>
+
+            <div class="space-y-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div>
+                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Teacher</label>
+                        <select id="editTeacherSelect" onchange="populateEditBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold"></select>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Block</label>
+                        <select id="editBlockSelect" onchange="populateEditSubjects()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold"></select>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Subject</label>
+                        <select id="editSubjectSelect" onchange="populateEditGrades()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold"></select>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Grade</label>
+                        <select id="editGradeSelect" onchange="loadPlanForEdit()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold">
+                            <option value="" disabled selected>-- Choose Subject First --</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="existingPlanContainer" class="hidden mt-6">
+                    <h4 class="font-bold text-slate-800 mb-2 text-base">Modify Data & Save</h4>
+                    <div class="table-scroll overflow-x-auto max-h-[500px] border border-slate-200 rounded-xl shadow-md">
+                        <table class="min-w-full bg-white text-left">
+                            <thead class="bg-slate-900 text-slate-100 sticky top-0 z-10 text-sm">
+                                <tr>
+                                    <th class="py-3 px-4 min-w-[120px] font-semibold border-r border-slate-800">Month</th>
+                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">NCERT</th>
+                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">Assessments</th>
+                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">NEET</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-1</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-2</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-3</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-4</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-5</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-6</th>
+                                    <th class="py-3 px-4 min-w-[140px] font-semibold">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="existingPlanBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-6">
+                        <button onclick="saveEditedPlan()" class="w-full bg-purple-600 text-white py-4 rounded-xl hover:bg-purple-700 font-extrabold text-xl shadow-lg shadow-purple-100 transition">Save Updates to Database</button>
+                    </div>
+                </div>
+                
+                <div id="noEditDataMsg" class="hidden text-center py-10 bg-slate-50 text-slate-400 rounded-xl border font-semibold mt-6">
+                    No plan data configuration attached for this operational cluster.
+                </div>
+            </div>
+            <div id="editSuccessMsg" class="mt-4 text-center font-bold text-emerald-700 hidden bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm animate-bounce">Updates saved successfully!</div>
+        </div>
+
+        <!-- TAB 5: MANAGE REGISTERED TEACHERS DIRECTORY -->
+        <div id="manageTeachers-section" class="hidden animate-fade-in">
+            <div class="border-l-4 border-orange-600 pl-3 mb-6">
+                <h3 class="text-2xl font-bold text-orange-950">Step 5: Manage Registered Teachers</h3>
+                <p class="text-xs text-slate-500 mt-1">View, update workload assignments, or completely delete teacher registry listings.</p>
+            </div>
+            <div id="teachersManagementList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'montessoriMasterDB_V5'; 
+        let stagedPlanData = []; 
+
+        const USER_CREDENTIALS = {
+            "dash_user": { pass: "dash123", tabs: ["dashboard"] },
+            "edit_user": { pass: "edit123", tabs: ["register", "teacherEdit"] },
+            "upload_user": { pass: "upload123", tabs: ["upload", "manageTeachers"] },
+            "admin_user": { pass: "admin123", tabs: ["register", "upload", "dashboard", "teacherEdit", "manageTeachers"] }
+        };
+
+        const TAB_STYLES = {
+            register: {
+                active: "px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-xl font-bold transition shadow-md shadow-indigo-100 transform scale-105 border border-transparent",
+                inactive: "px-6 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-xl hover:bg-indigo-100 font-bold transition shadow-sm"
+            },
+            upload: {
+                active: "px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl font-bold transition shadow-md shadow-emerald-100 transform scale-105 border border-transparent",
+                inactive: "px-6 py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl hover:bg-emerald-100 font-bold transition shadow-sm"
+            },
+            dashboard: {
+                active: "px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold transition shadow-md shadow-blue-100 transform scale-105 border border-transparent",
+                inactive: "px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm"
+            },
+            teacherEdit: {
+                active: "px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-bold transition shadow-md shadow-purple-100 transform scale-105 border border-transparent",
+                inactive: "px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm"
+            },
+            manageTeachers: {
+                active: "px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-xl font-bold transition shadow-md shadow-orange-100 transform scale-105 border border-transparent",
+                inactive: "px-6 py-3 bg-orange-50 text-orange-700 border border-orange-200 rounded-xl hover:bg-orange-100 font-bold transition shadow-sm"
+            }
+        };
+
+        function initApp() {
+            const savedSession = sessionStorage.getItem('portal_user');
+            if (savedSession && USER_CREDENTIALS[savedSession]) {
+                applyPortalPermissions(savedSession);
+            } else {
+                const body = document.getElementById('appBody');
+                body.className = "bg-login-image text-slate-800 font-sans p-4 md:p-8 min-h-screen flex items-center justify-center";
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('mainAppWorkspace').classList.add('hidden');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            const errDiv = document.getElementById('loginError');
+
+            if (USER_CREDENTIALS[user] && USER_CREDENTIALS[user].pass === pass) {
+                errDiv.classList.add('hidden');
+                sessionStorage.setItem('portal_user', user);
+                applyPortalPermissions(user);
+                document.getElementById('username').value = "";
+                document.getElementById('password').value = "";
+            } else {
+                errDiv.classList.remove('hidden');
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('portal_user');
+            document.getElementById('mainAppWorkspace').classList.add('hidden');
+            const body = document.getElementById('appBody');
+            body.className = "bg-login-image text-slate-800 font-sans p-4 md:p-8 min-h-screen flex items-center justify-center";
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+
+        function applyPortalPermissions(username) {
+            const allowedTabs = USER_CREDENTIALS[username].tabs;
+            
+            Object.keys(TAB_STYLES).forEach(tabKey => {
+                const btn = document.getElementById(`btn-${tabKey}`);
+                if (allowedTabs.includes(tabKey)) {
+                    btn.classList.remove('hidden');
+                } else {
+                    btn.classList.add('hidden');
+                }
+            });
+
+            document.getElementById('appBody').className = "bg-slate-100 text-slate-800 font-sans p-4 md:p-8";
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainAppWorkspace').classList.remove('hidden');
+            switchTab(allowedTabs[0]);
+        }
+
+        function switchTab(tab) {
+            document.getElementById('register-section').style.display = 'none';
+            document.getElementById('upload-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'none';
+            document.getElementById('teacherEdit-section').style.display = 'none';
+            document.getElementById('manageTeachers-section').style.display = 'none';
+            
+            Object.keys(TAB_STYLES).forEach(key => {
+                document.getElementById(`btn-${key}`).className = TAB_STYLES[key].inactive + 
+                    (document.getElementById(`btn-${key}`).classList.contains('hidden') ? ' hidden' : '');
+            });
+
+            document.getElementById(`${tab}-section`).style.display = 'block';
+            document.getElementById(`btn-${tab}`).className = TAB_STYLES[tab].active;
+
+            populateTeacherDropdowns();
+            if (tab === 'register') resetRegistrationForm();
+            if (tab === 'manageTeachers') renderTeachersManagement();
+        }
+
+        // --- STEP 1: REGISTER & WORKLOAD MATRIX LOGIC ---
+        function addAssignmentRow(block = '', subject = '', classes = []) {
+            const container = document.getElementById('assignments-container');
+            
+            const blocksOptions = ['ISAP', 'ISAP G', 'LB', 'CBT', 'LG', 'IT', 'IE', 'PRIMARY'].map(b => 
+                `<option value="${b}" ${b === block ? 'selected' : ''}>${b}</option>`
+            ).join('');
+            
+            const subjectsOptions = ['TELUGU', 'ENGLISH', 'HINDI', 'MATHS', 'PHYSICS', 'CHEMISTRY', 'BIOLOGY', 'SOCIAL SCIENCE', 'COMPUTER'].map(s => 
+                `<option value="${s}" ${s === subject ? 'selected' : ''}>${s}</option>`
+            ).join('');
+            
+            const classesHTML = Array.from({length: 10}, (_, i) => i + 1).map(i => {
+                const gradeStr = `Grade ${i}`;
+                const isChecked = classes.includes(gradeStr) ? 'checked' : '';
+                return `<label class="inline-flex items-center p-2.5 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 hover:border-indigo-200 text-sm font-medium transition"><input type="checkbox" value="${gradeStr}" ${isChecked} class="t-class w-4 h-4 text-indigo-600 rounded mr-2 focus:ring-indigo-500"> G ${i}</label>`;
+            }).join('');
+
+            const rowHTML = `
+                <div class="assignment-row bg-white p-6 border border-slate-200 rounded-xl shadow-sm relative mt-4">
+                    <button type="button" onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-rose-600 hover:text-rose-800 font-bold bg-rose-50 border border-rose-100 px-3 py-1 rounded-lg transition shadow-sm text-xs">✕ Remove</button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 mt-4">
+                        <div>
+                            <label class="block text-xs font-bold mb-1 text-slate-500 uppercase tracking-wider">Block Name</label>
+                            <select required class="t-block w-full border border-slate-200 p-2.5 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 bg-slate-50 font-medium cursor-pointer transition">
+                                <option value="" disabled ${!block ? 'selected' : ''}>Select Block</option>
+                                ${blocksOptions}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold mb-1 text-slate-500 uppercase tracking-wider">Subject</label>
+                            <select required class="t-subject w-full border border-slate-200 p-2.5 rounded-lg focus:ring-2 focus:ring-indigo-600 bg-slate-50 font-medium cursor-pointer transition">
+                                <option value="" disabled ${!subject ? 'selected' : ''}>Select Subject</option>
+                                ${subjectsOptions}
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-2 text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-1">Select Classes</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mt-2">
+                            ${classesHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', rowHTML);
+        }
+
+        function resetRegistrationForm() {
+            document.getElementById('registrationForm').reset();
+            document.getElementById('assignments-container').innerHTML = '';
+            addAssignmentRow(); 
+            const submitBtn = document.getElementById('regSubmitBtn');
+            submitBtn.innerText = "Save Teacher Profile";
+            submitBtn.className = "w-full bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg shadow-indigo-100 transition";
+        }
+
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('teacherName').value.trim();
+            const assignmentRows = document.querySelectorAll('.assignment-row');
+            let assignmentsArray = [];
+
+            let allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const isUpdateOperation = document.getElementById('regSubmitBtn').innerText.includes("Update Profile Matrix");
+
+            if (!isUpdateOperation) {
+                const nameExists = allTeachers.some(t => t.name.toLowerCase() === name.toLowerCase());
+                if (nameExists) {
+                    alert(`⚠️ Invalid Entry: A registry database entry for "${name}" already exists inside this portal setup. Duplicate listings are restricted.`);
+                    return;
+                }
+            }
+
+            assignmentRows.forEach(row => {
+                const block = row.querySelector('.t-block').value;
+                const subject = row.querySelector('.t-subject').value.trim();
+                const checkedClasses = Array.from(row.querySelectorAll('.t-class:checked')).map(cb => cb.value);
+            
+                if(block && subject && checkedClasses.length > 0) {
+                    assignmentsArray.push({ block: block, subject: subject, classes: checkedClasses });
+                }
+            });
+
+            if(assignmentsArray.length === 0) return alert("Please select at least one class for your assignments.");
+            
+            const existingProfile = allTeachers.find(t => t.name.toLowerCase() === name.toLowerCase());
+            const activePlans = existingProfile ? (existingProfile.plan || []) : [];
+
+            allTeachers = allTeachers.filter(t => t.name.toLowerCase() !== name.toLowerCase());
+            allTeachers.push({ name: name, assignments: assignmentsArray, plan: activePlans }); 
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
+
+            document.getElementById('registerMsg').classList.remove('hidden');
+            setTimeout(() => { document.getElementById('registerMsg').classList.add('hidden'); }, 3000);
+            
+            resetRegistrationForm();
+            populateTeacherDropdowns();
+        });
+
+        // --- STEP 2: PARSE & STAGE EXCEL TEMPLATES ---
+        function handleExcelUpload(event) {
+            const file = event.target.files[0];
+            const teacher = document.getElementById('uploadTeacherSelect').value;
+            const block = document.getElementById('uploadBlockSelect').value;
+            const subject = document.getElementById('uploadSubjectSelect').value;
+            const targetClass = document.getElementById('uploadClassSelect').value;
+
+            if (!teacher || !block || !subject || !targetClass) {
+                alert("Please satisfy all dropdown selection criteria filters before reading workbook binaries.");
+                event.target.value = '';
+                return;
+            }
+
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheet = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheet];
+                
+                const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                stagedPlanData = [];
+
+                const startIdx = (rawRows[0] && String(rawRows[0][0]).toLowerCase().includes('month')) ? 1 : 0;
+
+                for (let i = startIdx; i < rawRows.length; i++) {
+                    const row = rawRows[i];
+                    if (!row || row.length === 0 || !row[0]) continue;
+
+                    stagedPlanData.push({
+                        Block: block,
+                        Subject: subject,
+                        Class: targetClass,
+                        Month: row[0] || '',
+                        NCERT: row[1] || '',
+                        Assessments: row[2] || '',
+                        NEET: row[3] || '',
+                        Sec1: row[4] || 'X',
+                        Sec2: row[5] || 'X',
+                        Sec3: row[6] || 'X',
+                        Sec4: row[7] || 'X',
+                        Sec5: row[8] || 'X',
+                        Sec6: row[9] || 'X',
+                        Status: row[10] || 'NOT STARTED'
+                    });
+                }
+
+                renderStagingPreview();
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function renderStagingPreview() {
+            const tbody = document.getElementById('editTableBody');
+            const container = document.getElementById('previewContainer');
+            tbody.innerHTML = '';
+
+            if (stagedPlanData.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            const getDropdown = (colName, selectedValue, index, options) => {
+                return `<select onchange="updateStagedCell(${index}, '${colName}', this.value)" class="p-1.5 border border-slate-200 rounded-lg w-full font-bold text-xs bg-white cursor-pointer shadow-sm">
+                    ${options.map(opt => `<option value="${opt}" ${selectedValue === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                </select>`;
+            };
+
+            tbody.innerHTML = stagedPlanData.map((row, index) => `
+                <tr class="hover:bg-slate-50 transition border-b border-slate-200/60">
+                    <td class="p-2 min-w-[100px] border-r border-slate-100"><input type="text" value="${row.Month}" onchange="updateStagedCell(${index}, 'Month', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-sm font-semibold shadow-inner"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" value="${row.NCERT}" onchange="updateStagedCell(${index}, 'NCERT', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-sm text-slate-700 shadow-inner"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" value="${row.Assessments}" onchange="updateStagedCell(${index}, 'Assessments', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 shadow-inner"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" value="${row.NEET}" onchange="updateStagedCell(${index}, 'NEET', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 shadow-inner"></td>
+                    ${['Sec1', 'Sec2', 'Sec3', 'Sec4', 'Sec5', 'Sec6'].map(sec => `
+                        <td class="p-2 min-w-[125px] border-r border-slate-100">${getDropdown(sec, row[sec], index, ['X', 'NOT STARTED', 'IN PROGRESS', 'COMPLETED'])}</td>
+                    `).join('')}
+                    <td class="p-2 min-w-[140px]">${getDropdown('Status', row.Status, index, ['NOT STARTED', 'IN PROGRESS', 'COMPLETED'])}</td>
+                </tr>
+            `).join('');
+
+            container.classList.remove('hidden');
+        }
+
+        function updateStagedCell(index, field, value) {
+            if (stagedPlanData[index]) {
+                stagedPlanData[index][field] = value;
+            }
+        }
+
+        function saveStagedPlan() {
+            const teacherName = document.getElementById('uploadTeacherSelect').value;
+            if (!teacherName || stagedPlanData.length === 0) return;
+
+            let allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            let tIdx = allTeachers.findIndex(t => t.name === teacherName);
+
+            if (tIdx !== -1) {
+                allTeachers[tIdx].plan = allTeachers[tIdx].plan || [];
+                const firstRow = stagedPlanData[0];
+                allTeachers[tIdx].plan = allTeachers[tIdx].plan.filter(p => 
+                    !(p.Block === firstRow.Block && p.Subject === firstRow.Subject && (p.Class || p.class) === firstRow.Class)
+                );
+                
+                allTeachers[tIdx].plan.push(...stagedPlanData);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
+
+                document.getElementById('uploadMsg').classList.remove('hidden');
+                setTimeout(() => { document.getElementById('uploadMsg').classList.add('hidden'); }, 3000);
+                clearStagedPlan();
+            }
+        }
+
+        function clearStagedPlan() {
+            stagedPlanData = [];
+            document.getElementById('excelFile').value = '';
+            document.getElementById('previewContainer').classList.add('hidden');
+        }
+
+        // --- TAB 5: SEPARATE PROFILE MANAGEMENT WORKSPACE DIRECTORY ---
+        function renderTeachersManagement() {
+            const listDiv = document.getElementById('teachersManagementList');
+            if(!listDiv) return;
+            
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            if(allTeachers.length === 0) {
+                listDiv.innerHTML = '<div class="col-span-full text-center py-6 bg-slate-50 border border-dashed rounded-xl font-medium text-slate-400 text-sm">No teacher profiles available inside local cache database rows yet.</div>';
+                return;
+            }
+
+            listDiv.innerHTML = allTeachers.sort((a, b) => a.name.localeCompare(b.name)).map(t => {
+                const totalWorkloads = t.assignments ? t.assignments.length : 0;
+                const totalPlans = t.plan ? t.plan.length : 0;
+                const safeName = t.name.replace(/'/g, "\\'");
+                
+                return `
+                    <div class="bg-white p-5 border border-slate-200 shadow-sm rounded-xl flex flex-col justify-between hover:shadow-md transition animate-fade-in">
+                        <div>
+                            <div class="flex items-center justify-between border-b pb-2 mb-3">
+                                <h5 class="font-extrabold text-slate-900 text-lg">${t.name}</h5>
+                                <span class="text-xs font-bold px-2 py-1 bg-orange-50 text-orange-700 rounded-md border border-orange-100">${totalWorkloads} Workload Branches</span>
+                            </div>
+                            <p class="text-xs font-semibold text-slate-500 mb-2">Lesson Tracking Rows Built: <span class="text-slate-800 font-extrabold">${totalPlans}</span></p>
+                        </div>
+                        <div class="flex gap-2 mt-4 pt-2 border-t border-slate-100">
+                            <button type="button" onclick="loadTeacherToEdit('${safeName}')" class="flex-1 py-2 bg-amber-50 text-amber-700 font-bold border border-amber-200 hover:bg-amber-100 rounded-lg text-xs transition shadow-sm">✏️ Edit Workload</button>
+                            <button type="button" onclick="deleteTeacherProfile('${safeName}')" class="py-2 px-3 bg-rose-50 text-rose-700 font-bold border border-rose-200 hover:bg-rose-100 rounded-lg text-xs transition shadow-sm">🗑️ Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadTeacherToEdit(name) {
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === name);
+            if(!teacher) return;
+
+            switchTab('register');
+
+            document.getElementById('teacherName').value = teacher.name;
+            const container = document.getElementById('assignments-container');
+            container.innerHTML = '';
+
+            if (teacher.assignments && teacher.assignments.length > 0) {
+                teacher.assignments.forEach(assign => {
+                    addAssignmentRow(assign.block, assign.subject, assign.classes);
+                });
+            } else {
+                addAssignmentRow();
+            }
+
+            const submitBtn = document.getElementById('regSubmitBtn');
+            submitBtn.innerText = `Update Profile Matrix (${teacher.name})`;
+            submitBtn.className = "w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl hover:from-amber-700 hover:to-amber-800 font-extrabold text-xl shadow-lg shadow-amber-100 transition";
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteTeacherProfile(name) {
+            if(!confirm(`Are you sure you want to permanently delete ${name}?\nThis action will erase all uploaded lesson plans tied to this profile.`)) return;
+
+            let allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            allTeachers = allTeachers.filter(t => t.name !== name);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
+
+            renderTeachersManagement();
+            populateTeacherDropdowns();
+            resetRegistrationForm();
+        }
+
+        // --- DROPDOWN POPULATORS ---
+        function populateTeacherDropdowns() {
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            
+            const upSelect = document.getElementById('uploadTeacherSelect');
+            const dashSelect = document.getElementById('dashboardTeacherSelect');
+            const editSelect = document.getElementById('editTeacherSelect');
+            
+            let optionsHTML = '<option value="" disabled selected>-- Choose a Teacher --</option>';
+            allTeachers.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+                optionsHTML += `<option value="${t.name}">${t.name}</option>`;
+            });
+
+            if(upSelect) {
+                const currentUp = upSelect.value;
+                upSelect.innerHTML = optionsHTML;
+                if (currentUp && allTeachers.find(t=>t.name === currentUp)) upSelect.value = currentUp;
+            }
+
+            if(dashSelect && dashSelect.options.length <= 1) dashSelect.innerHTML = optionsHTML;
+
+            if(editSelect) {
+                const currentEdit = editSelect.value;
+                editSelect.innerHTML = optionsHTML;
+                if (currentEdit && allTeachers.find(t=>t.name === currentEdit)) editSelect.value = currentEdit;
+            }
+        }
+
+        function populateUploadBlocks() {
+            const teacherName = document.getElementById('uploadTeacherSelect').value;
+            const blockSelect = document.getElementById('uploadBlockSelect');
+            const subSelect = document.getElementById('uploadSubjectSelect');
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === teacherName);
+            
+            blockSelect.innerHTML = '<option value="" disabled selected>-- Choose a Block --</option>';
+            subSelect.innerHTML = '<option value="" disabled selected>-- Choose Block First --</option>';
+            
+            if (teacher && teacher.assignments) {
+                const blocks = [...new Set(teacher.assignments.map(a => a.block))];
+                blocks.forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
+            }
+        }
+
+        function populateUploadSubjects() {
+            const teacherName = document.getElementById('uploadTeacherSelect').value;
+            const blockName = document.getElementById('uploadBlockSelect').value;
+            const subSelect = document.getElementById('uploadSubjectSelect');
+            const classSelect = document.getElementById('uploadClassSelect');
+    
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === teacherName);
+    
+            subSelect.innerHTML = '<option value="" disabled selected>-- Choose a Subject --</option>';
+            classSelect.innerHTML = '<option value="" disabled selected>-- Choose a Class --</option>';
+    
+            if(teacher && teacher.assignments && blockName) {
+                const subjects = [...new Set(teacher.assignments.filter(a => a.block === blockName).map(a => a.subject))];
+                subjects.forEach(sub => subSelect.innerHTML += `<option value="${sub}">${sub}</option>`);
+            
+                const classes = [...new Set(teacher.assignments.filter(a => a.block === blockName).flatMap(a => a.classes))];
+                classes.forEach(cls => classSelect.innerHTML += `<option value="${cls}">${cls}</option>`);
+            }
+        }
+
+        // --- DASHBOARD TRACKING LOGIC ---
+        function populateDashboardBlocks() {
+            const selectedName = document.getElementById('dashboardTeacherSelect').value;
+            const blockSelect = document.getElementById('dashboardBlockSelect');
+            const gradeSelect = document.getElementById('dashboardGradeSelect');
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === selectedName);
+
+            blockSelect.innerHTML = '<option value="All">All Blocks</option>';
+            gradeSelect.innerHTML = '<option value="All">All Grades</option>';
+
+            if (teacher) {
+                if (teacher.assignments) {
+                    const blocks = [...new Set(teacher.assignments.map(a => a.block))];
+                    blocks.sort().forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
+                }
+                if (teacher.plan) {
+                    const grades = [...new Set(teacher.plan.map(p => p.Class || p.class).filter(Boolean))];
+                    grades.sort().forEach(grd => gradeSelect.innerHTML += `<option value="${grd}">${grd}</option>`);
+                }
+            }
+            renderTeacherData();
+        }
+
+       function renderTeacherData() {
+            const selectedName = document.getElementById('dashboardTeacherSelect').value;
+            const selectedBlock = document.getElementById('dashboardBlockSelect').value; 
+            const selectedGrade = document.getElementById('dashboardGradeSelect').value;
+            
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === selectedName);
+
+            if (!teacher) return;
+
+            document.getElementById('teacher-dashboard-content').style.display = 'block';
+            document.getElementById('noDataMsg').style.display = 'none';
+
+            let filteredAssignments = teacher.assignments || [];
+            if(selectedBlock !== "All") filteredAssignments = filteredAssignments.filter(a => a.block === selectedBlock);
+
+            const workloadDiv = document.getElementById('workloadDisplay');
+            if (filteredAssignments.length > 0) {
+                workloadDiv.innerHTML = filteredAssignments.map(assign => `
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-600 flex flex-col border border-slate-100 hover:shadow-md transition">
+                        <span class="font-extrabold text-slate-800 text-lg">${assign.subject}</span>
+                        <span class="text-xs text-blue-600 font-bold mb-1 tracking-wider uppercase">Block: ${assign.block}</span>
+                        <span class="text-xs font-semibold text-slate-500 bg-slate-50 p-1.5 rounded-md border border-slate-100 mt-1">${assign.classes.join(', ')}</span>
+                    </div>
+                `).join('');
+            } else {
+                workloadDiv.innerHTML = '<p class="text-slate-500 font-medium">No assignments mapped here.</p>';
+            }
+
+            const tbody = document.getElementById('planTableBody');
+            const noPlanMsg = document.getElementById('noPlanMsg');
+            tbody.innerHTML = '';
+            
+            let allPlanData = (teacher.plan || []).map((lesson, idx) => ({ ...lesson, _originalIndex: idx }));
+            let filteredPlan = allPlanData;
+            
+            if(selectedBlock !== "All") filteredPlan = filteredPlan.filter(lesson => lesson.Block === selectedBlock);
+            if(selectedGrade !== "All") filteredPlan = filteredPlan.filter(lesson => (lesson.Class || lesson.class) === selectedGrade);
+
+            if(filteredPlan.length === 0) {
+                noPlanMsg.style.display = 'block';
+                document.getElementById('stat-total').innerText = 0;
+                document.getElementById('stat-pending').innerText = 0;
+                document.getElementById('stat-completed').innerText = 0;
+                return;
+            }
+
+            noPlanMsg.style.display = 'none';
+            let pendingCount = 0, completedCount = 0;
+
+            filteredPlan.forEach((lesson) => {
+                const isComp = (lesson.Status === 'COMPLETED' || lesson.Status === 'Completed');
+                const isProg = (lesson.Status === 'IN PROGRESS' || lesson.Status === 'In Progress');
+                if (isComp) completedCount++;
+                else pendingCount++;
+
+                let statusBg = isComp ? 'bg-emerald-50/60 hover:bg-emerald-100/60' : isProg ? 'bg-amber-50/60 hover:bg-amber-100/60' : 'bg-rose-50/60 hover:bg-rose-100/60';
+                let cellSelectBg = isComp ? 'border-emerald-200 focus:ring-emerald-500' : isProg ? 'border-amber-200 focus:ring-amber-500' : 'border-rose-200 focus:ring-rose-500';
+
+                const row = document.createElement('tr');
+                row.className = `border-b border-slate-200/60 transition ${statusBg}`;
+                
+                const sectionSelectsHTML = ['Sec1', 'Sec2', 'Sec3', 'Sec4', 'Sec5', 'Sec6'].map(sec => {
+                    const secVal = lesson[sec] || 'X';
+                    let secBorder = secVal === 'COMPLETED' ? 'border-emerald-300' : secVal === 'IN PROGRESS' ? 'border-amber-300' : secVal === 'NOT STARTED' ? 'border-rose-300' : 'border-slate-200';
+                    return `
+                        <td class="py-2.5 px-2 min-w-[130px] border-r border-slate-200/40">
+                            <select onchange="updateInteractiveCell('${teacher.name.replace(/'/g, "\\'")}', ${lesson._originalIndex}, '${sec}', this.value)" class="p-1.5 border ${secBorder} rounded-lg font-bold w-full text-xs bg-white/90 cursor-pointer shadow-sm focus:ring-1">
+                                <option value="X" ${secVal === 'X' ? 'selected' : ''}>X</option>
+                                <option value="NOT STARTED" ${secVal === 'NOT STARTED' ? 'selected' : ''}>NOT STARTED</option>
+                                <option value="IN PROGRESS" ${secVal === 'IN PROGRESS' ? 'selected' : ''}>IN PROGRESS</option>
+                                <option value="COMPLETED" ${secVal === 'COMPLETED' ? 'selected' : ''}>COMPLETED</option>
+                            </select>
+                        </td>
+                    `;
+                }).join('');
+
+                row.innerHTML = `
+                    <td class="py-4 px-5 font-bold text-indigo-950 bg-white/40 min-w-[100px] border-r border-slate-200/40">${lesson.Block || 'N/A'}</td>
+                    <td class="py-4 px-5 font-bold text-blue-900 bg-white/40 min-w-[120px] border-r border-slate-200/40">${lesson.Subject || 'N/A'}</td>
+                    <td class="py-4 px-5 font-black text-slate-700 min-w-[110px] border-r border-slate-200/40">${lesson.Class || lesson.class || 'N/A'}</td>
+                    <td class="py-4 px-5 font-semibold text-slate-600 min-w-[100px] border-r border-slate-200/40">${lesson.Month}</td>
+                    <td class="py-4 px-6 text-slate-900 font-semibold min-w-[240px] whitespace-normal border-r border-slate-200/40">${lesson.NCERT}</td>
+                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] whitespace-normal border-r border-slate-200/40">${lesson.Assessments}</td>
+                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] whitespace-normal border-r border-slate-200/40">${lesson.NEET}</td>
+                    ${sectionSelectsHTML}
+                    <td class="py-4 px-6 min-w-[155px]">
+                        <select onchange="updateInteractiveCell('${teacher.name.replace(/'/g, "\\'")}', ${lesson._originalIndex}, 'Status', this.value)" class="p-2 border ${cellSelectBg} rounded-xl font-extrabold cursor-pointer w-full bg-white text-slate-800 shadow-sm text-xs focus:ring-2">
+                            <option value="NOT STARTED" ${(lesson.Status === 'NOT STARTED' || lesson.Status === 'Not Started') ? 'selected' : ''}>NOT STARTED</option>
+                            <option value="IN PROGRESS" ${(lesson.Status === 'IN PROGRESS' || lesson.Status === 'In Progress') ? 'selected' : ''}>IN PROGRESS</option>
+                            <option value="COMPLETED" ${(lesson.Status === 'COMPLETED' || lesson.Status === 'Completed') ? 'selected' : ''}>COMPLETED</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('stat-total').innerText = filteredPlan.length;
+            document.getElementById('stat-pending').innerText = pendingCount;
+            document.getElementById('stat-completed').innerText = completedCount;
+        }
+
+        function updateInteractiveCell(teacherName, originalIndex, field, value) {
+            let allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            let tIdx = allTeachers.findIndex(t => t.name === teacherName);
+            if (tIdx !== -1 && allTeachers[tIdx].plan && allTeachers[tIdx].plan[originalIndex]) {
+                allTeachers[tIdx].plan[originalIndex][field] = value;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
+                renderTeacherData(); 
+            }
+        }
+
+        function exportToExcel() {
+            const selectedName = document.getElementById('dashboardTeacherSelect').value;
+            const selectedBlock = document.getElementById('dashboardBlockSelect').value; 
+            const selectedGrade = document.getElementById('dashboardGradeSelect').value;
+            
+            if (!selectedName) return alert("Please select a teacher first to export data!");
+
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === selectedName);
+
+            if (!teacher || !teacher.plan || teacher.plan.length === 0) return alert("No lesson plan data found to export.");
+
+            let filteredPlan = teacher.plan;
+            if (selectedBlock !== "All") filteredPlan = filteredPlan.filter(lesson => lesson.Block === selectedBlock);
+            if (selectedGrade !== "All") filteredPlan = filteredPlan.filter(lesson => (lesson.Class || lesson.class) === selectedGrade);
+
+            if (filteredPlan.length === 0) return alert("No records match active filters.");
+
+            const headers = [
+                "Block", "Subject", "Class/Grade", "Month", 
+                "NCERT Syllabus", "Assessments", "NEET Syllabus", 
+                "Sec-1", "Sec-2", "Sec-3", "Sec-4", "Sec-5", "Sec-6", "Status"
+            ];
+
+            const excelRows = filteredPlan.map(lesson => [
+                lesson.Block || 'N/A',
+                lesson.Subject || 'N/A',
+                lesson.Class || lesson.class || 'N/A',
+                lesson.Month || '',
+                lesson.NCERT || '',
+                lesson.Assessments || '',
+                lesson.NEET || '',
+                lesson.Sec1 || 'X',
+                lesson.Sec2 || 'X',
+                lesson.Sec3 || 'X',
+                lesson.Sec4 || 'X',
+                lesson.Sec5 || 'X',
+                lesson.Sec6 || 'X',
+                lesson.Status || 'NOT STARTED'
+            ]);
+
+            const colWidths = headers.map((header, colIdx) => {
+                let maxLen = header.length;
+                excelRows.forEach(row => {
+                    const cellValue = String(row[colIdx] || '');
+                    if (cellValue.length > maxLen) maxLen = cellValue.length;
+                });
+                return Math.min(Math.max(maxLen * 7.5, 75), 300); 
+            });
+
+            let xml = '<?xml version="1.0" encoding="utf-8"?>\n';
+            xml += '<?mso-application progid="Excel.Sheet"?>\n';
+            xml += '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ';
+            xml += 'xmlns:o="urn:schemas-microsoft-com:office:office" ';
+            xml += 'xmlns:x="urn:schemas-microsoft-com:office:excel" ';
+            xml += 'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" ';
+            xml += 'xmlns:html="http://www.w3.org/TR/REC-html40">\n';
+            
+            xml += '  <Styles>\n';
+            xml += '    <Style ss:ID="HeaderStyle">\n';
+            xml += '      <Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/>\n';
+            xml += '      <Interior ss:Color="#1E3A8A" ss:Pattern="Solid"/>\n';
+            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>\n';
+            xml += '      <Borders>\n';
+            xml += '        <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#000000"/>\n';
+            xml += '      </Borders>\n';
+            xml += '    </Style>\n';
+            xml += '    <Style ss:ID="MetaStyle">\n';
+            xml += '      <Font ss:Color="#1E1B4B" ss:Name="Segoe UI"/>\n';
+            xml += '      <Interior ss:Color="#EEF2FF" ss:Pattern="Solid"/>\n';
+            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Top" ss:WrapText="1"/>\n';
+            xml += '    </Style>\n';
+            xml += '    <Style ss:ID="SyllabusStyle">\n';
+            xml += '      <Font ss:Color="#0F172A" ss:Name="Segoe UI"/>\n';
+            xml += '      <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>\n';
+            xml += '      <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>\n';
+            xml += '    </Style>\n';
+            xml += '    <Style ss:ID="TrackerStyle">\n';
+            xml += '      <Font ss:Bold="1" ss:Color="#0369A1" ss:Name="Segoe UI"/>\n';
+            xml += '      <Interior ss:Color="#F0F9FF" ss:Pattern="Solid"/>\n';
+            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Top" ss:WrapText="1"/>\n';
+            xml += '    </Style>\n';
+            xml += '  </Styles>\n';
+
+            xml += '  <Worksheet ss:Name="Syllabus Tracker">\n';
+            xml += '    <Table>\n';
+
+            colWidths.forEach(w => {
+                xml += `      <Column ss:Width="${w}"/>\n`;
+            });
+
+            xml += '      <Row ss:Height="28">\n';
+            headers.forEach(h => {
+                xml += `        <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">${h}</Data></Cell>\n`;
+            });
+            xml += '      </Row>\n';
+
+            excelRows.forEach(row => {
+                xml += '      <Row ss:AutoFitHeight="1">\n';
+                row.forEach((cell, colIdx) => {
+                    const cleanCell = String(cell)
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                    
+                    let appliedStyle = "SyllabusStyle"; 
+                    if (colIdx >= 0 && colIdx <= 3) {
+                        appliedStyle = "MetaStyle";       
+                    } else if (colIdx >= 7 && colIdx <= 13) {
+                        appliedStyle = "TrackerStyle";    
+                    }
+
+                    xml += `        <Cell ss:StyleID="${appliedStyle}"><Data ss:Type="String">${cleanCell}</Data></Cell>\n`;
+                });
+                xml += '      </Row>\n';
+            });
+
+            xml += '    </Table>\n';
+            xml += '  </Worksheet>\n';
+            xml += '</Workbook>\n';
+
+            try {
+                const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                const safeTeacherName = selectedName.replace(/[^a-z0-9]/gi, '_');
+                
+                link.href = url;
+                link.download = `${safeTeacherName}_${selectedBlock}_${selectedGrade}_Tracker.xls`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                alert("An error occurred while generating the color-formatted spreadsheet file.");
+            }
+        }
+
+        // --- STEP 4: EDIT PLAN LOGIC ---
+        function populateEditBlocks() {
+            const teacherName = document.getElementById('editTeacherSelect').value;
+            const blockSelect = document.getElementById('editBlockSelect');
+            const subSelect = document.getElementById('editSubjectSelect');
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === teacherName);
+            
+            blockSelect.innerHTML = '<option value="" disabled selected>-- Choose a Block --</option>';
+            subSelect.innerHTML = '<option value="" disabled selected>-- Choose Block First --</option>';
+            document.getElementById('existingPlanContainer').style.display = 'none';
+            document.getElementById('noEditDataMsg').style.display = 'none';
+            
+            if (teacher && teacher.assignments) {
+                const blocks = [...new Set(teacher.assignments.map(a => a.block))];
+                blocks.forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
+            }
+        }
+
+        function populateEditSubjects() {
+            const teacherName = document.getElementById('editTeacherSelect').value;
+            const blockName = document.getElementById('editBlockSelect').value;
+            const subSelect = document.getElementById('editSubjectSelect');
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === teacherName);
+            
+            subSelect.innerHTML = '<option value="" disabled selected>-- Choose a Subject --</option>';
+            document.getElementById('existingPlanContainer').style.display = 'none';
+            document.getElementById('noEditDataMsg').style.display = 'none';
+            
+            if(teacher && teacher.assignments && blockName) {
+                const subjects = [...new Set(teacher.assignments.filter(a => a.block === blockName).map(a => a.subject))];
+                subjects.forEach(sub => subSelect.innerHTML += `<option value="${sub}">${sub}</option>`);
+            }
+        }
+
+        function populateEditGrades() {
+            const teacherName = document.getElementById('editTeacherSelect').value;
+            const blockName = document.getElementById('editBlockSelect').value;
+            const subjectName = document.getElementById('editSubjectSelect').value;
+            const gradeSelect = document.getElementById('editGradeSelect');
+            
+            gradeSelect.innerHTML = '<option value="" disabled selected>-- Choose a Grade --</option>';
+            
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === teacherName);
+            
+            if (!teacher) return;
+            let foundGrades = new Set();
+
+            if (teacher.assignments && Array.isArray(teacher.assignments)) {
+                teacher.assignments.forEach(a => {
+                    if (a.block === blockName && a.subject === subjectName) {
+                        if (Array.isArray(a.classes)) a.classes.forEach(cls => foundGrades.add(cls));
+                        else if (a.classes) foundGrades.add(a.classes);
+                    }
+                });
+            }
+
+            if (teacher.plan && Array.isArray(teacher.plan)) {
+                teacher.plan.forEach(p => {
+                    if (p.Block === blockName && p.Subject === subjectName) {
+                        const classValue = p.Class || p.class;
+                        if (Array.isArray(classValue)) classValue.forEach(c => foundGrades.add(c));
+                        else if (classValue) foundGrades.add(classValue);
+                    }
+                });
+            }
+
+            if (foundGrades.size > 0) {
+                foundGrades.forEach(grd => {
+                    const opt = document.createElement('option');
+                    opt.value = grd; opt.textContent = grd;
+                    gradeSelect.appendChild(opt);
+                });
+            } else {
+                gradeSelect.innerHTML = '<option value="" disabled>No Grades Found</option>';
+            }
+        }
+
+        function loadPlanForEdit() {
+            const teacherName = document.getElementById('editTeacherSelect').value;
+            const blockName = document.getElementById('editBlockSelect').value;
+            const subjectName = document.getElementById('editSubjectSelect').value;
+            const gradeName = document.getElementById('editGradeSelect').value;
+            
+            if (!teacherName || !blockName || !subjectName || !gradeName) return;
+
+            const gangsters = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = gangsters.find(t => t.name === teacherName);
+
+            if (!teacher || !teacher.plan) return showNoEditData();
+
+            const planToEdit = teacher.plan.filter(p => 
+                p.Block === blockName && p.Subject === subjectName && (p.Class || p.class) === gradeName
+            );
+
+            if (planToEdit.length === 0) return showNoEditData();
+
+            document.getElementById('noEditDataMsg').style.display = 'none';
+            document.getElementById('existingPlanContainer').style.display = 'block';
+            
+            const tbody = document.getElementById('existingPlanBody');
+            const getDropdown = (colName, selectedValue, index, options) => {
+                return `<select data-col="${colName}" data-row="${index}" class="p-2 border border-slate-200 rounded-lg w-full font-bold text-xs bg-white cursor-pointer shadow-sm">
+                    ${options.map(opt => `<option value="${opt}" ${selectedValue === opt ? 'selected' : ''}>${opt}</option>`).join('')}
+                </select>`;
+            };
+
+            tbody.innerHTML = planToEdit.map((row, index) => `
+                <tr class="hover:bg-slate-50 transition border-b border-slate-200/60">
+                    <td class="p-2 min-w-[120px] border-r border-slate-100"><input type="text" data-col="Month" data-row="${index}" value="${row.Month || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-sm font-semibold bg-white shadow-inner"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NCERT" data-row="${index}" value="${row.NCERT || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-sm text-slate-700 bg-white shadow-inner"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="Assessments" data-row="${index}" value="${row.Assessments || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white shadow-inner"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NEET" data-row="${index}" value="${row.NEET || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white shadow-inner"></td>
+                    ${['Sec1', 'Sec2', 'Sec3', 'Sec4', 'Sec5', 'Sec6'].map(sec => `
+                        <td class="p-2 min-w-[125px] border-r border-slate-100">${getDropdown(sec, row[sec] || 'X', index, ['X', 'NOT STARTED', 'IN PROGRESS', 'COMPLETED'])}</td>
+                    `).join('')}
+                    <td class="p-2 min-w-[140px]">${getDropdown('Status', row.Status || 'NOT STARTED', index, ['NOT STARTED', 'IN PROGRESS', 'COMPLETED'])}</td>
+                </tr>
+            `).join('');
+        }
+
+        function showNoEditData() {
+            document.getElementById('existingPlanContainer').style.display = 'none';
+            document.getElementById('noEditDataMsg').style.display = 'block';
+        }
+
+        function saveEditedPlan() {
+            const teacherName = document.getElementById('editTeacherSelect').value;
+            const blockName = document.getElementById('editBlockSelect').value;
+            const subjectName = document.getElementById('editSubjectSelect').value;
+            const gradeName = document.getElementById('editGradeSelect').value; 
+            
+            const tableRows = document.querySelectorAll('#existingPlanBody tr');
+            let updatedRows = [];
+            
+            tableRows.forEach(row => {
+                const rowData = {
+                    Block: blockName, Subject: subjectName, Class: gradeName, 
+                    Month: row.querySelector('[data-col="Month"]').value,
+                    NCERT: row.querySelector('[data-col="NCERT"]').value,
+                    Assessments: row.querySelector('[data-col="Assessments"]').value,
+                    NEET: row.querySelector('[data-col="NEET"]').value,
+                    Sec1: row.querySelector('[data-col="Sec1"]').value,
+                    Sec2: row.querySelector('[data-col="Sec2"]').value,
+                    Sec3: row.querySelector('[data-col="Sec3"]').value,
+                    Sec4: row.querySelector('[data-col="Sec4"]').value,
+                    Sec5: row.querySelector('[data-col="Sec5"]').value,
+                    Sec6: row.querySelector('[data-col="Sec6"]').value,
+                    Status: row.querySelector('[data-col="Status"]').value
+                };
+                updatedRows.push(rowData);
+            });
+
+            let allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            let tIdx = allTeachers.findIndex(t => t.name === teacherName);
+            
+            if (tIdx !== -1) {
+                let otherPlans = allTeachers[tIdx].plan.filter(p => 
+                    !(p.Block === blockName && p.Subject === subjectName && (p.Class || p.class) === gradeName)
+                );
+                allTeachers[tIdx].plan = [...otherPlans, ...updatedRows];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
+                
+                const msg = document.getElementById('editSuccessMsg');
+                msg.classList.remove('hidden');
+                setTimeout(() => { msg.classList.add('hidden'); }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>
