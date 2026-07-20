@@ -12,7 +12,7 @@
         .table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .table-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .bg-login-image {
-            background: linear-gradient(rgba(241, 245, 249, 0.3), rgba(241, 245, 249, 0.15)), url('indus school1.jpeg');
+            background: linear-gradient(rgba(15, 23, 42, 0.45), rgba(30, 27, 75, 0.4)), url('indus school1.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -21,7 +21,7 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans p-4 md:p-8 min-h-screen" id="appBody" onload="initApp()">
 
-    <!-- AUTHENTICATION DIALOG INTERFACE SCREEN (Pushed to the left side to display background building text) -->
+    <!-- AUTHENTICATION DIALOG INTERFACE SCREEN -->
     <div id="loginScreen" class="hidden min-h-[85vh] flex flex-col justify-center items-center md:justify-start md:items-center md:flex-row px-4 md:pl-32 w-full">
         <div class="w-full max-w-xl bg-white/90 backdrop-blur-xl p-8 md:p-10 rounded-3xl shadow-[0_30px_70px_-15px_rgba(15,23,42,0.35)] border border-white/80 relative overflow-hidden transition-all duration-300">
             
@@ -29,15 +29,16 @@
             <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600"></div>
             
             <div class="text-center mb-8">
-                <!-- Flex layout including left logo, school name, and right logo -->
+                <!-- Flex layout optimized to stack the title on two explicit lines -->
                 <div class="flex items-center justify-center gap-4 max-w-full px-1">
-                    <img src="logo1.jpeg" alt="Montessori Indus Logo" class="h-10 w-auto md:h-12 object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
-                    <h2 class="text-lg sm:text-xl md:text-2xl font-black bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent tracking-tight whitespace-normal">
-                        Montessori Indus Residential School
+                    <img src="logo1.jpeg" alt="Montessori Indus Logo" class="h-12 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                    <h2 class="text-xl md:text-2xl font-black bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent tracking-tight leading-tight">
+                        Montessori Indus<br>
+                        <span class="text-lg md:text-xl font-extrabold opacity-95">Residential School</span>
                     </h2>
-                    <img src="logo2.jpg" alt="Montessori Jubilee Logo" class="h-10 w-auto md:h-12 object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                    <img src="logo2.jpg" alt="Montessori Jubilee Logo" class="h-12 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
                 </div>
-                <div class="inline-block mt-3 px-3 py-1 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-full border border-indigo-100 shadow-sm">
+                <div class="inline-block mt-4 px-3 py-1 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-full border border-indigo-100 shadow-sm">
                     <p class="text-[10px] text-indigo-700 font-extrabold uppercase tracking-widest">
                         Teachers Year Plan Tracker
                     </p>
@@ -78,9 +79,10 @@
                     Montessori Indus Residential School
                 </h1>
                 <h2 class="text-xl text-slate-500 mt-2 font-semibold tracking-wide uppercase text-xs">
-                    Year Plan & Workload Tracker
+                    Master Year Plan & Workload Tracker
                 </h2>
-            </div>            <button onclick="handleLogout()" class="px-5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 rounded-xl text-xs transition shadow-sm flex items-center gap-1.5 self-center">
+            </div>
+            <button onclick="handleLogout()" class="px-5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 rounded-xl text-xs transition shadow-sm flex items-center gap-1.5 self-center">
                 🔒 Secure Logout
             </button>
         </header>
@@ -88,9 +90,9 @@
         <!-- COLOR CODED CORE NAVIGATION TAB BUTTONS -->
         <div id="tabNavigationStrip" class="flex flex-wrap justify-center gap-3 mb-10">
             <button onclick="switchTab('register')" id="btn-register" class="px-6 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-xl hover:bg-indigo-100 font-bold transition shadow-sm">1. 📋 Register Teacher</button>
-            <button onclick="switchTab('upload')" id="btn-upload" class="px-6 py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl hover:bg-emerald-100 font-bold transition shadow-sm">2. 📁 Upload year Plan</button>
+            <button onclick="switchTab('upload')" id="btn-upload" class="px-6 py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl hover:bg-emerald-100 font-bold transition shadow-sm">2. 📁 Upload Plan</button>
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm">3. 📊 Dashboard & Tracking</button>
-            <button onclick="switchTab('teacherEdit')" id="btn-teacherEdit" class="px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm">4. ✏️ Update year Plan</button>
+            <button onclick="switchTab('teacherEdit')" id="btn-teacherEdit" class="px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm">4. Update Year Plan</button>
             <button onclick="switchTab('manageTeachers')" id="btn-manageTeachers" class="px-6 py-3 bg-orange-50 text-orange-700 border border-orange-200 rounded-xl hover:bg-orange-100 font-bold transition shadow-sm">5. 👥 Manage Teachers</button>
         </div>
 
@@ -198,27 +200,28 @@
         <!-- TAB 3: DASHBOARD METRICS & TRACKING STATUS -->
         <div id="dashboard-section" class="hidden animate-fade-in">
             <div class="mb-8 flex flex-wrap gap-4 items-end bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm">
-                <div class="w-full md:w-1/4">
+                <div class="w-full md:w-1/5">
                     <label class="block font-bold text-slate-700 text-sm mb-1">Select Teacher:</label>
                     <select id="dashboardTeacherSelect" onchange="populateDashboardBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-lg cursor-pointer bg-white shadow-sm transition">
                         <option value="" disabled selected>-- Choose a Teacher --</option>
                     </select>
                 </div>
-                <div class="w-full md:w-1/4">
+                <div class="w-full md:w-1/5">
                     <label class="block font-bold text-slate-700 text-sm mb-1">Filter by Block:</label>
                     <select id="dashboardBlockSelect" onchange="renderTeacherData()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-lg cursor-pointer bg-white shadow-sm transition">
                         <option value="All">All Blocks</option>
                     </select>
                 </div>
-                <div class="w-full md:w-1/4">
+                <div class="w-full md:w-1/5">
                     <label class="block font-bold text-slate-700 text-sm mb-1">Filter by Grade/Class:</label>
                     <select id="dashboardGradeSelect" onchange="renderTeacherData()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-lg cursor-pointer bg-white shadow-sm transition">
                         <option value="All">All Grades</option>
                     </select>
                 </div>
                 <div class="flex-grow"></div>
-                <div class="w-full md:w-auto mt-4 md:mt-0 pt-2">
-                    <button onclick="exportToExcel()" class="w-full px-6 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition shadow-lg">📥 Export Filtered Excel</button>
+                <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3 mt-4 md:mt-0 pt-2">
+                    <button onclick="exportToExcel()" class="px-5 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition shadow-lg text-sm">📥 Export Filtered Excel</button>
+                    <button onclick="exportCompletionReport()" class="px-5 py-3 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-xl hover:from-emerald-700 hover:to-teal-800 transition shadow-lg text-sm">📊 Export Completion Status</button>
                 </div>
             </div>
 
@@ -277,10 +280,10 @@
             </div>
         </div>
 
-        <!-- TAB 4: EDIT PLAN MATRIX GRID -->
+        <!-- TAB 4: UPDATE YEAR PLAN MATRIX GRID -->
         <div id="teacherEdit-section" class="hidden max-w-6xl mx-auto animate-fade-in">
             <div class="border-l-4 border-purple-600 pl-3 mb-4">
-                <h3 class="text-2xl font-bold text-purple-950">Step 4: Edit Existing Lesson Plan</h3>
+                <h3 class="text-2xl font-bold text-purple-950">Step 4: Update Year Plan</h3>
             </div>
             
             <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 mb-6 text-sm text-purple-800 font-medium">
@@ -332,8 +335,9 @@
                         </table>
                     </div>
 
-                    <div class="mt-6">
-                        <button onclick="saveEditedPlan()" class="w-full bg-purple-600 text-white py-4 rounded-xl hover:bg-purple-700 font-extrabold text-xl shadow-lg shadow-purple-100 transition">Save Updates to Database</button>
+                    <div class="flex gap-4 mt-6">
+                        <button onclick="saveEditedPlan()" class="flex-1 bg-purple-600 text-white py-4 rounded-xl hover:bg-purple-700 font-extrabold text-xl shadow-lg shadow-purple-100 transition">Save Updates to Database</button>
+                        <button onclick="exportEditToExcel()" class="px-6 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition shadow-md text-sm">📥 Export This Plan</button>
                     </div>
                 </div>
                 
@@ -686,7 +690,7 @@
             document.getElementById('previewContainer').classList.add('hidden');
         }
 
-        // --- TAB 5: SEPARATE PROFILE MANAGEMENT WORKSPACE DIRECTORY ---
+        // --- TAB 5: PROFILE MANAGEMENT ---
         function renderTeachersManagement() {
             const listDiv = document.getElementById('teachersManagementList');
             if(!listDiv) return;
@@ -1096,7 +1100,139 @@
             }
         }
 
-        // --- STEP 4: EDIT PLAN LOGIC ---
+        function exportCompletionReport() {
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            if (allTeachers.length === 0) return alert("No master records found inside the local database to analyze.");
+
+            let globalTotal = 0;
+            let globalCompleted = 0;
+            const gradeMap = {};
+
+            allTeachers.forEach(teacher => {
+                if (!teacher.plan) return;
+                teacher.plan.forEach(lesson => {
+                    const rawGrade = lesson.Class || lesson.class || 'UNASSIGNED';
+                    const grade = rawGrade.toString().trim().toUpperCase();
+                    const status = (lesson.Status || '').toString().trim().toUpperCase();
+                    
+                    globalTotal++;
+                    if (status === 'COMPLETED') globalCompleted++;
+
+                    if (!gradeMap[grade]) {
+                        gradeMap[grade] = { total: 0, completed: 0, rows: [] };
+                    }
+                    
+                    gradeMap[grade].total++;
+                    if (status === 'COMPLETED') {
+                        gradeMap[grade].completed++;
+                        
+                        gradeMap[grade].rows.push([
+                            teacher.name,
+                            lesson.Block || 'N/A',
+                            lesson.Subject || 'N/A',
+                            lesson.Month || '',
+                            lesson.NCERT || '',
+                            status
+                        ]);
+                    }
+                });
+            });
+
+            const globalPercent = globalTotal > 0 ? ((globalCompleted / globalTotal) * 100).toFixed(1) : 0;
+
+            let xml = '<?xml version="1.0" encoding="utf-8"?>\n';
+            xml += '<?mso-application progid="Excel.Sheet"?>\n';
+            xml += '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ';
+            xml += 'xmlns:o="urn:schemas-microsoft-com:office:office" ';
+            xml += 'xmlns:x="urn:schemas-microsoft-com:office:excel" ';
+            xml += 'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" ';
+            xml += 'xmlns:html="http://www.w3.org/TR/REC-html40">\n';
+            
+            xml += '  <Styles>\n';
+            xml += '    <Style ss:ID="TitleStyle"><Font ss:Bold="1" ss:Size="14" ss:Color="#0F172A" ss:Name="Segoe UI"/></Style>\n';
+            xml += '    <Style ss:ID="SummaryHeader"><Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/><Interior ss:Color="#047857" ss:Pattern="Solid"/></Style>\n';
+            xml += '    <Style ss:ID="TableHeader"><Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/><Interior ss:Color="#1E3A8A" ss:Pattern="Solid"/><Alignment ss:Horizontal="Center"/></Style>\n';
+            xml += '    <Style ss:ID="GradeRow"><Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/><Interior ss:Color="#4338CA" ss:Pattern="Solid"/></Style>\n';
+            xml += '    <Style ss:ID="Centered"><Alignment ss:Horizontal="Center" ss:Vertical="Center"/></Style>\n';
+            xml += '    <Style ss:ID="CompletedCell"><Font ss:Bold="1" ss:Color="#047857" ss:Name="Segoe UI"/><Interior ss:Color="#D1FAE5" ss:Pattern="Solid"/><Alignment ss:Horizontal="Center"/></Style>\n';
+            xml += '    <Style ss:ID="NoDataStyle"><Font ss:Italic="1" ss:Color="#64748B" ss:Name="Segoe UI"/><Alignment ss:Horizontal="Center"/></Style>\n';
+            xml += '  </Styles>\n';
+
+            xml += '  <Worksheet ss:Name="Completed Syllabus Summary">\n';
+            xml += '    <Table>\n';
+            xml += '      <Column ss:Width="160"/>\n<Column ss:Width="100"/>\n<Column ss:Width="120"/>\n<Column ss:Width="90"/>\n<Column ss:Width="250"/>\n<Column ss:Width="110"/>\n';
+
+            xml += '      <Row><Cell ss:StyleID="TitleStyle"><Data ss:Type="String">MONTESSORI INDUS - COMPLETED SYLLABUS ONLY REPORT</Data></Cell></Row>\n';
+            xml += '      <Row ss:Height="22">\n';
+            xml += '        <Cell ss:StyleID="SummaryHeader"><Data ss:Type="String">Master Metric Context</Data></Cell>\n';
+            xml += '        <Cell ss:StyleID="SummaryHeader"><Data ss:Type="String">Value / Progress Status</Data></Cell>\n';
+            xml += '      </Row>\n';
+            xml += `      <Row><Cell><Data ss:Type="String">All Grades Combined Total Logged Rows</Data></Cell><Cell ss:StyleID="Centered"><Data ss:Type="Number">${globalTotal}</Data></Cell></Row>\n`;
+            xml += `      <Row><Cell><Data ss:Type="String">All Grades Combined Completed Rows</Data></Cell><Cell ss:StyleID="CompletedCell"><Data ss:Type="String">${globalCompleted} (${globalPercent}%)</Data></Cell></Row>\n`;
+            xml += '      <Row></Row>\n'; 
+
+            xml += '      <Row ss:Height="24">\n';
+            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Teacher Name</Data></Cell>\n';
+            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Block</Data></Cell>\n';
+            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Subject</Data></Cell>\n';
+            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Month</Data></Cell>\n';
+            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">NCERT Syllabus Chapter Details</Data></Cell>\n';
+            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Completion Status</Data></Cell>\n';
+            xml += '      </Row>\n';
+
+            Object.keys(gradeMap).sort((a, b) => {
+                return (parseInt(a.replace(/^\D+/g, '')) || 0) - (parseInt(b.replace(/^\D+/g, '')) || 0);
+            }).forEach(grade => {
+                const info = gradeMap[grade];
+                const pct = info.total > 0 ? ((info.completed / info.total) * 100).toFixed(1) : 0;
+                
+                xml += '      <Row ss:Height="20">\n';
+                xml += `        <Cell ss:StyleID="GradeRow"><Data ss:Type="String">${grade} COMPLETED OVERVIEW</Data></Cell>\n`;
+                xml += `        <Cell ss:StyleID="GradeRow"><Data ss:Type="String">Grade Progress Summary:</Data></Cell>\n`;
+                xml += `        <Cell ss:StyleID="GradeRow"><Data ss:Type="String">${info.completed} / ${info.total} Rows Finished</Data></Cell>\n`;
+                xml += `        <Cell ss:StyleID="GradeRow"><Data ss:Type="String">${pct}% Completed</Data></Cell>\n`;
+                xml += '        <Cell ss:StyleID="GradeRow"></Cell>\n<Cell ss:StyleID="GradeRow"></Cell>\n';
+                xml += '      </Row>\n';
+
+                if (info.rows.length === 0) {
+                    xml += '      <Row>\n';
+                    xml += '        <Cell ss:StyleID="NoDataStyle"><Data ss:Type="String">No completed rows found for this grade context yet.</Data></Cell>\n';
+                    xml += '        <Cell></Cell>\n<Cell></Cell>\n<Cell></Cell>\n<Cell></Cell>\n<Cell></Cell>\n';
+                    xml += '      </Row>\n';
+                } else {
+                    info.rows.forEach(row => {
+                        const cleanNcert = row[4].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        xml += '      <Row ss:AutoFitHeight="1">\n';
+                        xml += `        <Cell><Data ss:Type="String">${row[0]}</Data></Cell>\n`; 
+                        xml += `        <Cell ss:StyleID="Centered"><Data ss:Type="String">${row[1]}</Data></Cell>\n`; 
+                        xml += `        <Cell><Data ss:Type="String">${row[2]}</Data></Cell>\n`; 
+                        xml += `        <Cell ss:StyleID="Centered"><Data ss:Type="String">${row[3]}</Data></Cell>\n`; 
+                        xml += `        <Cell><Data ss:Type="String">${cleanNcert}</Data></Cell>\n`; 
+                        xml += `        <Cell ss:StyleID="CompletedCell"><Data ss:Type="String">${row[5]}</Data></Cell>\n`;
+                        xml += '      </Row>\n';
+                    });
+                }
+            });
+
+            xml += '    </Table>\n';
+            xml += '  </Worksheet>\n';
+            xml += '</Workbook>\n';
+
+            try {
+                const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = "Syllabus_Completion_Master_Report.xls";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                alert("An issue occurred packing data reporting variables to report matrices.");
+            }
+        }
+
+        // --- STEP 4: UPDATE PLAN LOGIC ---
         function populateEditBlocks() {
             const teacherName = document.getElementById('editTeacherSelect').value;
             const blockSelect = document.getElementById('editBlockSelect');
@@ -1264,6 +1400,146 @@
                 const msg = document.getElementById('editSuccessMsg');
                 msg.classList.remove('hidden');
                 setTimeout(() => { msg.classList.add('hidden'); }, 3000);
+            }
+        }
+
+        function exportEditToExcel() {
+            const selectedName = document.getElementById('editTeacherSelect').value;
+            const selectedBlock = document.getElementById('editBlockSelect').value; 
+            const selectedSubject = document.getElementById('editSubjectSelect').value;
+            const selectedGrade = document.getElementById('editGradeSelect').value;
+            
+            if (!selectedName || !selectedBlock || !selectedSubject || !selectedGrade) {
+                return alert("Please satisfy all dropdown selection criteria first to export this dataset!");
+            }
+
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === selectedName);
+
+            if (!teacher || !teacher.plan || teacher.plan.length === 0) return alert("No lesson plan data found to export.");
+
+            const filteredPlan = teacher.plan.filter(p => 
+                p.Block === selectedBlock && p.Subject === selectedSubject && (p.Class || p.class) === selectedGrade
+            );
+
+            if (filteredPlan.length === 0) return alert("No records match configuration aggregates inside system rows.");
+
+            const headers = [
+                "Block", "Subject", "Class/Grade", "Month", 
+                "NCERT Syllabus", "Assessments", "NEET Syllabus", 
+                "Sec-1", "Sec-2", "Sec-3", "Sec-4", "Sec-5", "Sec-6", "Status"
+            ];
+
+            const excelRows = filteredPlan.map(lesson => [
+                lesson.Block || 'N/A',
+                lesson.Subject || 'N/A',
+                lesson.Class || lesson.class || 'N/A',
+                lesson.Month || '',
+                lesson.NCERT || '',
+                lesson.Assessments || '',
+                lesson.NEET || '',
+                lesson.Sec1 || 'X',
+                lesson.Sec2 || 'X',
+                lesson.Sec3 || 'X',
+                lesson.Sec4 || 'X',
+                lesson.Sec5 || 'X',
+                lesson.Sec6 || 'X',
+                lesson.Status || 'NOT STARTED'
+            ]);
+
+            const colWidths = headers.map((header, colIdx) => {
+                let maxLen = header.length;
+                excelRows.forEach(row => {
+                    const cellValue = String(row[colIdx] || '');
+                    if (cellValue.length > maxLen) maxLen = cellValue.length;
+                });
+                return Math.min(Math.max(maxLen * 7.5, 75), 300); 
+            });
+
+            let xml = '<?xml version="1.0" encoding="utf-8"?>\n';
+            xml += '<?mso-application progid="Excel.Sheet"?>\n';
+            xml += '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ';
+            xml += 'xmlns:o="urn:schemas-microsoft-com:office:office" ';
+            xml += 'xmlns:x="urn:schemas-microsoft-com:office:excel" ';
+            xml += 'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" ';
+            xml += 'xmlns:html="http://www.w3.org/TR/REC-html40">\n';
+            
+            xml += '  <Styles>\n';
+            xml += '    <Style ss:ID="HeaderStyle">\n';
+            xml += '      <Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/>\n';
+            xml += '      <Interior ss:Color="#5B21B6" ss:Pattern="Solid"/>\n'; 
+            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>\n';
+            xml += '      <Borders>\n';
+            xml += '        <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#000000"/>\n';
+            xml += '      </Borders>\n';
+            xml += '    </Style>\n';
+            xml += '    <Style ss:ID="MetaStyle">\n';
+            xml += '      <Font ss:Color="#1E1B4B" ss:Name="Segoe UI"/>\n';
+            xml += '      <Interior ss:Color="#F5F3FF" ss:Pattern="Solid"/>\n';
+            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Top" ss:WrapText="1"/>\n';
+            xml += '    </head>\n';
+            xml += '    <Style ss:ID="SyllabusStyle">\n';
+            xml += '      <Font ss:Color="#0F172A" ss:Name="Segoe UI"/>\n';
+            xml += '      <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>\n';
+            xml += '      <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>\n';
+            xml += '    </Style>\n';
+            xml += '    <Style ss:ID="TrackerStyle">\n';
+            xml += '      <Font ss:Bold="1" ss:Color="#6D28D9" ss:Name="Segoe UI"/>\n';
+            xml += '      <Interior ss:Color="#F5F3FF" ss:Pattern="Solid"/>\n';
+            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Top" ss:WrapText="1"/>\n';
+            xml += '    </Style>\n';
+            xml += '  </Styles>\n';
+
+            xml += '  <Worksheet ss:Name="Syllabus Update Backup">\n';
+            xml += '    <Table>\n';
+
+            colWidths.forEach(w => {
+                xml += `      <Column ss:Width="${w}"/>\n`;
+            });
+
+            xml += '      <Row ss:Height="28">\n';
+            headers.forEach(h => {
+                xml += `        <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">${h}</Data></Cell>\n`;
+            });
+            xml += '      </Row>\n';
+
+            excelRows.forEach(row => {
+                xml += '      <Row ss:AutoFitHeight="1">\n';
+                row.forEach((cell, colIdx) => {
+                    const cleanCell = String(cell)
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                    
+                    let appliedStyle = "SyllabusStyle"; 
+                    if (colIdx >= 0 && colIdx <= 3) {
+                        appliedStyle = "MetaStyle";       
+                    } else if (colIdx >= 7 && colIdx <= 13) {
+                        appliedStyle = "TrackerStyle";    
+                    }
+
+                    xml += `        <Cell ss:StyleID="${appliedStyle}"><Data ss:Type="String">${cleanCell}</Data></Cell>\n`;
+                });
+                xml += '      </Row>\n';
+            });
+
+            xml += '    </Table>\n';
+            xml += '  </Worksheet>\n';
+            xml += '</Workbook>\n';
+
+            try {
+                const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                const safeTeacherName = selectedName.replace(/[^a-z0-9]/gi, '_');
+                
+                link.href = url;
+                link.download = `Backup_${safeTeacherName}_${selectedBlock}_${selectedGrade}_Plan.xls`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                alert("An error occurred while generating the spreadsheet file backup.");
             }
         }
     </script>
