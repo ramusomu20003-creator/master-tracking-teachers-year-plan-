@@ -21,8 +21,8 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans p-4 md:p-8 min-h-screen" id="appBody" onload="initApp()">
 
-    <!-- AUTHENTICATION DIALOG INTERFACE SCREEN -->
-    <div id="loginScreen" class="hidden min-h-[85vh] flex flex-col justify-center items-center md:justify-start md:items-center md:flex-row px-4 md:pl-32 w-full">
+    <!-- AUTHENTICATION DIALOG INTERFACE SCREEN (Moved to the absolute top of the screen with md:justify-start and pt-4) -->
+    <div id="loginScreen" class="hidden min-h-[85vh] flex flex-col justify-start items-center md:justify-start md:items-center md:flex-row px-4 md:pl-32 pt-4 md:pt-6 w-full">
         <div class="w-full max-w-xl bg-white/95 backdrop-blur-xl p-8 md:p-10 rounded-3xl shadow-[0_30px_70px_-15px_rgba(15,23,42,0.25)] border border-white/80 relative overflow-hidden transition-all duration-300">
             
             <!-- Sleek Gradient Floating Top Ribbon Bar -->
@@ -398,7 +398,7 @@
                 applyPortalPermissions(savedSession);
             } else {
                 const body = document.getElementById('appBody');
-                body.className = "bg-login-image text-slate-800 font-sans p-4 md:p-8 min-h-screen flex items-center justify-center";
+                body.className = "bg-login-image text-slate-800 font-sans p-4 md:p-8 min-h-screen flex items-center justify-center md:items-start md:pt-16";
                 document.getElementById('loginScreen').classList.remove('hidden');
                 document.getElementById('mainAppWorkspace').classList.add('hidden');
             }
@@ -425,7 +425,7 @@
             sessionStorage.removeItem('portal_user');
             document.getElementById('mainAppWorkspace').classList.add('hidden');
             const body = document.getElementById('appBody');
-            body.className = "bg-login-image text-slate-800 font-sans p-4 md:p-8 min-h-screen flex items-center justify-center";
+            body.className = "bg-login-image text-slate-800 font-sans p-4 md:p-8 min-h-screen flex items-center justify-center md:items-start md:pt-16";
             document.getElementById('loginScreen').classList.remove('hidden');
         }
 
@@ -1275,8 +1275,8 @@
             
             gradeSelect.innerHTML = '<option value="" disabled selected>-- Choose a Grade --</option>';
             
-            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            const teacher = allTeachers.find(t => t.name === teacherName);
+            const defense = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = defense.find(t => t.name === teacherName);
             
             if (!teacher) return;
             let foundGrades = new Set();
