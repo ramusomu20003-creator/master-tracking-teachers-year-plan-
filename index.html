@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Montessori Indus Master Tracking</title>
+    <title>Montessori Indus Master Tracking System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
@@ -12,91 +12,83 @@
         .table-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .table-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         .bg-login-image {
-            background: linear-gradient(rgba(186, 230, 253, 0.45), rgba(125, 211, 252, 0.35)), url('indus school1.jpeg');
+            background: linear-gradient(rgba(241, 245, 249, 0.45), rgba(241, 245, 249, 0.35)), url('indus school1.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans p-4 md:p-8 min-h-screen" id="appBody" onload="initApp()">
+<body class="bg-slate-100 text-slate-800 font-sans p-4 md:p-8" id="appBody" onload="initApp()">
 
-    <!-- AUTHENTICATION DIALOG INTERFACE SCREEN (Moved to the absolute top of the screen with md:justify-start and pt-4) -->
-    <div id="loginScreen" class="hidden min-h-[85vh] flex flex-col justify-start items-center md:justify-start md:items-center md:flex-row px-4 md:pl-32 pt-4 md:pt-6 w-full">
-        <div class="w-full max-w-xl bg-white/95 backdrop-blur-xl p-8 md:p-10 rounded-3xl shadow-[0_30px_70px_-15px_rgba(15,23,42,0.25)] border border-white/80 relative overflow-hidden transition-all duration-300">
-            
-            <!-- Sleek Gradient Floating Top Ribbon Bar -->
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="loginScreen" class="hidden min-h-screen flex flex-col justify-start items-center px-4 pt-2 md:pt-4 w-full">
+        <div class="w-full max-w-4xl bg-white/85 backdrop-blur-xl p-5 md:p-8 rounded-3xl shadow-[0_30px_70px_-15px_rgba(15,23,42,0.22)] border border-white/60 relative overflow-hidden mt-2">
             <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600"></div>
             
-            <div class="text-center mb-8">
-                <!-- Flex layout optimized to force header text onto a single line -->
-                <div class="flex items-center justify-center gap-3 max-w-full px-1">
-                    <img src="logo1.jpeg" alt="Montessori Indus Logo" class="h-8 w-auto sm:h-10 md:h-12 object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
-                    <h2 class="text-sm sm:text-base md:text-lg font-black bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent tracking-tight whitespace-nowrap">
+            <div class="text-center mb-5">
+                <div class="flex items-center justify-center gap-3 sm:gap-5 max-w-full px-2">
+                    <img src="logo1.jpeg" alt="Montessori Indus Logo" class="h-12 sm:h-16 md:h-20 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                    <h2 class="text-lg sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent tracking-tight">
                         Montessori Indus Residential School
                     </h2>
-                    <img src="logo2.jpg" alt="Montessori Jubilee Logo" class="h-8 w-auto sm:h-10 md:h-12 object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                    <img src="logo2.jpg" alt="Montessori Jubilee Logo" class="h-12 sm:h-16 md:h-20 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
                 </div>
-                <div class="inline-block mt-3 px-3 py-1 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-full border border-indigo-100 shadow-sm">
-                    <p class="text-[10px] text-indigo-700 font-extrabold uppercase tracking-widest">
-                        Teachers Year Plan Tracker
+                <div class="inline-block mt-2.5 px-4 py-1 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-full border border-indigo-100 shadow-sm">
+                    <p class="text-xs text-indigo-700 font-extrabold uppercase tracking-widest">
+                        Teachers year Plan Tracker
                     </p>
                 </div>
             </div>
 
-            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5 max-w-md mx-auto">
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4 max-w-md mx-auto">
                 <div>
-                    <label class="block text-xs font-extrabold mb-1.5 text-slate-700 tracking-wider uppercase">User Name</label>
-                    <div class="relative">
-                        <input type="text" id="username" required placeholder="Enter your username" class="w-full border border-slate-200 bg-white/70 p-3 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition">
-                    </div>
+                    <label class="block text-xs font-extrabold mb-1 text-slate-700 tracking-wider uppercase">User Name</label>
+                    <input type="text" id="username" required placeholder="Enter your username" class="w-full border border-slate-200 bg-white/70 p-3 pl-4 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition text-sm">
                 </div>
                 <div>
-                    <label class="block text-xs font-extrabold mb-1.5 text-slate-700 tracking-wider uppercase">Password</label>
-                    <div class="relative">
-                        <input type="password" id="password" required placeholder="••••••••" class="w-full border border-slate-200 bg-white/70 p-3 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition">
-                    </div>
+                    <label class="block text-xs font-extrabold mb-1 text-slate-700 tracking-wider uppercase">Password</label>
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full border border-slate-200 bg-white/70 p-3 pl-4 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition text-sm">
                 </div>
                 
-                <div id="loginError" class="text-rose-600 text-xs font-bold hidden bg-rose-50 border border-rose-100 p-3 rounded-xl text-center shadow-sm animate-pulse">
+                <div id="loginError" class="text-rose-600 text-xs font-bold hidden bg-rose-50 border border-rose-100 p-2.5 rounded-xl text-center shadow-sm">
                     ❌ Invalid credentials provided. Please check inputs.
                 </div>
                 
-                <!-- Refined Gradient Action Button Interface -->
-                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-indigo-600/20 transition transform hover:-translate-y-0.5 active:translate-y-0 text-sm tracking-wide uppercase">
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition text-sm tracking-wide uppercase mt-2">
                     Sign In
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD CONTENT CONTAINER CONTROL DESK -->
+    <!-- MAIN DASHBOARD WORKSPACE -->
     <div id="mainAppWorkspace" class="max-w-7xl mx-auto bg-white p-6 md:p-10 rounded-2xl shadow-xl border-t-8 border-indigo-600 hidden">
         <header class="flex flex-col md:flex-row justify-between items-center mb-10 border-b border-slate-100 pb-6 gap-4">
             <div class="text-center md:text-left">
-                <h1 class="text-4xl font-black bg-gradient-to-r from-indigo-700 via-blue-700 to-purple-700 bg-clip-text text-transparent tracking-tight">
+                <h1 class="text-3xl md:text-4xl font-black bg-gradient-to-r from-indigo-700 via-blue-700 to-purple-700 bg-clip-text text-transparent tracking-tight">
                     Montessori Indus Residential School
                 </h1>
-                <h2 class="text-xl text-slate-500 mt-2 font-semibold tracking-wide uppercase text-xs">
-                    Master Year Plan & Workload Tracker
+                <h2 class="text-xs text-slate-500 mt-2 font-semibold tracking-wide uppercase">
+                    Teacher Year Plan & Workload Tracker
                 </h2>
             </div>
-            <button onclick="handleLogout()" class="px-5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 rounded-xl text-xs transition shadow-sm flex items-center gap-1.5 self-center">
+            <button onclick="handleLogout()" class="px-5 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 rounded-xl text-xs transition shadow-sm flex items-center gap-1.5 self-center">
                 🔒 Secure Logout
             </button>
         </header>
 
-        <!-- COLOR CODED CORE NAVIGATION TAB BUTTONS -->
+        <!-- NAVIGATION TABS -->
         <div id="tabNavigationStrip" class="flex flex-wrap justify-center gap-3 mb-10">
             <button onclick="switchTab('register')" id="btn-register" class="px-6 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-xl hover:bg-indigo-100 font-bold transition shadow-sm">1. 📋 Register Teacher</button>
             <button onclick="switchTab('upload')" id="btn-upload" class="px-6 py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl hover:bg-emerald-100 font-bold transition shadow-sm">2. 📁 Upload Plan</button>
             <button onclick="switchTab('dashboard')" id="btn-dashboard" class="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm">3. 📊 Dashboard & Tracking</button>
-            <button onclick="switchTab('teacherEdit')" id="btn-teacherEdit" class="px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm">4. ✏️ Update Year Plan</button>
+            <button onclick="switchTab('teacherEdit')" id="btn-teacherEdit" class="px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm">4. ✏️ Edit Existing Plan</button>
             <button onclick="switchTab('manageTeachers')" id="btn-manageTeachers" class="px-6 py-3 bg-orange-50 text-orange-700 border border-orange-200 rounded-xl hover:bg-orange-100 font-bold transition shadow-sm">5. 👥 Manage Teachers</button>
         </div>
 
-        <!-- TAB 1: REGISTER TEACHER FORM -->
-        <div id="register-section" class="hidden animate-fade-in">
+        <!-- TAB 1: REGISTER TEACHER -->
+        <div id="register-section" class="hidden">
             <div class="border-l-4 border-indigo-600 pl-3 mb-4">
                 <h3 class="text-2xl font-extrabold text-indigo-950">Step 1: Register Teacher & Workload</h3>
             </div>
@@ -109,7 +101,7 @@
                 
                 <div>
                     <h4 class="font-bold text-slate-800 mb-1 text-lg">Workload Assignments</h4>
-                    <p class="text-xs text-slate-500 mb-4">Select the operational block and mapped subject, then assign sections accordingly.</p>
+                    <p class="text-xs text-slate-500 mb-4">Select the operational block, subject, and assign target grade sections.</p>
                     
                     <div id="assignments-container" class="space-y-4"></div>
                     
@@ -118,109 +110,108 @@
                     </button>
                 </div>
 
-                <button type="submit" id="regSubmitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg shadow-indigo-100 transition">Save Teacher Profile</button>
+                <button type="submit" id="regSubmitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg transition">Save Teacher Profile</button>
             </form>
             <div id="registerMsg" class="mt-4 text-center font-bold text-emerald-700 hidden bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm">Teacher profile configured successfully!</div>
         </div>
 
-        <!-- TAB 2: UPLOAD SOURCE LESSON PLAN -->
-        <div id="upload-section" class="hidden max-w-6xl mx-auto animate-fade-in">
+        <!-- TAB 2: UPLOAD LESSON PLAN -->
+        <div id="upload-section" class="hidden max-w-6xl mx-auto">
             <div class="border-l-4 border-emerald-600 pl-3 mb-4">
                 <h3 class="text-2xl font-bold text-emerald-950">Step 2: Upload New Lesson Plan</h3>
             </div>
             
             <div class="bg-emerald-50/60 p-4 rounded-xl border border-emerald-100 mb-6 text-sm text-emerald-800 font-medium">
-                <strong>Instructions:</strong> Select a teacher, choose the operational Block, and the targeted workflow Subject. Then attach the layout parsing Excel data matrix.
+                <strong>Instructions:</strong> Select teacher, operational Block, Subject, and Class to parse and attach syllabus matrix data.
             </div>
 
             <div class="space-y-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div>
                         <label class="block font-bold mb-2 text-slate-700 text-base">Select Teacher</label>
-                        <select id="uploadTeacherSelect" onchange="populateUploadBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-indigo-600 bg-white font-semibold cursor-pointer shadow-sm transition"></select>
+                        <select id="uploadTeacherSelect" onchange="populateUploadBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 bg-white font-semibold cursor-pointer shadow-sm transition"></select>
                     </div>
                     <div>
                         <label class="block font-bold mb-2 text-slate-700 text-base">Select Block</label>
-                        <select id="uploadBlockSelect" onchange="populateUploadSubjects()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-indigo-600 bg-white font-semibold cursor-pointer shadow-sm transition">
+                        <select id="uploadBlockSelect" onchange="populateUploadSubjects()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 bg-white font-semibold cursor-pointer shadow-sm transition">
                             <option value="" disabled selected>-- Choose Block --</option>
                         </select>
                     </div>
                     <div>
                         <label class="block font-bold mb-2 text-slate-700 text-base">Select Subject</label>
-                        <select id="uploadSubjectSelect" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-indigo-600 bg-white font-semibold cursor-pointer shadow-sm transition">
+                        <select id="uploadSubjectSelect" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 bg-white font-semibold cursor-pointer shadow-sm transition">
                             <option value="" disabled selected>-- Choose Subject --</option>
                         </select>
                     </div>
                     <div>
                         <label class="block font-bold mb-2 text-slate-700 text-base">Select Class</label>
-                        <select id="uploadClassSelect" class="w-full border p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-indigo-600 bg-white font-semibold cursor-pointer shadow-sm transition">
+                        <select id="uploadClassSelect" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-emerald-500 bg-white font-semibold cursor-pointer shadow-sm transition">
                             <option value="" disabled selected>-- Choose Class --</option>
                         </select>
                     </div>
                 </div>
                 
                 <div class="border-t pt-4 border-slate-200/60">
-                    <label class="block font-bold mb-2 text-slate-700 text-base">Select Excel Files</label>
+                    <label class="block font-bold mb-2 text-slate-700 text-base">Select Excel File (.xlsx, .xls)</label>
                     <input type="file" id="excelFile" accept=".xlsx, .xls" onchange="handleExcelUpload(event)" class="w-full border border-slate-300 p-3 rounded-xl bg-white cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200 transition shadow-sm">
                 </div>
 
                 <div id="previewContainer" class="hidden mt-6">
-                    <h4 class="font-bold text-gray-800 mb-2 text-lg">Preview & Edit Data</h4>
-                    <div class="table-scroll overflow-x-auto max-h-96 shadow-md border border-slate-200 rounded-xl">
-                       <table class="min-w-full bg-white text-left" id="editTable">
-                            <thead class="bg-slate-900 text-slate-100 sticky top-0 z-10 text-sm">
+                    <h4 class="font-bold text-gray-800 mb-2 text-lg">Preview & Edit Staged Data</h4>
+                    <div class="table-scroll overflow-x-auto shadow-md rounded-xl border border-slate-200">
+                        <table class="min-w-full bg-white text-left" id="editTable">
+                            <thead class="bg-slate-900 text-slate-100 sticky top-0 z-10 text-xs uppercase tracking-wider">
                                 <tr>
-                                    <th class="py-3 px-4 min-w-[100px] font-semibold border-r border-slate-800">Month</th>
-                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">NCERT</th>
-                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">Assessments</th>
-                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">NEET</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-1</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-2</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-3</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-4</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-5</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-6</th>
-                                    <th class="py-3 px-4 min-w-[140px] font-semibold">Status</th>
+                                    <th class="py-3 px-4 min-w-[100px] border-r border-slate-800">Month</th>
+                                    <th class="py-3 px-4 min-w-[220px] border-r border-slate-800">NCERT</th>
+                                    <th class="py-3 px-4 min-w-[220px] border-r border-slate-800">Assessments</th>
+                                    <th class="py-3 px-4 min-w-[220px] border-r border-slate-800">NEET</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-1</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-2</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-3</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-4</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-5</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-6</th>
+                                    <th class="py-3 px-4 min-w-[140px]">Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="editTableBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                            <tbody id="editTableBody" class="divide-y divide-slate-100 text-slate-700 text-sm"></tbody>
                         </table>
                     </div>
 
                     <div class="flex gap-4 mt-6">
-                        <button id="submitPlanBtn" onclick="saveStagedPlan()" class="flex-1 bg-emerald-600 text-white py-4 rounded-xl hover:bg-emerald-700 font-extrabold text-xl shadow-lg shadow-emerald-100 transition">Submit Plan</button>
+                        <button id="submitPlanBtn" onclick="saveStagedPlan()" class="flex-1 bg-emerald-600 text-white py-4 rounded-xl hover:bg-emerald-700 font-extrabold text-xl shadow-lg transition">Submit Plan</button>
                         <button id="clearPlanBtn" onclick="clearStagedPlan()" class="px-6 bg-slate-200 text-slate-700 rounded-xl hover:bg-rose-600 hover:text-white font-bold shadow-md transition">Clear</button>
                     </div>
                 </div>
             </div>
-            <div id="uploadMsg" class="mt-4 text-center font-bold text-emerald-700 hidden bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm">Lesson plan successfully attached!</div>
+            <div id="uploadMsg" class="mt-4 text-center font-bold text-emerald-700 hidden bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm">Lesson plan attached successfully!</div>
         </div>
 
-        <!-- TAB 3: DASHBOARD METRICS & TRACKING STATUS -->
-        <div id="dashboard-section" class="hidden animate-fade-in">
+        <!-- TAB 3: DASHBOARD TRACKING -->
+        <div id="dashboard-section" class="hidden">
             <div class="mb-8 flex flex-wrap gap-4 items-end bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm">
-                <div class="w-full md:w-1/5">
+                <div class="w-full md:w-1/4">
                     <label class="block font-bold text-slate-700 text-sm mb-1">Select Teacher:</label>
-                    <select id="dashboardTeacherSelect" onchange="populateDashboardBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-lg cursor-pointer bg-white shadow-sm transition">
+                    <select id="dashboardTeacherSelect" onchange="populateDashboardBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-base cursor-pointer bg-white shadow-sm transition">
                         <option value="" disabled selected>-- Choose a Teacher --</option>
                     </select>
                 </div>
-                <div class="w-full md:w-1/5">
+                <div class="w-full md:w-1/4">
                     <label class="block font-bold text-slate-700 text-sm mb-1">Filter by Block:</label>
-                    <select id="dashboardBlockSelect" onchange="renderTeacherData()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-lg cursor-pointer bg-white shadow-sm transition">
+                    <select id="dashboardBlockSelect" onchange="renderTeacherData()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-base cursor-pointer bg-white shadow-sm transition">
                         <option value="All">All Blocks</option>
                     </select>
                 </div>
-                <div class="w-full md:w-1/5">
+                <div class="w-full md:w-1/4">
                     <label class="block font-bold text-slate-700 text-sm mb-1">Filter by Grade/Class:</label>
-                    <select id="dashboardGradeSelect" onchange="renderTeacherData()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-lg cursor-pointer bg-white shadow-sm transition">
+                    <select id="dashboardGradeSelect" onchange="renderTeacherData()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-base cursor-pointer bg-white shadow-sm transition">
                         <option value="All">All Grades</option>
                     </select>
                 </div>
                 <div class="flex-grow"></div>
-                <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3 mt-4 md:mt-0 pt-2">
-                    <button onclick="exportToExcel()" class="px-5 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition shadow-lg text-sm">📥 Export Filtered Excel</button>
-                    <button onclick="exportCompletionReport()" class="px-5 py-3 bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-xl hover:from-emerald-700 hover:to-teal-800 transition shadow-lg text-sm">📊 Export Completion Status</button>
+                <div class="w-full md:w-auto mt-4 md:mt-0 pt-2">
+                    <button onclick="exportToExcel()" class="w-full px-6 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition shadow-lg text-sm">📥 Export Filtered Excel</button>
                 </div>
             </div>
 
@@ -247,7 +238,7 @@
 
                 <div class="overflow-x-auto shadow-xl rounded-2xl border border-slate-200 table-scroll">
                     <table class="min-w-full bg-white text-left" id="planTable">
-                        <thead class="bg-slate-900 text-slate-100 text-sm">
+                        <thead class="bg-slate-900 text-slate-100 text-xs uppercase tracking-wider">
                             <tr>
                                 <th class="py-4 px-5 font-semibold min-w-[100px] border-r border-slate-800">Block</th>
                                 <th class="py-4 px-5 font-semibold min-w-[120px] border-r border-slate-800">Subject</th>
@@ -270,73 +261,74 @@
                 </div>
                 
                 <div id="noPlanMsg" class="hidden text-center py-10 bg-amber-50 text-amber-800 rounded-xl border border-amber-200 font-semibold mt-6">
-                    No lesson plans found matching filters.
+                    No lesson plans found matching active filter criteria.
                 </div>
             </div>
 
             <div id="noDataMsg" class="text-center py-16 bg-slate-50 rounded-2xl border border-slate-200/70 text-slate-400 font-bold text-lg">
-                👆 Select a teacher to load tracking matrix records.
+                👆 Select a teacher above to view tracking records.
             </div>
         </div>
 
-        <!-- TAB 4: UPDATE YEAR PLAN MATRIX GRID -->
-        <div id="teacherEdit-section" class="hidden max-w-6xl mx-auto animate-fade-in">
+        <!-- TAB 4: EDIT PLAN MATRIX GRID -->
+        <div id="teacherEdit-section" class="hidden max-w-6xl mx-auto">
             <div class="border-l-4 border-purple-600 pl-3 mb-4">
-                <h3 class="text-2xl font-bold text-purple-950">Step 4: Update Year Plan</h3>
+                <h3 class="text-2xl font-bold text-purple-950">Step 4: Update  Lesson Plan</h3>
             </div>
             
             <div class="bg-purple-50 p-4 rounded-xl border border-purple-100 mb-6 text-sm text-purple-800 font-medium">
-                <strong>Instructions:</strong> Use this workflow interface tab configuration profile to overwrite typos or adjust curriculum cells natively.
+                <strong>Instructions:</strong> Select cluster details to modify row parameters and save updates to local storage.
             </div>
-
             <div class="space-y-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
                     <div>
-                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Teacher</label>
-                        <select id="editTeacherSelect" onchange="populateEditBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold"></select>
+                        <label class="block font-bold mb-2 text-slate-700 text-sm">Select Teacher</label>
+                        <select id="editTeacherSelect" onchange="populateEditBlocks()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold text-sm"></select>
                     </div>
                     <div>
-                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Block</label>
-                        <select id="editBlockSelect" onchange="populateEditSubjects()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold"></select>
+                        <label class="block font-bold mb-2 text-slate-700 text-sm">Select Block</label>
+                        <select id="editBlockSelect" onchange="populateEditSubjects()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold text-sm"></select>
                     </div>
                     <div>
-                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Subject</label>
-                        <select id="editSubjectSelect" onchange="populateEditGrades()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold"></select>
+                        <label class="block font-bold mb-2 text-slate-700 text-sm">Select Subject</label>
+                        <select id="editSubjectSelect" onchange="populateEditGrades()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold text-sm"></select>
                     </div>
                     <div>
-                        <label class="block font-bold mb-2 text-slate-700 text-base">Select Grade</label>
-                        <select id="editGradeSelect" onchange="loadPlanForEdit()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold">
+                        <label class="block font-bold mb-2 text-slate-700 text-sm">Select Grade</label>
+                        <select id="editGradeSelect" onchange="loadPlanForEdit()" class="w-full border border-slate-300 p-3 rounded-xl focus:ring-2 focus:ring-purple-500 bg-white shadow-sm transition font-semibold text-sm">
                             <option value="" disabled selected>-- Choose Subject First --</option>
                         </select>
+                    </div>
+                    <div>
+                        <button onclick="exportEditPlanToExcel()" class="w-full px-4 py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl transition shadow-lg text-xs md:text-sm">📥 Export Filtered Excel</button>
                     </div>
                 </div>
                 
                 <div id="existingPlanContainer" class="hidden mt-6">
-                    <h4 class="font-bold text-slate-800 mb-2 text-base">Modify Data & Save</h4>
+                    <h4 class="font-bold text-slate-800 mb-2 text-base">Modify Data & Save Updates</h4>
                     <div class="table-scroll overflow-x-auto max-h-[500px] border border-slate-200 rounded-xl shadow-md">
                         <table class="min-w-full bg-white text-left">
-                            <thead class="bg-slate-900 text-slate-100 sticky top-0 z-10 text-sm">
+                            <thead class="bg-slate-900 text-slate-100 sticky top-0 z-10 text-xs uppercase tracking-wider">
                                 <tr>
-                                    <th class="py-3 px-4 min-w-[120px] font-semibold border-r border-slate-800">Month</th>
-                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">NCERT</th>
-                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">Assessments</th>
-                                    <th class="py-3 px-4 min-w-[220px] font-semibold border-r border-slate-800">NEET</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-1</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-2</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-3</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-4</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-5</th>
-                                    <th class="py-3 px-2 min-w-[125px] text-center font-semibold border-r border-slate-800">Sec-6</th>
-                                    <th class="py-3 px-4 min-w-[140px] font-semibold">Status</th>
+                                    <th class="py-3 px-4 min-w-[120px] border-r border-slate-800">Month</th>
+                                    <th class="py-3 px-4 min-w-[220px] border-r border-slate-800">NCERT</th>
+                                    <th class="py-3 px-4 min-w-[220px] border-r border-slate-800">Assessments</th>
+                                    <th class="py-3 px-4 min-w-[220px] border-r border-slate-800">NEET</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-1</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-2</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-3</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-4</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-5</th>
+                                    <th class="py-3 px-2 min-w-[125px] text-center border-r border-slate-800">Sec-6</th>
+                                    <th class="py-3 px-4 min-w-[140px]">Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="existingPlanBody" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                            <tbody id="existingPlanBody" class="divide-y divide-slate-100 text-slate-700 text-sm"></tbody>
                         </table>
                     </div>
 
-                    <div class="flex gap-4 mt-6">
-                        <button onclick="saveEditedPlan()" class="flex-1 bg-purple-600 text-white py-4 rounded-xl hover:bg-purple-700 font-extrabold text-xl shadow-lg shadow-purple-100 transition">Save Updates to Database</button>
-                        <button onclick="exportEditToExcel()" class="px-6 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition shadow-md text-sm">📥 Export This Plan</button>
+                    <div class="mt-6">
+                        <button onclick="saveEditedPlan()" class="w-full bg-purple-600 text-white py-4 rounded-xl hover:bg-purple-700 font-extrabold text-xl shadow-lg transition">Save Updates to Database</button>
                     </div>
                 </div>
                 
@@ -348,10 +340,10 @@
         </div>
 
         <!-- TAB 5: MANAGE REGISTERED TEACHERS DIRECTORY -->
-        <div id="manageTeachers-section" class="hidden animate-fade-in">
+        <div id="manageTeachers-section" class="hidden">
             <div class="border-l-4 border-orange-600 pl-3 mb-6">
                 <h3 class="text-2xl font-bold text-orange-950">Step 5: Manage Registered Teachers</h3>
-                <p class="text-xs text-slate-500 mt-1">View, update workload assignments, or completely delete teacher registry listings.</p>
+                <p class="text-xs text-slate-500 mt-1">View, update workload assignments, or delete teacher profiles.</p>
             </div>
             <div id="teachersManagementList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
@@ -371,23 +363,23 @@
 
         const TAB_STYLES = {
             register: {
-                active: "px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-xl font-bold transition shadow-md shadow-indigo-100 transform scale-105 border border-transparent",
+                active: "px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
                 inactive: "px-6 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-xl hover:bg-indigo-100 font-bold transition shadow-sm"
             },
             upload: {
-                active: "px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl font-bold transition shadow-md shadow-emerald-100 transform scale-105 border border-transparent",
+                active: "px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
                 inactive: "px-6 py-3 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-xl hover:bg-emerald-100 font-bold transition shadow-sm"
             },
             dashboard: {
-                active: "px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold transition shadow-md shadow-blue-100 transform scale-105 border border-transparent",
+                active: "px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
                 inactive: "px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm"
             },
             teacherEdit: {
-                active: "px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-bold transition shadow-md shadow-purple-100 transform scale-105 border border-transparent",
+                active: "px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
                 inactive: "px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm"
             },
             manageTeachers: {
-                active: "px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-xl font-bold transition shadow-md shadow-orange-100 transform scale-105 border border-transparent",
+                active: "px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
                 inactive: "px-6 py-3 bg-orange-50 text-orange-700 border border-orange-200 rounded-xl hover:bg-orange-100 font-bold transition shadow-sm"
             }
         };
@@ -397,8 +389,7 @@
             if (savedSession && USER_CREDENTIALS[savedSession]) {
                 applyPortalPermissions(savedSession);
             } else {
-                const body = document.getElementById('appBody');
-                body.className = "bg-login-image text-slate-800 font-sans p-4 md:p-8 min-h-screen flex items-center justify-center md:items-start md:pt-16";
+                document.getElementById('appBody').className = "bg-login-image text-slate-800 font-sans p-2 md:p-4 min-h-screen flex items-start justify-center";
                 document.getElementById('loginScreen').classList.remove('hidden');
                 document.getElementById('mainAppWorkspace').classList.add('hidden');
             }
@@ -424,8 +415,7 @@
         function handleLogout() {
             sessionStorage.removeItem('portal_user');
             document.getElementById('mainAppWorkspace').classList.add('hidden');
-            const body = document.getElementById('appBody');
-            body.className = "bg-login-image text-slate-800 font-sans p-4 md:p-8 min-h-screen flex items-center justify-center md:items-start md:pt-16";
+            document.getElementById('appBody').className = "bg-login-image text-slate-800 font-sans p-2 md:p-4 min-h-screen flex items-start justify-center";
             document.getElementById('loginScreen').classList.remove('hidden');
         }
 
@@ -455,8 +445,10 @@
             document.getElementById('manageTeachers-section').style.display = 'none';
             
             Object.keys(TAB_STYLES).forEach(key => {
-                document.getElementById(`btn-${key}`).className = TAB_STYLES[key].inactive + 
-                    (document.getElementById(`btn-${key}`).classList.contains('hidden') ? ' hidden' : '');
+                const btn = document.getElementById(`btn-${key}`);
+                if (btn) {
+                    btn.className = TAB_STYLES[key].inactive + (btn.classList.contains('hidden') ? ' hidden' : '');
+                }
             });
 
             document.getElementById(`${tab}-section`).style.display = 'block';
@@ -467,7 +459,16 @@
             if (tab === 'manageTeachers') renderTeachersManagement();
         }
 
-        // --- STEP 1: REGISTER & WORKLOAD MATRIX LOGIC ---
+        // Custom style helper for Sec-1 to Sec-6 dropdown items
+        function getSectionStyleClass(val) {
+            if (val === 'COMPLETED') return 'bg-emerald-100 text-emerald-900 border-emerald-300 font-bold';
+            if (val === 'IN PROGRESS') return 'bg-amber-100 text-amber-900 border-amber-300 font-bold';
+            if (val === 'X') return 'bg-red-600 text-white border-red-700 font-black';
+            if (val === 'NOT STARTED') return 'bg-rose-100 text-rose-800 border-rose-300 font-bold';
+            return 'bg-white text-slate-800 border-slate-200 font-medium';
+        }
+
+        // --- STEP 1: REGISTER TEACHER MATRIX LOGIC ---
         function addAssignmentRow(block = '', subject = '', classes = []) {
             const container = document.getElementById('assignments-container');
             
@@ -482,23 +483,23 @@
             const classesHTML = Array.from({length: 10}, (_, i) => i + 1).map(i => {
                 const gradeStr = `Grade ${i}`;
                 const isChecked = classes.includes(gradeStr) ? 'checked' : '';
-                return `<label class="inline-flex items-center p-2.5 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 hover:border-indigo-200 text-sm font-medium transition"><input type="checkbox" value="${gradeStr}" ${isChecked} class="t-class w-4 h-4 text-indigo-600 rounded mr-2 focus:ring-indigo-500"> G ${i}</label>`;
+                return `<label class="inline-flex items-center p-2.5 bg-slate-50 rounded-lg border border-slate-200 hover:bg-indigo-50 hover:border-indigo-200 text-sm font-medium cursor-pointer transition"><input type="checkbox" value="${gradeStr}" ${isChecked} class="t-class w-4 h-4 text-indigo-600 rounded mr-2 focus:ring-indigo-500"> G ${i}</label>`;
             }).join('');
 
             const rowHTML = `
                 <div class="assignment-row bg-white p-6 border border-slate-200 rounded-xl shadow-sm relative mt-4">
-                    <button type="button" onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-rose-600 hover:text-rose-800 font-bold bg-rose-50 border border-rose-100 px-3 py-1 rounded-lg transition shadow-sm text-xs">✕ Remove</button>
+                    <button type="button" onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-rose-600 hover:text-rose-800 font-bold bg-rose-50 border border-rose-100 px-3 py-1 rounded-lg text-xs">✕ Remove</button>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 mt-4">
                         <div>
                             <label class="block text-xs font-bold mb-1 text-slate-500 uppercase tracking-wider">Block Name</label>
-                            <select required class="t-block w-full border border-slate-200 p-2.5 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 bg-slate-50 font-medium cursor-pointer transition">
+                            <select required class="t-block w-full border border-slate-200 p-2.5 rounded-lg bg-slate-50 font-medium cursor-pointer">
                                 <option value="" disabled ${!block ? 'selected' : ''}>Select Block</option>
                                 ${blocksOptions}
                             </select>
                         </div>
                         <div>
                             <label class="block text-xs font-bold mb-1 text-slate-500 uppercase tracking-wider">Subject</label>
-                            <select required class="t-subject w-full border border-slate-200 p-2.5 rounded-lg focus:ring-2 focus:ring-indigo-600 bg-slate-50 font-medium cursor-pointer transition">
+                            <select required class="t-subject w-full border border-slate-200 p-2.5 rounded-lg bg-slate-50 font-medium cursor-pointer">
                                 <option value="" disabled ${!subject ? 'selected' : ''}>Select Subject</option>
                                 ${subjectsOptions}
                             </select>
@@ -521,7 +522,7 @@
             addAssignmentRow(); 
             const submitBtn = document.getElementById('regSubmitBtn');
             submitBtn.innerText = "Save Teacher Profile";
-            submitBtn.className = "w-full bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg shadow-indigo-100 transition";
+            submitBtn.className = "w-full bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg transition";
         }
 
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
@@ -536,7 +537,7 @@
             if (!isUpdateOperation) {
                 const nameExists = allTeachers.some(t => t.name.toLowerCase() === name.toLowerCase());
                 if (nameExists) {
-                    alert(`⚠️ Invalid Entry: A registry database entry for "${name}" already exists inside this portal setup. Duplicate listings are restricted.`);
+                    alert(`⚠️ A database entry for "${name}" already exists.`);
                     return;
                 }
             }
@@ -633,17 +634,18 @@
             }
 
             const getDropdown = (colName, selectedValue, index, options) => {
-                return `<select onchange="updateStagedCell(${index}, '${colName}', this.value)" class="p-1.5 border border-slate-200 rounded-lg w-full font-bold text-xs bg-white cursor-pointer shadow-sm">
+                const styleClass = getSectionStyleClass(selectedValue);
+                return `<select onchange="updateStagedCell(${index}, '${colName}', this.value); this.className='p-1.5 border rounded-lg w-full font-bold text-xs cursor-pointer shadow-sm ' + getSectionStyleClass(this.value);" class="p-1.5 border ${styleClass} rounded-lg w-full text-xs cursor-pointer shadow-sm">
                     ${options.map(opt => `<option value="${opt}" ${selectedValue === opt ? 'selected' : ''}>${opt}</option>`).join('')}
                 </select>`;
             };
 
             tbody.innerHTML = stagedPlanData.map((row, index) => `
-                <tr class="hover:bg-slate-50 transition border-b border-slate-200/60">
-                    <td class="p-2 min-w-[100px] border-r border-slate-100"><input type="text" value="${row.Month}" onchange="updateStagedCell(${index}, 'Month', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-sm font-semibold shadow-inner"></td>
-                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" value="${row.NCERT}" onchange="updateStagedCell(${index}, 'NCERT', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-sm text-slate-700 shadow-inner"></td>
-                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" value="${row.Assessments}" onchange="updateStagedCell(${index}, 'Assessments', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 shadow-inner"></td>
-                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" value="${row.NEET}" onchange="updateStagedCell(${index}, 'NEET', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 shadow-inner"></td>
+                <tr class="hover:bg-slate-50 border-b border-slate-200/60">
+                    <td class="p-2 min-w-[100px] border-r border-slate-100"><input type="text" value="${row.Month}" onchange="updateStagedCell(${index}, 'Month', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-sm font-semibold"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" value="${row.NCERT}" onchange="updateStagedCell(${index}, 'NCERT', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-sm text-slate-700"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" value="${row.Assessments}" onchange="updateStagedCell(${index}, 'Assessments', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" value="${row.NEET}" onchange="updateStagedCell(${index}, 'NEET', this.value)" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500"></td>
                     ${['Sec1', 'Sec2', 'Sec3', 'Sec4', 'Sec5', 'Sec6'].map(sec => `
                         <td class="p-2 min-w-[125px] border-r border-slate-100">${getDropdown(sec, row[sec], index, ['X', 'NOT STARTED', 'IN PROGRESS', 'COMPLETED'])}</td>
                     `).join('')}
@@ -671,7 +673,7 @@
                 allTeachers[tIdx].plan = allTeachers[tIdx].plan || [];
                 const firstRow = stagedPlanData[0];
                 allTeachers[tIdx].plan = allTeachers[tIdx].plan.filter(p => 
-                    !(p.Block === firstRow.Block && p.Subject === firstRow.Subject && (p.Class || p.class) === firstRow.Class)
+                    !(p.Block === firstRow.Block && p.Subject === firstRow.Subject && p.Class === firstRow.Class)
                 );
                 
                 allTeachers[tIdx].plan.push(...stagedPlanData);
@@ -696,7 +698,7 @@
             
             const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
             if(allTeachers.length === 0) {
-                listDiv.innerHTML = '<div class="col-span-full text-center py-6 bg-slate-50 border border-dashed rounded-xl font-medium text-slate-400 text-sm">No teacher profiles available inside local cache database rows yet.</div>';
+                listDiv.innerHTML = '<div class="col-span-full text-center py-6 bg-slate-50 border border-dashed rounded-xl font-medium text-slate-400 text-sm">No teacher profiles available inside database records.</div>';
                 return;
             }
 
@@ -706,13 +708,13 @@
                 const safeName = t.name.replace(/'/g, "\\'");
                 
                 return `
-                    <div class="bg-white p-5 border border-slate-200 shadow-sm rounded-xl flex flex-col justify-between hover:shadow-md transition animate-fade-in">
+                    <div class="bg-white p-5 border border-slate-200 shadow-sm rounded-xl flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between border-b pb-2 mb-3">
                                 <h5 class="font-extrabold text-slate-900 text-lg">${t.name}</h5>
-                                <span class="text-xs font-bold px-2 py-1 bg-orange-50 text-orange-700 rounded-md border border-orange-100">${totalWorkloads} Workload Branches</span>
+                                <span class="text-xs font-bold px-2 py-1 bg-orange-50 text-orange-700 rounded-md border border-orange-100">${totalWorkloads} Branches</span>
                             </div>
-                            <p class="text-xs font-semibold text-slate-500 mb-2">Lesson Tracking Rows Built: <span class="text-slate-800 font-extrabold">${totalPlans}</span></p>
+                            <p class="text-xs font-semibold text-slate-500 mb-2">Lesson Tracking Rows: <span class="text-slate-800 font-extrabold">${totalPlans}</span></p>
                         </div>
                         <div class="flex gap-2 mt-4 pt-2 border-t border-slate-100">
                             <button type="button" onclick="loadTeacherToEdit('${safeName}')" class="flex-1 py-2 bg-amber-50 text-amber-700 font-bold border border-amber-200 hover:bg-amber-100 rounded-lg text-xs transition shadow-sm">✏️ Edit Workload</button>
@@ -744,13 +746,13 @@
 
             const submitBtn = document.getElementById('regSubmitBtn');
             submitBtn.innerText = `Update Profile Matrix (${teacher.name})`;
-            submitBtn.className = "w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl hover:from-amber-700 hover:to-amber-800 font-extrabold text-xl shadow-lg shadow-amber-100 transition";
+            submitBtn.className = "w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl hover:from-amber-700 hover:to-amber-800 font-extrabold text-xl shadow-lg transition";
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function deleteTeacherProfile(name) {
-            if(!confirm(`Are you sure you want to permanently delete ${name}?\nThis action will erase all uploaded lesson plans tied to this profile.`)) return;
+            if(!confirm(`Are you sure you want to permanently delete ${name}?`)) return;
 
             let allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
             allTeachers = allTeachers.filter(t => t.name !== name);
@@ -850,7 +852,7 @@
             renderTeacherData();
         }
 
-       function renderTeacherData() {
+        function renderTeacherData() {
             const selectedName = document.getElementById('dashboardTeacherSelect').value;
             const selectedBlock = document.getElementById('dashboardBlockSelect').value; 
             const selectedGrade = document.getElementById('dashboardGradeSelect').value;
@@ -914,10 +916,11 @@
                 
                 const sectionSelectsHTML = ['Sec1', 'Sec2', 'Sec3', 'Sec4', 'Sec5', 'Sec6'].map(sec => {
                     const secVal = lesson[sec] || 'X';
-                    let secBorder = secVal === 'COMPLETED' ? 'border-emerald-300' : secVal === 'IN PROGRESS' ? 'border-amber-300' : secVal === 'NOT STARTED' ? 'border-rose-300' : 'border-slate-200';
+                    const secStyleClass = getSectionStyleClass(secVal);
+
                     return `
                         <td class="py-2.5 px-2 min-w-[130px] border-r border-slate-200/40">
-                            <select onchange="updateInteractiveCell('${teacher.name.replace(/'/g, "\\'")}', ${lesson._originalIndex}, '${sec}', this.value)" class="p-1.5 border ${secBorder} rounded-lg font-bold w-full text-xs bg-white/90 cursor-pointer shadow-sm focus:ring-1">
+                            <select onchange="updateInteractiveCell('${teacher.name.replace(/'/g, "\\'")}', ${lesson._originalIndex}, '${sec}', this.value)" class="p-1.5 border ${secStyleClass} rounded-lg w-full text-xs cursor-pointer shadow-sm">
                                 <option value="X" ${secVal === 'X' ? 'selected' : ''}>X</option>
                                 <option value="NOT STARTED" ${secVal === 'NOT STARTED' ? 'selected' : ''}>NOT STARTED</option>
                                 <option value="IN PROGRESS" ${secVal === 'IN PROGRESS' ? 'selected' : ''}>IN PROGRESS</option>
@@ -932,12 +935,12 @@
                     <td class="py-4 px-5 font-bold text-blue-900 bg-white/40 min-w-[120px] border-r border-slate-200/40">${lesson.Subject || 'N/A'}</td>
                     <td class="py-4 px-5 font-black text-slate-700 min-w-[110px] border-r border-slate-200/40">${lesson.Class || lesson.class || 'N/A'}</td>
                     <td class="py-4 px-5 font-semibold text-slate-600 min-w-[100px] border-r border-slate-200/40">${lesson.Month}</td>
-                    <td class="py-4 px-6 text-slate-900 font-semibold min-w-[240px] whitespace-normal border-r border-slate-200/40">${lesson.NCERT}</td>
-                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] whitespace-normal border-r border-slate-200/40">${lesson.Assessments}</td>
-                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] whitespace-normal border-r border-slate-200/40">${lesson.NEET}</td>
+                    <td class="py-4 px-6 text-slate-900 font-semibold min-w-[240px] border-r border-slate-200/40">${lesson.NCERT}</td>
+                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] border-r border-slate-200/40">${lesson.Assessments}</td>
+                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] border-r border-slate-200/40">${lesson.NEET}</td>
                     ${sectionSelectsHTML}
                     <td class="py-4 px-6 min-w-[155px]">
-                        <select onchange="updateInteractiveCell('${teacher.name.replace(/'/g, "\\'")}', ${lesson._originalIndex}, 'Status', this.value)" class="p-2 border ${cellSelectBg} rounded-xl font-extrabold cursor-pointer w-full bg-white text-slate-800 shadow-sm text-xs focus:ring-2">
+                        <select onchange="updateInteractiveCell('${teacher.name.replace(/'/g, "\\'")}', ${lesson._originalIndex}, 'Status', this.value)" class="p-2 border ${cellSelectBg} rounded-xl font-extrabold cursor-pointer w-full bg-white text-slate-800 text-xs">
                             <option value="NOT STARTED" ${(lesson.Status === 'NOT STARTED' || lesson.Status === 'Not Started') ? 'selected' : ''}>NOT STARTED</option>
                             <option value="IN PROGRESS" ${(lesson.Status === 'IN PROGRESS' || lesson.Status === 'In Progress') ? 'selected' : ''}>IN PROGRESS</option>
                             <option value="COMPLETED" ${(lesson.Status === 'COMPLETED' || lesson.Status === 'Completed') ? 'selected' : ''}>COMPLETED</option>
@@ -962,6 +965,7 @@
             }
         }
 
+        // --- DASHBOARD EXCEL EXPORT FUNCTION ---
         function exportToExcel() {
             const selectedName = document.getElementById('dashboardTeacherSelect').value;
             const selectedBlock = document.getElementById('dashboardBlockSelect').value; 
@@ -980,258 +984,91 @@
 
             if (filteredPlan.length === 0) return alert("No records match active filters.");
 
+            generateWorkbookDownload(filteredPlan, selectedName, selectedBlock, selectedGrade);
+        }
+
+        // --- STEP 4 EXCEL EXPORT FUNCTION ---
+        function exportEditPlanToExcel() {
+            const teacherName = document.getElementById('editTeacherSelect').value;
+            const blockName = document.getElementById('editBlockSelect').value;
+            const subjectName = document.getElementById('editSubjectSelect').value;
+            const gradeName = document.getElementById('editGradeSelect').value;
+
+            if (!teacherName || !blockName || !subjectName || !gradeName) {
+                return alert("Please select Teacher, Block, Subject, and Grade filters first!");
+            }
+
+            const tableRows = document.querySelectorAll('#existingPlanBody tr');
+            if (tableRows.length === 0) return alert("No lesson plan data displayed to export.");
+
+            let exportRows = [];
+            tableRows.forEach(row => {
+                exportRows.push({
+                    Block: blockName,
+                    Subject: subjectName,
+                    Class: gradeName,
+                    Month: row.querySelector('[data-col="Month"]').value,
+                    NCERT: row.querySelector('[data-col="NCERT"]').value,
+                    Assessments: row.querySelector('[data-col="Assessments"]').value,
+                    NEET: row.querySelector('[data-col="NEET"]').value,
+                    Sec1: row.querySelector('[data-col="Sec1"]').value,
+                    Sec2: row.querySelector('[data-col="Sec2"]').value,
+                    Sec3: row.querySelector('[data-col="Sec3"]').value,
+                    Sec4: row.querySelector('[data-col="Sec4"]').value,
+                    Sec5: row.querySelector('[data-col="Sec5"]').value,
+                    Sec6: row.querySelector('[data-col="Sec6"]').value,
+                    Status: row.querySelector('[data-col="Status"]').value
+                });
+            });
+
+            generateWorkbookDownload(exportRows, teacherName, blockName, gradeName);
+        }
+
+        // --- COMMON WORKBOOK GENERATOR ---
+        function generateWorkbookDownload(planData, teacherName, blockName, gradeName) {
             const headers = [
                 "Block", "Subject", "Class/Grade", "Month", 
                 "NCERT Syllabus", "Assessments", "NEET Syllabus", 
                 "Sec-1", "Sec-2", "Sec-3", "Sec-4", "Sec-5", "Sec-6", "Status"
             ];
 
-            const excelRows = filteredPlan.map(lesson => [
-                lesson.Block || 'N/A',
-                lesson.Subject || 'N/A',
-                lesson.Class || lesson.class || 'N/A',
-                lesson.Month || '',
-                lesson.NCERT || '',
-                lesson.Assessments || '',
-                lesson.NEET || '',
-                lesson.Sec1 || 'X',
-                lesson.Sec2 || 'X',
-                lesson.Sec3 || 'X',
-                lesson.Sec4 || 'X',
-                lesson.Sec5 || 'X',
-                lesson.Sec6 || 'X',
-                lesson.Status || 'NOT STARTED'
-            ]);
+            const excelRows = planData.map(lesson => ({
+                "Block": lesson.Block || 'N/A',
+                "Subject": lesson.Subject || 'N/A',
+                "Class/Grade": lesson.Class || lesson.class || 'N/A',
+                "Month": lesson.Month || '',
+                "NCERT Syllabus": lesson.NCERT || '',
+                "Assessments": lesson.Assessments || '',
+                "NEET Syllabus": lesson.NEET || '',
+                "Sec-1": lesson.Sec1 || 'X',
+                "Sec-2": lesson.Sec2 || 'X',
+                "Sec-3": lesson.Sec3 || 'X',
+                "Sec-4": lesson.Sec4 || 'X',
+                "Sec-5": lesson.Sec5 || 'X',
+                "Sec-6": lesson.Sec6 || 'X',
+                "Status": lesson.Status || 'NOT STARTED'
+            }));
 
-            const colWidths = headers.map((header, colIdx) => {
+            const worksheet = XLSX.utils.json_to_sheet(excelRows, { header: headers });
+            
+            const colWidths = headers.map(header => {
                 let maxLen = header.length;
                 excelRows.forEach(row => {
-                    const cellValue = String(row[colIdx] || '');
-                    if (cellValue.length > maxLen) maxLen = cellValue.length;
+                    const val = String(row[header] || '');
+                    if (val.length > maxLen) maxLen = val.length;
                 });
-                return Math.min(Math.max(maxLen * 7.5, 75), 300); 
+                return { wch: Math.min(Math.max(maxLen + 2, 12), 40) };
             });
+            worksheet['!cols'] = colWidths;
 
-            let xml = '<?xml version="1.0" encoding="utf-8"?>\n';
-            xml += '<?mso-application progid="Excel.Sheet"?>\n';
-            xml += '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ';
-            xml += 'xmlns:o="urn:schemas-microsoft-com:office:office" ';
-            xml += 'xmlns:x="urn:schemas-microsoft-com:office:excel" ';
-            xml += 'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" ';
-            xml += 'xmlns:html="http://www.w3.org/TR/REC-html40">\n';
-            
-            xml += '  <Styles>\n';
-            xml += '    <Style ss:ID="HeaderStyle">\n';
-            xml += '      <Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/>\n';
-            xml += '      <Interior ss:Color="#1E3A8A" ss:Pattern="Solid"/>\n';
-            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>\n';
-            xml += '      <Borders>\n';
-            xml += '        <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#000000"/>\n';
-            xml += '      </Borders>\n';
-            xml += '    </Style>\n';
-            xml += '    <Style ss:ID="MetaStyle">\n';
-            xml += '      <Font ss:Color="#1E1B4B" ss:Name="Segoe UI"/>\n';
-            xml += '      <Interior ss:Color="#EEF2FF" ss:Pattern="Solid"/>\n';
-            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Top" ss:WrapText="1"/>\n';
-            xml += '    </Style>\n';
-            xml += '    <Style ss:ID="SyllabusStyle">\n';
-            xml += '      <Font ss:Color="#0F172A" ss:Name="Segoe UI"/>\n';
-            xml += '      <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>\n';
-            xml += '      <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>\n';
-            xml += '    </Style>\n';
-            xml += '    <Style ss:ID="TrackerStyle">\n';
-            xml += '      <Font ss:Bold="1" ss:Color="#0369A1" ss:Name="Segoe UI"/>\n';
-            xml += '      <Interior ss:Color="#F0F9FF" ss:Pattern="Solid"/>\n';
-            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Top" ss:WrapText="1"/>\n';
-            xml += '    </Style>\n';
-            xml += '  </Styles>\n';
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Syllabus Tracker");
 
-            xml += '  <Worksheet ss:Name="Syllabus Tracker">\n';
-            xml += '    <Table>\n';
-
-            colWidths.forEach(w => {
-                xml += `      <Column ss:Width="${w}"/>\n`;
-            });
-
-            xml += '      <Row ss:Height="28">\n';
-            headers.forEach(h => {
-                xml += `        <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">${h}</Data></Cell>\n`;
-            });
-            xml += '      </Row>\n';
-
-            excelRows.forEach(row => {
-                xml += '      <Row ss:AutoFitHeight="1">\n';
-                row.forEach((cell, colIdx) => {
-                    const cleanCell = String(cell)
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;');
-                    
-                    let appliedStyle = "SyllabusStyle"; 
-                    if (colIdx >= 0 && colIdx <= 3) {
-                        appliedStyle = "MetaStyle";       
-                    } else if (colIdx >= 7 && colIdx <= 13) {
-                        appliedStyle = "TrackerStyle";    
-                    }
-
-                    xml += `        <Cell ss:StyleID="${appliedStyle}"><Data ss:Type="String">${cleanCell}</Data></Cell>\n`;
-                });
-                xml += '      </Row>\n';
-            });
-
-            xml += '    </Table>\n';
-            xml += '  </Worksheet>\n';
-            xml += '</Workbook>\n';
-
-            try {
-                const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8;" });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
-                const safeTeacherName = selectedName.replace(/[^a-z0-9]/gi, '_');
-                
-                link.href = url;
-                link.download = `${safeTeacherName}_${selectedBlock}_${selectedGrade}_Tracker.xls`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch (err) {
-                alert("An error occurred while generating the color-formatted spreadsheet file.");
-            }
+            const safeTeacherName = teacherName.replace(/[^a-z0-9]/gi, '_');
+            XLSX.writeFile(workbook, `${safeTeacherName}_${blockName}_${gradeName}_Tracker.xlsx`);
         }
 
-        function exportCompletionReport() {
-            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            if (allTeachers.length === 0) return alert("No master records found inside the local database to analyze.");
-
-            let globalTotal = 0;
-            let globalCompleted = 0;
-            const gradeMap = {};
-
-            allTeachers.forEach(teacher => {
-                if (!teacher.plan) return;
-                teacher.plan.forEach(lesson => {
-                    const rawGrade = lesson.Class || lesson.class || 'UNASSIGNED';
-                    const grade = rawGrade.toString().trim().toUpperCase();
-                    const status = (lesson.Status || '').toString().trim().toUpperCase();
-                    
-                    globalTotal++;
-                    if (status === 'COMPLETED') globalCompleted++;
-
-                    if (!gradeMap[grade]) {
-                        gradeMap[grade] = { total: 0, completed: 0, rows: [] };
-                    }
-                    
-                    gradeMap[grade].total++;
-                    if (status === 'COMPLETED') {
-                        gradeMap[grade].completed++;
-                        
-                        gradeMap[grade].rows.push([
-                            teacher.name,
-                            lesson.Block || 'N/A',
-                            lesson.Subject || 'N/A',
-                            lesson.Month || '',
-                            lesson.NCERT || '',
-                            status
-                        ]);
-                    }
-                });
-            });
-
-            const globalPercent = globalTotal > 0 ? ((globalCompleted / globalTotal) * 100).toFixed(1) : 0;
-
-            let xml = '<?xml version="1.0" encoding="utf-8"?>\n';
-            xml += '<?mso-application progid="Excel.Sheet"?>\n';
-            xml += '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ';
-            xml += 'xmlns:o="urn:schemas-microsoft-com:office:office" ';
-            xml += 'xmlns:x="urn:schemas-microsoft-com:office:excel" ';
-            xml += 'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" ';
-            xml += 'xmlns:html="http://www.w3.org/TR/REC-html40">\n';
-            
-            xml += '  <Styles>\n';
-            xml += '    <Style ss:ID="TitleStyle"><Font ss:Bold="1" ss:Size="14" ss:Color="#0F172A" ss:Name="Segoe UI"/></Style>\n';
-            xml += '    <Style ss:ID="SummaryHeader"><Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/><Interior ss:Color="#047857" ss:Pattern="Solid"/></Style>\n';
-            xml += '    <Style ss:ID="TableHeader"><Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/><Interior ss:Color="#1E3A8A" ss:Pattern="Solid"/><Alignment ss:Horizontal="Center"/></Style>\n';
-            xml += '    <Style ss:ID="GradeRow"><Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/><Interior ss:Color="#4338CA" ss:Pattern="Solid"/></Style>\n';
-            xml += '    <Style ss:ID="Centered"><Alignment ss:Horizontal="Center" ss:Vertical="Center"/></Style>\n';
-            xml += '    <Style ss:ID="CompletedCell"><Font ss:Bold="1" ss:Color="#047857" ss:Name="Segoe UI"/><Interior ss:Color="#D1FAE5" ss:Pattern="Solid"/><Alignment ss:Horizontal="Center"/></Style>\n';
-            xml += '    <Style ss:ID="NoDataStyle"><Font ss:Italic="1" ss:Color="#64748B" ss:Name="Segoe UI"/><Alignment ss:Horizontal="Center"/></Style>\n';
-            xml += '  </Styles>\n';
-
-            xml += '  <Worksheet ss:Name="Completed Syllabus Summary">\n';
-            xml += '    <Table>\n';
-            xml += '      <Column ss:Width="160"/>\n<Column ss:Width="100"/>\n<Column ss:Width="120"/>\n<Column ss:Width="90"/>\n<Column ss:Width="250"/>\n<Column ss:Width="110"/>\n';
-
-            xml += '      <Row><Cell ss:StyleID="TitleStyle"><Data ss:Type="String">MONTESSORI INDUS - COMPLETED SYLLABUS ONLY REPORT</Data></Cell></Row>\n';
-            xml += '      <Row ss:Height="22">\n';
-            xml += '        <Cell ss:StyleID="SummaryHeader"><Data ss:Type="String">Master Metric Context</Data></Cell>\n';
-            xml += '        <Cell ss:StyleID="SummaryHeader"><Data ss:Type="String">Value / Progress Status</Data></Cell>\n';
-            xml += '      </Row>\n';
-            xml += `      <Row><Cell><Data ss:Type="String">All Grades Combined Total Logged Rows</Data></Cell><Cell ss:StyleID="Centered"><Data ss:Type="Number">${globalTotal}</Data></Cell></Row>\n`;
-            xml += `      <Row><Cell><Data ss:Type="String">All Grades Combined Completed Rows</Data></Cell><Cell ss:StyleID="CompletedCell"><Data ss:Type="String">${globalCompleted} (${globalPercent}%)</Data></Cell></Row>\n`;
-            xml += '      <Row></Row>\n'; 
-
-            xml += '      <Row ss:Height="24">\n';
-            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Teacher Name</Data></Cell>\n';
-            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Block</Data></Cell>\n';
-            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Subject</Data></Cell>\n';
-            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Month</Data></Cell>\n';
-            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">NCERT Syllabus Chapter Details</Data></Cell>\n';
-            xml += '        <Cell ss:StyleID="TableHeader"><Data ss:Type="String">Completion Status</Data></Cell>\n';
-            xml += '      </Row>\n';
-
-            Object.keys(gradeMap).sort((a, b) => {
-                return (parseInt(a.replace(/^\D+/g, '')) || 0) - (parseInt(b.replace(/^\D+/g, '')) || 0);
-            }).forEach(grade => {
-                const info = gradeMap[grade];
-                const pct = info.total > 0 ? ((info.completed / info.total) * 100).toFixed(1) : 0;
-                
-                xml += '      <Row ss:Height="20">\n';
-                xml += `        <Cell ss:StyleID="GradeRow"><Data ss:Type="String">${grade} COMPLETED OVERVIEW</Data></Cell>\n`;
-                xml += `        <Cell ss:StyleID="GradeRow"><Data ss:Type="String">Grade Progress Summary:</Data></Cell>\n`;
-                xml += `        <Cell ss:StyleID="GradeRow"><Data ss:Type="String">${info.completed} / ${info.total} Rows Finished</Data></Cell>\n`;
-                xml += `        <Cell ss:StyleID="GradeRow"><Data ss:Type="String">${pct}% Completed</Data></Cell>\n`;
-                xml += '        <Cell ss:StyleID="GradeRow"></Cell>\n<Cell ss:StyleID="GradeRow"></Cell>\n';
-                xml += '      </Row>\n';
-
-                if (info.rows.length === 0) {
-                    xml += '      <Row>\n';
-                    xml += '        <Cell ss:StyleID="NoDataStyle"><Data ss:Type="String">No completed rows found for this grade context yet.</Data></Cell>\n';
-                    xml += '        <Cell></Cell>\n<Cell></Cell>\n<Cell></Cell>\n<Cell></Cell>\n<Cell></Cell>\n';
-                    xml += '      </Row>\n';
-                } else {
-                    info.rows.forEach(row => {
-                        const cleanNcert = row[4].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                        xml += '      <Row ss:AutoFitHeight="1">\n';
-                        xml += `        <Cell><Data ss:Type="String">${row[0]}</Data></Cell>\n`; 
-                        xml += `        <Cell ss:StyleID="Centered"><Data ss:Type="String">${row[1]}</Data></Cell>\n`; 
-                        xml += `        <Cell><Data ss:Type="String">${row[2]}</Data></Cell>\n`; 
-                        xml += `        <Cell ss:StyleID="Centered"><Data ss:Type="String">${row[3]}</Data></Cell>\n`; 
-                        xml += `        <Cell><Data ss:Type="String">${cleanNcert}</Data></Cell>\n`; 
-                        xml += `        <Cell ss:StyleID="CompletedCell"><Data ss:Type="String">${row[5]}</Data></Cell>\n`;
-                        xml += '      </Row>\n';
-                    });
-                }
-            });
-
-            xml += '    </Table>\n';
-            xml += '  </Worksheet>\n';
-            xml += '</Workbook>\n';
-
-            try {
-                const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8;" });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = "Syllabus_Completion_Master_Report.xls";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch (err) {
-                alert("An issue occurred packing data reporting variables to report matrices.");
-            }
-        }
-
-        // --- STEP 4: UPDATE PLAN LOGIC ---
+        // --- STEP 4: EDIT PLAN LOGIC ---
         function populateEditBlocks() {
             const teacherName = document.getElementById('editTeacherSelect').value;
             const blockSelect = document.getElementById('editBlockSelect');
@@ -1275,8 +1112,8 @@
             
             gradeSelect.innerHTML = '<option value="" disabled selected>-- Choose a Grade --</option>';
             
-            const defense = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            const teacher = defense.find(t => t.name === teacherName);
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === teacherName);
             
             if (!teacher) return;
             let foundGrades = new Set();
@@ -1319,8 +1156,8 @@
             
             if (!teacherName || !blockName || !subjectName || !gradeName) return;
 
-            const gangsters = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            const teacher = gangsters.find(t => t.name === teacherName);
+            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const teacher = allTeachers.find(t => t.name === teacherName);
 
             if (!teacher || !teacher.plan) return showNoEditData();
 
@@ -1335,17 +1172,18 @@
             
             const tbody = document.getElementById('existingPlanBody');
             const getDropdown = (colName, selectedValue, index, options) => {
-                return `<select data-col="${colName}" data-row="${index}" class="p-2 border border-slate-200 rounded-lg w-full font-bold text-xs bg-white cursor-pointer shadow-sm">
+                const styleClass = getSectionStyleClass(selectedValue);
+                return `<select data-col="${colName}" data-row="${index}" onchange="this.className='p-2 border rounded-lg w-full text-xs cursor-pointer shadow-sm ' + getSectionStyleClass(this.value);" class="p-2 border ${styleClass} rounded-lg w-full text-xs cursor-pointer shadow-sm">
                     ${options.map(opt => `<option value="${opt}" ${selectedValue === opt ? 'selected' : ''}>${opt}</option>`).join('')}
                 </select>`;
             };
 
             tbody.innerHTML = planToEdit.map((row, index) => `
-                <tr class="hover:bg-slate-50 transition border-b border-slate-200/60">
-                    <td class="p-2 min-w-[120px] border-r border-slate-100"><input type="text" data-col="Month" data-row="${index}" value="${row.Month || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-sm font-semibold bg-white shadow-inner"></td>
-                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NCERT" data-row="${index}" value="${row.NCERT || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-sm text-slate-700 bg-white shadow-inner"></td>
-                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="Assessments" data-row="${index}" value="${row.Assessments || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white shadow-inner"></td>
-                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NEET" data-row="${index}" value="${row.NEET || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white shadow-inner"></td>
+                <tr class="hover:bg-slate-50 border-b border-slate-200/60">
+                    <td class="p-2 min-w-[120px] border-r border-slate-100"><input type="text" data-col="Month" data-row="${index}" value="${row.Month || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-sm font-semibold bg-white"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NCERT" data-row="${index}" value="${row.NCERT || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-sm text-slate-700 bg-white"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="Assessments" data-row="${index}" value="${row.Assessments || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NEET" data-row="${index}" value="${row.NEET || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white"></td>
                     ${['Sec1', 'Sec2', 'Sec3', 'Sec4', 'Sec5', 'Sec6'].map(sec => `
                         <td class="p-2 min-w-[125px] border-r border-slate-100">${getDropdown(sec, row[sec] || 'X', index, ['X', 'NOT STARTED', 'IN PROGRESS', 'COMPLETED'])}</td>
                     `).join('')}
@@ -1399,146 +1237,6 @@
                 const msg = document.getElementById('editSuccessMsg');
                 msg.classList.remove('hidden');
                 setTimeout(() => { msg.classList.add('hidden'); }, 3000);
-            }
-        }
-
-        function exportEditToExcel() {
-            const selectedName = document.getElementById('editTeacherSelect').value;
-            const selectedBlock = document.getElementById('editBlockSelect').value; 
-            const selectedSubject = document.getElementById('editSubjectSelect').value;
-            const selectedGrade = document.getElementById('editGradeSelect').value;
-            
-            if (!selectedName || !selectedBlock || !selectedSubject || !selectedGrade) {
-                return alert("Please satisfy all dropdown selection criteria first to export this dataset!");
-            }
-
-            const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            const teacher = allTeachers.find(t => t.name === selectedName);
-
-            if (!teacher || !teacher.plan || teacher.plan.length === 0) return alert("No lesson plan data found to export.");
-
-            const filteredPlan = teacher.plan.filter(p => 
-                p.Block === selectedBlock && p.Subject === selectedSubject && (p.Class || p.class) === selectedGrade
-            );
-
-            if (filteredPlan.length === 0) return alert("No records match configuration aggregates inside system rows.");
-
-            const headers = [
-                "Block", "Subject", "Class/Grade", "Month", 
-                "NCERT Syllabus", "Assessments", "NEET Syllabus", 
-                "Sec-1", "Sec-2", "Sec-3", "Sec-4", "Sec-5", "Sec-6", "Status"
-            ];
-
-            const excelRows = filteredPlan.map(lesson => [
-                lesson.Block || 'N/A',
-                lesson.Subject || 'N/A',
-                lesson.Class || lesson.class || 'N/A',
-                lesson.Month || '',
-                lesson.NCERT || '',
-                lesson.Assessments || '',
-                lesson.NEET || '',
-                lesson.Sec1 || 'X',
-                lesson.Sec2 || 'X',
-                lesson.Sec3 || 'X',
-                lesson.Sec4 || 'X',
-                lesson.Sec5 || 'X',
-                lesson.Sec6 || 'X',
-                lesson.Status || 'NOT STARTED'
-            ]);
-
-            const colWidths = headers.map((header, colIdx) => {
-                let maxLen = header.length;
-                excelRows.forEach(row => {
-                    const cellValue = String(row[colIdx] || '');
-                    if (cellValue.length > maxLen) maxLen = cellValue.length;
-                });
-                return Math.min(Math.max(maxLen * 7.5, 75), 300); 
-            });
-
-            let xml = '<?xml version="1.0" encoding="utf-8"?>\n';
-            xml += '<?mso-application progid="Excel.Sheet"?>\n';
-            xml += '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" ';
-            xml += 'xmlns:o="urn:schemas-microsoft-com:office:office" ';
-            xml += 'xmlns:x="urn:schemas-microsoft-com:office:excel" ';
-            xml += 'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" ';
-            xml += 'xmlns:html="http://www.w3.org/TR/REC-html40">\n';
-            
-            xml += '  <Styles>\n';
-            xml += '    <Style ss:ID="HeaderStyle">\n';
-            xml += '      <Font ss:Bold="1" ss:Color="#FFFFFF" ss:Name="Segoe UI"/>\n';
-            xml += '      <Interior ss:Color="#5B21B6" ss:Pattern="Solid"/>\n'; 
-            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>\n';
-            xml += '      <Borders>\n';
-            xml += '        <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#000000"/>\n';
-            xml += '      </Borders>\n';
-            xml += '    </Style>\n';
-            xml += '    <Style ss:ID="MetaStyle">\n';
-            xml += '      <Font ss:Color="#1E1B4B" ss:Name="Segoe UI"/>\n';
-            xml += '      <Interior ss:Color="#F5F3FF" ss:Pattern="Solid"/>\n';
-            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Top" ss:WrapText="1"/>\n';
-            xml += '    </Style>\n';
-            xml += '    <Style ss:ID="SyllabusStyle">\n';
-            xml += '      <Font ss:Color="#0F172A" ss:Name="Segoe UI"/>\n';
-            xml += '      <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>\n';
-            xml += '      <Alignment ss:Horizontal="Left" ss:Vertical="Top" ss:WrapText="1"/>\n';
-            xml += '    </Style>\n';
-            xml += '    <Style ss:ID="TrackerStyle">\n';
-            xml += '      <Font ss:Bold="1" ss:Color="#6D28D9" ss:Name="Segoe UI"/>\n';
-            xml += '      <Interior ss:Color="#F5F3FF" ss:Pattern="Solid"/>\n';
-            xml += '      <Alignment ss:Horizontal="Center" ss:Vertical="Top" ss:WrapText="1"/>\n';
-            xml += '    </Style>\n';
-            xml += '  </Styles>\n';
-
-            xml += '  <Worksheet ss:Name="Syllabus Update Backup">\n';
-            xml += '    <Table>\n';
-
-            colWidths.forEach(w => {
-                xml += `      <Column ss:Width="${w}"/>\n`;
-            });
-
-            xml += '      <Row ss:Height="28">\n';
-            headers.forEach(h => {
-                xml += `        <Cell ss:StyleID="HeaderStyle"><Data ss:Type="String">${h}</Data></Cell>\n`;
-            });
-            xml += '      </Row>\n';
-
-            excelRows.forEach(row => {
-                xml += '      <Row ss:AutoFitHeight="1">\n';
-                row.forEach((cell, colIdx) => {
-                    const cleanCell = String(cell)
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;');
-                    
-                    let appliedStyle = "SyllabusStyle"; 
-                    if (colIdx >= 0 && colIdx <= 3) {
-                        appliedStyle = "MetaStyle";       
-                    } else if (colIdx >= 7 && colIdx <= 13) {
-                        appliedStyle = "TrackerStyle";    
-                    }
-
-                    xml += `        <Cell ss:StyleID="${appliedStyle}"><Data ss:Type="String">${cleanCell}</Data></Cell>\n`;
-                });
-                xml += '      </Row>\n';
-            });
-
-            xml += '    </Table>\n';
-            xml += '  </Worksheet>\n';
-            xml += '</Workbook>\n';
-
-            try {
-                const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8;" });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
-                const safeTeacherName = selectedName.replace(/[^a-z0-9]/gi, '_');
-                
-                link.href = url;
-                link.download = `Backup_${safeTeacherName}_${selectedBlock}_${selectedGrade}_Plan.xls`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } catch (err) {
-                alert("An error occurred while generating the spreadsheet file backup.");
             }
         }
     </script>
