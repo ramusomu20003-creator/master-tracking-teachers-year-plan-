@@ -101,7 +101,7 @@
                 
                 <div>
                     <h4 class="font-bold text-slate-800 mb-1 text-lg">Workload Assignments</h4>
-                    <p class="text-xs text-slate-500 mb-4">Select the operational block, subject, and assign target grade sections. You can also auto-generate the preset syllabus (Biology, Physics, Chemistry for Grades 7-10) directly into the database.</p>
+                    <p class="text-xs text-slate-500 mb-4">Select the operational block, subject, and assign target grade sections. You can also auto-generate the preset syllabus directly into the database.</p>
                     
                     <div id="assignments-container" class="space-y-4"></div>
                     
@@ -384,56 +384,73 @@
             }
         };
 
-        // PRESET SYLLABUS DATA WITH 'X' DEFAULT FOR SEC-1 TO SEC-6
+        // PRESET SYLLABUS DATA WITH GRADE 6 BIOLOGY ADDED
         const PRESET_SYLLABUS = {
             "BIOLOGY": {
+                "Grade 6": [
+                    { Month: "JUNE", NCERT: "The Wonderful world of Science", Assessments: "", NEET: "1. Eminent scientists in biology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JULY", NCERT: "1.The Wonderful world of Science.                                  2.Diversity in Living World-Introduction", Assessments: "Periodic Test - 1", NEET: "1. Eminent scientists in biology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "AUGUST", NCERT: "Diversity in Living World", Assessments: "", NEET: "1. Eminent scientists in biology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "SEPTEMBER", NCERT: "Diversity in Living World", Assessments: "Periodic Test - 2", NEET: "2. Equipment’s used by Scientists in Research Institutes", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "OCTOBER", NCERT: "Mindful Eating", Assessments: "Summative Assessment - 1", NEET: "2. Equipment’s used by Scientists in Research Institutes", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "NOVEMBER", NCERT: "Mindful Eating", Assessments: "", NEET: "2. Equipment’s used by Scientists in Research Institutes", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "DECEMBER", NCERT: "Revision & Exam", Assessments: "Periodic Test - 3", NEET: "2. Equipment’s used by Scientists in Research Institutes", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JANUARY", NCERT: "Living Creatures: Exploring their characters", Assessments: "", NEET: "3. Introduction to Human Body Systems", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "FEBRUARY", NCERT: "Nature’s Treasures", Assessments: "Periodic Test - 4", NEET: "3. Introduction to Human Body Systems", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "MARCH", NCERT: "Revision & Exams", Assessments: "", NEET: "3. Introduction to Human Body Systems", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "APRIL", NCERT: "Revision & Exams", Assessments: "Summative Assessment - 2", NEET: "3. Introduction to Human Body Systems", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" }
+                ],
                 "Grade 7": [
-                    { Month: "JUNE", NCERT: "1. The Ever Evolving world of Science", Assessments: "", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "JULY", NCERT: "1. The Ever Evolving world of Science", Assessments: "Periodic Test - 1", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "AUGUST", NCERT: "2. Life Processes in Plants", Assessments: "", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "SEPTEMBER", NCERT: "2. Life Processes in Plants", Assessments: "Periodic Test - 2", NEET: "2. RESEARCH INSTITUTES", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "OCTOBER", NCERT: "3. Life Processes in Animals", Assessments: "Summative Assessment - 1", NEET: "2. RESEARCH INSTITUTES", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "NOVEMBER", NCERT: "3. Life Processes in Animals", Assessments: "", NEET: "3. SENSE ORGANS (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "DECEMBER", NCERT: "Revision & Exam", Assessments: "Periodic Test - 3", NEET: "3. SENSE ORGANS (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "JANUARY", NCERT: "4. Adolescence: A stage of growth and Change", Assessments: "", NEET: "4. HUMAN SKELETAL SYSTEM (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "FEBRUARY", NCERT: "4. Adolescence: A stage of growth and Change", Assessments: "Periodic Test - 4", NEET: "4. HUMAN SKELETAL SYSTEM (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "MARCH", NCERT: "Revision & Exams", Assessments: "Summative Assessment - 2", NEET: "7 BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" }
+                    { Month: "JUNE", NCERT: "The Ever Evolving world of Science", Assessments: "", NEET: "1. Photosynthesis in higher plants", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JULY", NCERT: "The Ever Evolving world of Science", Assessments: "Periodic Test - 1", NEET: "1. Photosynthesis in higher plants", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "AUGUST", NCERT: "Life Processes in Plants", Assessments: "", NEET: "1. Photosynthesis in higher plants", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "SEPTEMBER", NCERT: "Life Processes in Plants", Assessments: "Periodic Test - 2", NEET: "1. Photosynthesis in higher plants", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "OCTOBER", NCERT: "Life Processes in Animals", Assessments: "", NEET: "2. Breathing and exchange of gases", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "NOVEMBER", NCERT: "Life Processes in Animals", Assessments: "", NEET: "2. Breathing and exchange of gases", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "DECEMBER", NCERT: "Revision & Exam", Assessments: "Summative Assessment - 1", NEET: "2. Breathing and exchange of gases", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JANUARY", NCERT: "Adolescence: A stage of growth and Change", Assessments: "", NEET: "3. Body fluids and circulation", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "FEBRUARY", NCERT: "Adolescence: A stage of growth and Change", Assessments: "Periodic Test - 3", NEET: "3. Body fluids and circulation", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
+                    { Month: "MARCH", NCERT: "Revision & Exams", Assessments: "", NEET: "3. Body fluids and circulation", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
+                    { Month: "APRIL", NCERT: "Revision & Exams", Assessments: "Summative Assessment - 2", NEET: "3. Body fluids and circulation", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" }
                 ],
                 "Grade 8": [
-                    { Month: "JUNE", NCERT: "1. The Ever Evolving world of Science", Assessments: "", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "JULY", NCERT: "1. The Ever Evolving world of Science", Assessments: "Periodic Test - 1", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "AUGUST", NCERT: "2. Life Processes in Plants", Assessments: "", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "SEPTEMBER", NCERT: "2. Life Processes in Plants", Assessments: "Periodic Test - 2", NEET: "2. RESEARCH INSTITUTES", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "OCTOBER", NCERT: "3. Life Processes in Animals", Assessments: "Summative Assessment - 1", NEET: "2. RESEARCH INSTITUTES", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "NOVEMBER", NCERT: "3. Life Processes in Animals", Assessments: "", NEET: "3. SENSE ORGANS (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "DECEMBER", NCERT: "Revision & Exam", Assessments: "Periodic Test - 3", NEET: "3. SENSE ORGANS (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "JANUARY", NCERT: "4. Adolescence: A stage of growth and Change", Assessments: "", NEET: "4. HUMAN SKELETAL SYSTEM (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "FEBRUARY", NCERT: "4. Adolescence: A stage of growth and Change", Assessments: "Periodic Test - 4", NEET: "4. HUMAN SKELETAL SYSTEM (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "MARCH", NCERT: "Revision & Exams", Assessments: "Summative Assessment - 2", NEET: "8 BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" }
+                    { Month: "JUNE", NCERT: "1. The Ever Evolving world of Science", Assessments: "", NEET: "1. Morphology of flowering plants", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JULY", NCERT: "2. The Invisible Living World - Beyond Our Naked Eye", Assessments: "Periodic Test - 1", NEET: "1. Morphology of flowering plants", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "AUGUST", NCERT: "2. The Invisible Living World - Beyond Our Naked Eye", Assessments: "", NEET: "1. Morphology of flowering plants", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "SEPTEMBER", NCERT: "2. The Invisible Living World - Beyond Our Naked Eye", Assessments: "Periodic Test - 2", NEET: "1. Morphology of flowering plants", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "OCTOBER", NCERT: "3. Health - The Ultimate Treasure", Assessments: "", NEET: "1. Morphology of flowering plants", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "NOVEMBER", NCERT: "3. Health - The Ultimate Treasure", Assessments: "", NEET: "2. Human skeletal system", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "DECEMBER", NCERT: "Revision & Exam", Assessments: "Summative Assessment - 1", NEET: "2. Human skeletal system", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JANUARY", NCERT: "12. How Nature Works in Harmony", Assessments: "", NEET: "2. Human skeletal system", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "FEBRUARY", NCERT: "12. How Nature Works in Harmony", Assessments: "Periodic Test - 3", NEET: "3. Anatomy of frog", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "MARCH", NCERT: "", Assessments: "", NEET: "3. Anatomy of frog", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "APRIL", NCERT: "Exams", Assessments: "Summative Assessment - 2", NEET: "3. Anatomy of frog", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" }
                 ],
                 "Grade 9": [
-                    { Month: "JUNE", NCERT: "1. The Ever Evolving world of Science", Assessments: "", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "JULY", NCERT: "1. The Ever Evolving world of Science", Assessments: "Periodic Test - 1", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "AUGUST", NCERT: "2. Life Processes in Plants", Assessments: "", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "SEPTEMBER", NCERT: "2. Life Processes in Plants", Assessments: "Periodic Test - 2", NEET: "2. RESEARCH INSTITUTES", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "OCTOBER", NCERT: "3. Life Processes in Animals", Assessments: "Summative Assessment - 1", NEET: "2. RESEARCH INSTITUTES", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "NOVEMBER", NCERT: "3. Life Processes in Animals", Assessments: "", NEET: "3. SENSE ORGANS (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "DECEMBER", NCERT: "Revision & Exam", Assessments: "Periodic Test - 3", NEET: "3. SENSE ORGANS (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "JANUARY", NCERT: "4. Adolescence: A stage of growth and Change", Assessments: "", NEET: "4. HUMAN SKELETAL SYSTEM (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "FEBRUARY", NCERT: "4. Adolescence: A stage of growth and Change", Assessments: "Periodic Test - 4", NEET: "4. HUMAN SKELETAL SYSTEM (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "MARCH", NCERT: "Revision & Exams", Assessments: "Summative Assessment - 2", NEET: "9 BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" }
+                    { Month: "JUNE", NCERT: "Cell  – Basic unit of life", Assessments: "", NEET: "1. Plant kingdom", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JULY", NCERT: "Cell  – Basic unit of life", Assessments: "Periodic Test - 1", NEET: "1. Plant kingdom", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "AUGUST", NCERT: "Cell  – Basic unit of life", Assessments: "", NEET: "1. Plant kingdom", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "SEPTEMBER", NCERT: "Plant tissues", Assessments: "Periodic Test - 2", NEET: "1. Plant kingdom", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "OCTOBER", NCERT: "Animal tissues", Assessments: "", NEET: "1. Plant kingdom", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "NOVEMBER", NCERT: "Reproduction", Assessments: "", NEET: "2. Animal Kingdom", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "DECEMBER", NCERT: "Diversity", Assessments: "Summative Assessment - 1", NEET: "2. Animal Kingdom", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JANUARY", NCERT: "Life Processes –  Nutrition (Jr10th)", Assessments: "", NEET: "2. Animal Kingdom", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "FEBRUARY", NCERT: "Life Processes –  Nutrition (Jr10th)", Assessments: "Periodic Test - 3", NEET: "2. Animal Kingdom", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "MARCH", NCERT: "Life Processes – Respiration", Assessments: "", NEET: "3. Miracles of biotechnology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "APRIL", NCERT: "Life Processes – Respiration", Assessments: "Summative Assessment - 2", NEET: "3. Miracles of biotechnology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" }
                 ],
                 "Grade 10": [
-                    { Month: "JUNE", NCERT: "1. The Ever Evolving world of Science", Assessments: "", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "JULY", NCERT: "1. The Ever Evolving world of Science", Assessments: "Periodic Test - 1", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "AUGUST", NCERT: "2. Life Processes in Plants", Assessments: "", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "SEPTEMBER", NCERT: "2. Life Processes in Plants", Assessments: "Periodic Test - 2", NEET: "2. RESEARCH INSTITUTES", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "OCTOBER", NCERT: "3. Life Processes in Animals", Assessments: "Summative Assessment - 1", NEET: "2. RESEARCH INSTITUTES", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "NOVEMBER", NCERT: "3. Life Processes in Animals", Assessments: "", NEET: "3. SENSE ORGANS (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "DECEMBER", NCERT: "Revision & Exam", Assessments: "Periodic Test - 3", NEET: "3. SENSE ORGANS (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "JANUARY", NCERT: "4. Adolescence: A stage of growth and Change", Assessments: "", NEET: "4. HUMAN SKELETAL SYSTEM (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "FEBRUARY", NCERT: "4. Adolescence: A stage of growth and Change", Assessments: "Periodic Test - 4", NEET: "4. HUMAN SKELETAL SYSTEM (CLASS 11)", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" },
-                    { Month: "MARCH", NCERT: "Revision & Exams", Assessments: "Summative Assessment - 2", NEET: "10 BIOLOGY", Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED" }
+                    { Month: "JUNE", NCERT: "Revision of Life Processes (Nutrition, Respiration)", Assessments: "", NEET: "1. Excretory system", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JULY", NCERT: "Life Processes – Transportation & Excretion", Assessments: "Periodic Test - 1", NEET: "2. Neural coordination", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "AUGUST", NCERT: "Control and coordination", Assessments: "", NEET: "3. Chemical coordination", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "SEPTEMBER", NCERT: "Reproduction", Assessments: "Spell - 1", NEET: "4. Reproductive health", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "OCTOBER", NCERT: "Our Environment", Assessments: "Spell - 2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "NOVEMBER", NCERT: "==", Assessments: "Spell -3", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "DECEMBER", NCERT: "==", Assessments: "Pre final -1", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "JANUARY", NCERT: "==", Assessments: "Pre final -2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "FEBRUARY", NCERT: "", Assessments: "Periodic Test - 3", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "MARCH", NCERT: "", Assessments: "", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                    { Month: "APRIL", NCERT: "", Assessments: "Summative Assessment - 2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" }
                 ]
             },
             "PHYSICS": {
@@ -617,7 +634,7 @@
         function getSectionStyleClass(val) {
             if (val === 'COMPLETED') return 'bg-emerald-100 text-emerald-900 border-emerald-300 font-bold';
             if (val === 'IN PROGRESS') return 'bg-amber-100 text-amber-900 border-amber-300 font-bold';
-            if (val === 'X' || !val) return 'bg-red-100 text-black border-red-300 font-bold'; // LIGHT RED BG & BLACK TEXT FOR 'X'
+            if (val === 'X' || !val) return 'bg-red-100 text-black border-red-300 font-bold'; 
             if (val === 'NOT STARTED') return 'bg-slate-100 text-slate-700 border-slate-300 font-bold';
             return 'bg-white text-slate-800 border-slate-200 font-medium';
         }
@@ -1158,6 +1175,8 @@
             noPlanMsg.style.display = 'none';
             let pendingCount = 0, completedCount = 0;
 
+            const safeTeacherName = teacher.name.replace(/'/g, "\\'");
+
             filteredPlan.forEach((lesson) => {
                 const isComp = (lesson.Status === 'COMPLETED' || lesson.Status === 'Completed');
                 const isProg = (lesson.Status === 'IN PROGRESS' || lesson.Status === 'In Progress');
@@ -1176,7 +1195,7 @@
 
                     return `
                         <td class="py-2.5 px-2 min-w-[130px] border-r border-slate-200/40">
-                            <select onchange="updateInteractiveCell('${teacher.name.replace(/'/g, "\\'")}', ${lesson._originalIndex}, '${sec}', this.value); this.className='p-1.5 border rounded-lg w-full text-xs cursor-pointer shadow-sm ' + getSectionStyleClass(this.value);" class="p-1.5 border ${secStyleClass} rounded-lg w-full text-xs cursor-pointer shadow-sm">
+                            <select onchange="updateInteractiveCell('${safeTeacherName}', ${lesson._originalIndex}, '${sec}', this.value); this.className='p-1.5 border rounded-lg w-full text-xs cursor-pointer shadow-sm ' + getSectionStyleClass(this.value);" class="p-1.5 border ${secStyleClass} rounded-lg w-full text-xs cursor-pointer shadow-sm">
                                 <option value="X" ${secVal === 'X' ? 'selected' : ''}>X</option>
                                 <option value="NOT STARTED" ${secVal === 'NOT STARTED' ? 'selected' : ''}>NOT STARTED</option>
                                 <option value="IN PROGRESS" ${secVal === 'IN PROGRESS' ? 'selected' : ''}>IN PROGRESS</option>
@@ -1196,7 +1215,7 @@
                     <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] border-r border-slate-200/40">${lesson.NEET || ''}</td>
                     ${sectionSelectsHTML}
                     <td class="py-4 px-6 min-w-[155px]">
-                        <select onchange="updateInteractiveCell('${teacher.name.replace(/'/g, "\\'")}', ${lesson._originalIndex}, 'Status', this.value)" class="p-2 border ${cellSelectBg} rounded-xl font-extrabold cursor-pointer w-full bg-white text-slate-800 text-xs">
+                        <select onchange="updateInteractiveCell('${safeTeacherName}', ${lesson._originalIndex}, 'Status', this.value)" class="p-2 border ${cellSelectBg} rounded-xl font-extrabold cursor-pointer w-full bg-white text-slate-800 text-xs">
                             <option value="NOT STARTED" ${(lesson.Status === 'NOT STARTED' || lesson.Status === 'Not Started') ? 'selected' : ''}>NOT STARTED</option>
                             <option value="IN PROGRESS" ${(lesson.Status === 'IN PROGRESS' || lesson.Status === 'In Progress') ? 'selected' : ''}>IN PROGRESS</option>
                             <option value="COMPLETED" ${(lesson.Status === 'COMPLETED' || lesson.Status === 'Completed') ? 'selected' : ''}>COMPLETED</option>
