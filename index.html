@@ -565,8 +565,11 @@
             const activeBtn = document.getElementById(`btn-${tab}`);
             if (activeBtn) activeBtn.className = TAB_STYLES[tab].active;
 
-            populateTeacherDropdowns();
+            // ALWAYS RESET SELECTION TO DEFAULT `-- Choose a Teacher --` ON TAB SWITCH
+            populateTeacherDropdowns(true);
             if (tab === 'register') resetRegistrationForm();
+            if (tab === 'dashboard') populateDashboardBlocks();
+            if (tab === 'teacherEdit') populateEditBlocks();
             if (tab === 'manageTeachers') renderTeachersManagement();
         }
 
@@ -682,7 +685,7 @@
             setTimeout(() => { document.getElementById('registerMsg').classList.add('hidden'); }, 3000);
             
             resetRegistrationForm();
-            populateTeacherDropdowns();
+            populateTeacherDropdowns(true);
         });
 
         // --- AUTOMATIC PLAN ATTACHMENT WITH PRESET MATCHING & OVERWRITE PROTECTION ---
@@ -825,7 +828,7 @@
             }
 
             localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
-            populateTeacherDropdowns();
+            populateTeacherDropdowns(true);
 
             alert(`✅ Preset File Plan for ${subject} (${selectedClasses.join(', ')}) attached successfully to ${teacherName}'s profile!`);
         }
@@ -898,32 +901,45 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
 
             renderTeachersManagement();
-            populateTeacherDropdowns();
+            populateTeacherDropdowns(true);
             resetRegistrationForm();
         }
 
-        // --- DROPDOWN POPULATORS ---
-        function populateTeacherDropdowns() {
+        // --- DROPDOWN POPULATORS (DEFAULTS TO "-- Choose a Teacher --") ---
+        function populateTeacherDropdowns(resetToDefault = false) {
             const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
             
             const dashSelect = document.getElementById('dashboardTeacherSelect');
             const editSelect = document.getElementById('editTeacherSelect');
-            
+
+            // Strictly filter teachers who have generated year plans saved in t.plan
+            const teachersWithPlans = allTeachers
+                .filter(t => t.plan && t.plan.length > 0)
+                .sort((a, b) => a.name.localeCompare(b.name));
+
             let optionsHTML = '<option value="" disabled selected>-- Choose a Teacher --</option>';
-            allTeachers.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
+            teachersWithPlans.forEach(t => {
                 optionsHTML += `<option value="${t.name}">${t.name}</option>`;
             });
 
-            if(dashSelect) {
+            if (dashSelect) {
                 const currentDash = dashSelect.value;
                 dashSelect.innerHTML = optionsHTML;
-                if (currentDash && allTeachers.find(t=>t.name === currentDash)) dashSelect.value = currentDash;
+                if (!resetToDefault && currentDash && teachersWithPlans.find(t => t.name === currentDash)) {
+                    dashSelect.value = currentDash;
+                } else {
+                    dashSelect.value = "";
+                }
             }
 
-            if(editSelect) {
+            if (editSelect) {
                 const currentEdit = editSelect.value;
                 editSelect.innerHTML = optionsHTML;
-                if (currentEdit && allTeachers.find(t=>t.name === currentEdit)) editSelect.value = currentEdit;
+                if (!resetToDefault && currentEdit && teachersWithPlans.find(t => t.name === currentEdit)) {
+                    editSelect.value = currentEdit;
+                } else {
+                    editSelect.value = "";
+                }
             }
         }
 
@@ -947,8 +963,11 @@
                     const grades = [...new Set(teacher.plan.map(p => p.Class || p.class).filter(Boolean))];
                     grades.sort().forEach(grd => gradeSelect.innerHTML += `<option value="${grd}">${grd}</option>`);
                 }
+                renderTeacherData();
+            } else {
+                document.getElementById('teacher-dashboard-content').style.display = 'none';
+                document.getElementById('noDataMsg').style.display = 'block';
             }
-            renderTeacherData();
         }
 
         function renderTeacherData() {
@@ -1190,9 +1209,6 @@
             if (teacher && teacher.plan && teacher.plan.length > 0) {
                 const blocks = [...new Set(teacher.plan.map(p => p.Block).filter(Boolean))];
                 blocks.sort().forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
-            } else if (teacher && teacher.assignments) {
-                const blocks = [...new Set(teacher.assignments.map(a => a.block))];
-                blocks.sort().forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
             }
         }
 
@@ -1211,14 +1227,6 @@
             
             if (teacher && teacher.plan && blockName) {
                 const subjects = [...new Set(teacher.plan.filter(p => p.Block === blockName).map(p => p.Subject).filter(Boolean))];
-                if (subjects.length > 0) {
-                    subjects.sort().forEach(sub => subSelect.innerHTML += `<option value="${sub}">${sub}</option>`);
-                    return;
-                }
-            }
-            
-            if (teacher && teacher.assignments && blockName) {
-                const subjects = [...new Set(teacher.assignments.filter(a => a.block === blockName).map(a => a.subject))];
                 subjects.sort().forEach(sub => subSelect.innerHTML += `<option value="${sub}">${sub}</option>`);
             }
         }
@@ -1350,6 +1358,10 @@
                 allTeachers[tIdx].plan = [...otherPlans, ...updatedRows];
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
                 
+                // RESET DROPDOWNS & VIEWS TO DEFAULT
+                populateTeacherDropdowns(true);
+                populateEditBlocks();
+
                 const msg = document.getElementById('editSuccessMsg');
                 msg.classList.remove('hidden');
                 setTimeout(() => { msg.classList.add('hidden'); }, 3000);
