@@ -749,7 +749,6 @@
             const defaultMonths = ['JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER', 'JANUARY', 'FEBRUARY', 'MARCH'];
 
             selectedClasses.forEach(grade => {
-                // Check if preset data exists for the selected subject and grade
                 if (isIsapBlock && isBiology && PRESET_SYLLABUS["BIOLOGY"] && PRESET_SYLLABUS["BIOLOGY"][grade]) {
                     const presetRows = PRESET_SYLLABUS["BIOLOGY"][grade];
                     presetRows.forEach(pRow => {
@@ -791,7 +790,6 @@
                         });
                     });
                 } else {
-                    // Fallback template
                     defaultMonths.forEach(month => {
                         newPlanRows.push({
                             Block: block,
@@ -1354,7 +1352,7 @@
             XLSX.writeFile(workbook, `${safeTeacherName}_${safeBlock}_${safeGrade}_Tracker.xlsx`);
         }
 
-        // --- STEP 4: EDIT PLAN LOGIC ---
+        // --- STEP 4: EDIT PLAN LOGIC (STRICTLY POPULATES ONLY GENERATED PLANS) ---
         function populateEditBlocks() {
             const teacherName = document.getElementById('editTeacherSelect').value;
             const blockSelect = document.getElementById('editBlockSelect');
@@ -1369,9 +1367,12 @@
             document.getElementById('existingPlanContainer').style.display = 'none';
             document.getElementById('noEditDataMsg').style.display = 'none';
             
-            if (teacher && teacher.assignments) {
+            if (teacher && teacher.plan && teacher.plan.length > 0) {
+                const blocks = [...new Set(teacher.plan.map(p => p.Block).filter(Boolean))];
+                blocks.sort().forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
+            } else if (teacher && teacher.assignments) {
                 const blocks = [...new Set(teacher.assignments.map(a => a.block))];
-                blocks.forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
+                blocks.sort().forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
             }
         }
 
@@ -1388,9 +1389,17 @@
             document.getElementById('existingPlanContainer').style.display = 'none';
             document.getElementById('noEditDataMsg').style.display = 'none';
             
-            if(teacher && teacher.assignments && blockName) {
+            if (teacher && teacher.plan && blockName) {
+                const subjects = [...new Set(teacher.plan.filter(p => p.Block === blockName).map(p => p.Subject).filter(Boolean))];
+                if (subjects.length > 0) {
+                    subjects.sort().forEach(sub => subSelect.innerHTML += `<option value="${sub}">${sub}</option>`);
+                    return;
+                }
+            }
+            
+            if (teacher && teacher.assignments && blockName) {
                 const subjects = [...new Set(teacher.assignments.filter(a => a.block === blockName).map(a => a.subject))];
-                subjects.forEach(sub => subSelect.innerHTML += `<option value="${sub}">${sub}</option>`);
+                subjects.sort().forEach(sub => subSelect.innerHTML += `<option value="${sub}">${sub}</option>`);
             }
         }
 
@@ -1407,36 +1416,31 @@
             const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
             const teacher = allTeachers.find(t => t.name === teacherName);
             
-            if (!teacher) return;
+            if (!teacher || !teacher.plan || teacher.plan.length === 0) {
+                gradeSelect.innerHTML = '<option value="" disabled>No Generated Plans Found</option>';
+                return;
+            }
+            
             let foundGrades = new Set();
 
-            if (teacher.assignments && Array.isArray(teacher.assignments)) {
-                teacher.assignments.forEach(a => {
-                    if (a.block === blockName && a.subject === subjectName) {
-                        if (Array.isArray(a.classes)) a.classes.forEach(cls => foundGrades.add(cls));
-                        else if (a.classes) foundGrades.add(a.classes);
-                    }
-                });
-            }
-
-            if (teacher.plan && Array.isArray(teacher.plan)) {
-                teacher.plan.forEach(p => {
-                    if (p.Block === blockName && p.Subject === subjectName) {
-                        const classValue = p.Class || p.class;
-                        if (Array.isArray(classValue)) classValue.forEach(c => foundGrades.add(c));
-                        else if (classValue) foundGrades.add(classValue);
-                    }
-                });
-            }
+            // Strictly filter grades ONLY from teacher.plan (where actual plans are generated)
+            teacher.plan.forEach(p => {
+                if (p.Block === blockName && p.Subject === subjectName) {
+                    const classValue = p.Class || p.class;
+                    if (Array.isArray(classValue)) classValue.forEach(c => foundGrades.add(c));
+                    else if (classValue) foundGrades.add(classValue);
+                }
+            });
 
             if (foundGrades.size > 0) {
-                foundGrades.forEach(grd => {
+                Array.from(foundGrades).sort().forEach(grd => {
                     const opt = document.createElement('option');
-                    opt.value = grd; opt.textContent = grd;
+                    opt.value = grd; 
+                    opt.textContent = grd;
                     gradeSelect.appendChild(opt);
                 });
             } else {
-                gradeSelect.innerHTML = '<option value="" disabled>No Grades Found</option>';
+                gradeSelect.innerHTML = '<option value="" disabled>No Generated Plans Found</option>';
             }
         }
 
