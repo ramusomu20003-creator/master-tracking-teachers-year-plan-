@@ -305,7 +305,21 @@
             }
         };
 
-        // SPECIAL PRESET SYLLABUS FOR ISAP / ISAP G PHYSICS (GRADES 7-10)
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        const sortByGradeNumber = (a, b) => {
+            const numA = parseInt(String(a).replace(/\D/g, ''), 10) || 0;
+            const numB = parseInt(String(b).replace(/\D/g, ''), 10) || 0;
+            return numA - numB;
+        };
+
         const ISAP_PHYSICS_PRESET = {
             "Grade 7": [
                 { Month: "JUNE", NCERT: "", Assessments: "", NEET: "PHYSICAL WORLD", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
@@ -337,7 +351,6 @@
             ]
         };
 
-        // SPECIAL PRESET SYLLABUS FOR ISAP / ISAP G CHEMISTRY (GRADES 7-10)
         const ISAP_CHEMISTRY_PRESET = {
             "Grade 7": [
                 { Month: "JUNE", NCERT: "", Assessments: "", NEET: "BASIC CONCEPTS OF CHEMISTRY", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
@@ -369,7 +382,6 @@
             ]
         };
 
-        // SPECIAL PRESET SYLLABUS FOR ISAP / ISAP G BIOLOGY (GRADES 7-10)
         const ISAP_BIOLOGY_PRESET = {
             "Grade 7": [
                 { Month: "JUNE", NCERT: "The Ever Evolving world of Science", Assessments: "", NEET: "1. BRANCHES OF BIOLOGY", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
@@ -421,7 +433,6 @@
             ]
         };
 
-        // STANDARD NON-ISAP / ISAP G BIOLOGY PRESET (GRADES 6-10)
         const GENERAL_BIOLOGY_PRESET = {
             "Grade 6": [
                 { Month: "JUNE", NCERT: "The Wonderful world of Science", Assessments: "", NEET: "1. Eminent scientists in biology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
@@ -490,7 +501,6 @@
             ]
         };
 
-        // STANDARD NON-ISAP / ISAP G PHYSICS PRESET (GRADES 6-10)
         const GENERAL_PHYSICS_PRESET = {
             "Grade 6": [
                 { Month: "JUNE", NCERT: "Basics", Assessments: "", NEET: "", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
@@ -554,7 +564,6 @@
             ]
         };
 
-        // GENERAL PRESET SYLLABUS DATA INCLUDING BIOLOGY, PHYSICS AND STANDARD CHEMISTRY
         const PRESET_SYLLABUS = {
             "BIOLOGY": GENERAL_BIOLOGY_PRESET,
             "PHYSICS": GENERAL_PHYSICS_PRESET,
@@ -635,24 +644,21 @@
             const activeBtn = document.getElementById(`btn-${tab}`);
             if (activeBtn) activeBtn.className = TAB_STYLES[tab].active;
 
-            // ALWAYS RESET SELECTION TO DEFAULT `-- Choose a Teacher --` ON TAB SWITCH
-            populateTeacherDropdowns(true);
+            populateTeacherDropdowns(false);
             if (tab === 'register') resetRegistrationForm();
             if (tab === 'dashboard') populateDashboardBlocks();
             if (tab === 'teacherEdit') populateEditBlocks();
             if (tab === 'manageTeachers') renderTeachersManagement();
         }
 
-        // STYLING SPECIFICATION: X HAS LIGHT RED BACKGROUND AND BLACK TEXT
         function getSectionStyleClass(val) {
             if (val === 'COMPLETED') return 'bg-emerald-100 text-emerald-900 border-emerald-300 font-bold';
             if (val === 'IN PROGRESS') return 'bg-amber-100 text-amber-900 border-amber-300 font-bold';
-            if (val === 'X' || !val) return 'bg-red-100 text-black border-red-300 font-bold'; 
+            if (val === 'X' || !val) return 'bg-rose-100 text-rose-900 border-rose-300 font-bold'; 
             if (val === 'NOT STARTED') return 'bg-slate-100 text-slate-700 border-slate-300 font-bold';
             return 'bg-white text-slate-800 border-slate-200 font-medium';
         }
 
-        // --- STEP 1: REGISTER TEACHER MATRIX LOGIC ---
         function addAssignmentRow(block = '', subject = '', classes = []) {
             const container = document.getElementById('assignments-container');
             
@@ -758,7 +764,6 @@
             populateTeacherDropdowns(true);
         });
 
-        // --- AUTOMATIC PLAN ATTACHMENT WITH PRESET MATCHING & OVERWRITE PROTECTION ---
         function autoGenerateAndSavePlan(btnElement) {
             const teacherName = document.getElementById('teacherName').value.trim();
             if (!teacherName) return alert("Please enter the Teacher Name at the top first!");
@@ -775,14 +780,13 @@
             let allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
             let tIdx = allTeachers.findIndex(t => t.name.toLowerCase() === teacherName.toLowerCase());
 
-            // --- PREVENT OVERWRITING EXISTING YEAR PLANS ---
             if (tIdx !== -1 && allTeachers[tIdx].plan && allTeachers[tIdx].plan.length > 0) {
                 const existingClasses = selectedClasses.filter(grade => 
                     allTeachers[tIdx].plan.some(p => p.Block === block && p.Subject === subject && (p.Class || p.class) === grade)
                 );
 
                 if (existingClasses.length > 0) {
-                    alert(`⚠️ A year plan has ALREADY been generated for ${subject} (${existingClasses.join(', ')}) under Block "${block}"!\n\nAuto-generation is blocked to prevent overwriting your existing data. Use "Step 3: Update Year Plan" to make updates.`);
+                    alert(`⚠️ A year plan has ALREADY been generated for ${subject} (${existingClasses.join(', ')}) under Block "${block}"!`);
                     return;
                 }
             }
@@ -796,112 +800,56 @@
             const defaultMonths = ['JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER', 'JANUARY', 'FEBRUARY', 'MARCH'];
 
             selectedClasses.forEach(grade => {
-                // 1. ISAP / ISAP G & PHYSICS
                 if (isIsapBlock && isPhysics && ISAP_PHYSICS_PRESET[grade]) {
                     const presetRows = ISAP_PHYSICS_PRESET[grade];
                     presetRows.forEach(pRow => {
                         newPlanRows.push({
-                            Block: block,
-                            Subject: subject,
-                            Class: grade,
-                            Month: pRow.Month,
-                            NCERT: pRow.NCERT,
-                            Assessments: pRow.Assessments,
-                            NEET: pRow.NEET,
-                            Sec1: pRow.Sec1 || "X",
-                            Sec2: pRow.Sec2 || "X",
-                            Sec3: pRow.Sec3 || "X",
-                            Sec4: pRow.Sec4 || "X",
-                            Sec5: pRow.Sec5 || "X",
-                            Sec6: pRow.Sec6 || "X",
+                            Block: block, Subject: subject, Class: grade, Month: pRow.Month,
+                            NCERT: pRow.NCERT, Assessments: pRow.Assessments, NEET: pRow.NEET,
+                            Sec1: pRow.Sec1 || "X", Sec2: pRow.Sec2 || "X", Sec3: pRow.Sec3 || "X",
+                            Sec4: pRow.Sec4 || "X", Sec5: pRow.Sec5 || "X", Sec6: pRow.Sec6 || "X",
                             Status: pRow.Status
                         });
                     });
-                }
-                // 2. ISAP / ISAP G & CHEMISTRY
-                else if (isIsapBlock && isChemistry && ISAP_CHEMISTRY_PRESET[grade]) {
+                } else if (isIsapBlock && isChemistry && ISAP_CHEMISTRY_PRESET[grade]) {
                     const presetRows = ISAP_CHEMISTRY_PRESET[grade];
                     presetRows.forEach(pRow => {
                         newPlanRows.push({
-                            Block: block,
-                            Subject: subject,
-                            Class: grade,
-                            Month: pRow.Month,
-                            NCERT: pRow.NCERT,
-                            Assessments: pRow.Assessments,
-                            NEET: pRow.NEET,
-                            Sec1: pRow.Sec1 || "X",
-                            Sec2: pRow.Sec2 || "X",
-                            Sec3: pRow.Sec3 || "X",
-                            Sec4: pRow.Sec4 || "X",
-                            Sec5: pRow.Sec5 || "X",
-                            Sec6: pRow.Sec6 || "X",
+                            Block: block, Subject: subject, Class: grade, Month: pRow.Month,
+                            NCERT: pRow.NCERT, Assessments: pRow.Assessments, NEET: pRow.NEET,
+                            Sec1: pRow.Sec1 || "X", Sec2: pRow.Sec2 || "X", Sec3: pRow.Sec3 || "X",
+                            Sec4: pRow.Sec4 || "X", Sec5: pRow.Sec5 || "X", Sec6: pRow.Sec6 || "X",
                             Status: pRow.Status
                         });
                     });
-                }
-                // 3. ISAP / ISAP G & BIOLOGY
-                else if (isIsapBlock && isBiology && ISAP_BIOLOGY_PRESET[grade]) {
+                } else if (isIsapBlock && isBiology && ISAP_BIOLOGY_PRESET[grade]) {
                     const presetRows = ISAP_BIOLOGY_PRESET[grade];
                     presetRows.forEach(pRow => {
                         newPlanRows.push({
-                            Block: block,
-                            Subject: subject,
-                            Class: grade,
-                            Month: pRow.Month,
-                            NCERT: pRow.NCERT,
-                            Assessments: pRow.Assessments,
-                            NEET: pRow.NEET,
-                            Sec1: pRow.Sec1 || "X",
-                            Sec2: pRow.Sec2 || "X",
-                            Sec3: pRow.Sec3 || "X",
-                            Sec4: pRow.Sec4 || "X",
-                            Sec5: pRow.Sec5 || "X",
-                            Sec6: pRow.Sec6 || "X",
+                            Block: block, Subject: subject, Class: grade, Month: pRow.Month,
+                            NCERT: pRow.NCERT, Assessments: pRow.Assessments, NEET: pRow.NEET,
+                            Sec1: pRow.Sec1 || "X", Sec2: pRow.Sec2 || "X", Sec3: pRow.Sec3 || "X",
+                            Sec4: pRow.Sec4 || "X", Sec5: pRow.Sec5 || "X", Sec6: pRow.Sec6 || "X",
                             Status: pRow.Status
                         });
                     });
-                }
-                // 4. STANDARD SUBJECT MATCH (All non-ISAP blocks)
-                else if (PRESET_SYLLABUS[subject] && PRESET_SYLLABUS[subject][grade]) {
+                } else if (PRESET_SYLLABUS[subject] && PRESET_SYLLABUS[subject][grade]) {
                     const presetRows = PRESET_SYLLABUS[subject][grade];
                     presetRows.forEach(pRow => {
                         newPlanRows.push({
-                            Block: block,
-                            Subject: subject,
-                            Class: grade,
-                            Month: pRow.Month,
-                            NCERT: pRow.NCERT,
-                            Assessments: pRow.Assessments,
-                            NEET: pRow.NEET,
-                            Sec1: pRow.Sec1 || "X",
-                            Sec2: pRow.Sec2 || "X",
-                            Sec3: pRow.Sec3 || "X",
-                            Sec4: pRow.Sec4 || "X",
-                            Sec5: pRow.Sec5 || "X",
-                            Sec6: pRow.Sec6 || "X",
+                            Block: block, Subject: subject, Class: grade, Month: pRow.Month,
+                            NCERT: pRow.NCERT, Assessments: pRow.Assessments, NEET: pRow.NEET,
+                            Sec1: pRow.Sec1 || "X", Sec2: pRow.Sec2 || "X", Sec3: pRow.Sec3 || "X",
+                            Sec4: pRow.Sec4 || "X", Sec5: pRow.Sec5 || "X", Sec6: pRow.Sec6 || "X",
                             Status: pRow.Status
                         });
                     });
-                } 
-                // 5. FALLBACK DEFAULT MONTHS
-                else {
+                } else {
                     defaultMonths.forEach(month => {
                         newPlanRows.push({
-                            Block: block,
-                            Subject: subject,
-                            Class: grade,
-                            Month: month,
-                            NCERT: "",
-                            Assessments: "",
-                            NEET: (grade === 'Grade 9' || grade === 'Grade 10') ? "NEET / IIT Topic" : "N/A",
-                            Sec1: "X",
-                            Sec2: "X",
-                            Sec3: "X",
-                            Sec4: "X",
-                            Sec5: "X",
-                            Sec6: "X",
-                            Status: "NOT STARTED"
+                            Block: block, Subject: subject, Class: grade, Month: month,
+                            NCERT: "", Assessments: "", NEET: (grade === 'Grade 9' || grade === 'Grade 10') ? "NEET / IIT Topic" : "N/A",
+                            Sec1: "X", Sec2: "X", Sec3: "X", Sec4: "X", Sec5: "X", Sec6: "X", Status: "NOT STARTED"
                         });
                     });
                 }
@@ -922,14 +870,11 @@
 
             localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
             
-            // AUTOMATIC FORM RESET AND REFRESH
-            resetRegistrationForm();
-            populateTeacherDropdowns(true);
+            populateTeacherDropdowns(false);
 
-            alert(`✅ Preset File Plan for ${subject} (${selectedClasses.join(', ')}) attached successfully to ${teacherName}'s profile!`);
+            alert(`✅ Plan for ${subject} (${selectedClasses.join(', ')}) attached successfully! You can now click "+ Add Another Block / Subject" to add more.`);
         }
 
-        // --- TAB MANAGEMENT ---
         function renderTeachersManagement() {
             const listDiv = document.getElementById('teachersManagementList');
             if(!listDiv) return;
@@ -943,13 +888,13 @@
             listDiv.innerHTML = allTeachers.sort((a, b) => a.name.localeCompare(b.name)).map(t => {
                 const totalWorkloads = t.assignments ? t.assignments.length : 0;
                 const totalPlans = t.plan ? t.plan.length : 0;
-                const safeName = t.name.replace(/'/g, "\\'");
+                const safeName = escapeHtml(t.name);
                 
                 return `
                     <div class="bg-white p-5 border border-slate-200 shadow-sm rounded-xl flex flex-col justify-between hover:shadow-md transition">
                         <div>
                             <div class="flex items-center justify-between border-b pb-2 mb-3">
-                                <h5 class="font-extrabold text-slate-900 text-lg">${t.name}</h5>
+                                <h5 class="font-extrabold text-slate-900 text-lg">${safeName}</h5>
                                 <span class="text-xs font-bold px-2 py-1 bg-orange-50 text-orange-700 rounded-md border border-orange-100">${totalWorkloads} Branches</span>
                             </div>
                             <p class="text-xs font-semibold text-slate-500 mb-2">Lesson Tracking Rows: <span class="text-slate-800 font-extrabold">${totalPlans}</span></p>
@@ -983,7 +928,7 @@
             }
 
             const submitBtn = document.getElementById('regSubmitBtn');
-            submitBtn.innerText = `Update Profile Matrix (${teacher.name})`;
+            submitBtn.innerText = `Update Profile Matrix (${escapeHtml(teacher.name)})`;
             submitBtn.className = "w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl hover:from-amber-700 hover:to-amber-800 font-extrabold text-xl shadow-lg transition";
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1001,21 +946,19 @@
             resetRegistrationForm();
         }
 
-        // --- DROPDOWN POPULATORS (DEFAULTS TO "-- Choose a Teacher --") ---
         function populateTeacherDropdowns(resetToDefault = false) {
             const allTeachers = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
             
             const dashSelect = document.getElementById('dashboardTeacherSelect');
             const editSelect = document.getElementById('editTeacherSelect');
 
-            // Strictly filter teachers who have generated year plans saved in t.plan
             const teachersWithPlans = allTeachers
                 .filter(t => t.plan && t.plan.length > 0)
                 .sort((a, b) => a.name.localeCompare(b.name));
 
             let optionsHTML = '<option value="" disabled selected>-- Choose a Teacher --</option>';
             teachersWithPlans.forEach(t => {
-                optionsHTML += `<option value="${t.name}">${t.name}</option>`;
+                optionsHTML += `<option value="${escapeHtml(t.name)}">${escapeHtml(t.name)}</option>`;
             });
 
             if (dashSelect) {
@@ -1039,7 +982,6 @@
             }
         }
 
-        // --- DASHBOARD TRACKING LOGIC ---
         function populateDashboardBlocks() {
             const selectedName = document.getElementById('dashboardTeacherSelect').value;
             const blockSelect = document.getElementById('dashboardBlockSelect');
@@ -1053,11 +995,11 @@
             if (teacher) {
                 if (teacher.assignments) {
                     const blocks = [...new Set(teacher.assignments.map(a => a.block))];
-                    blocks.sort().forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
+                    blocks.sort().forEach(blk => blockSelect.innerHTML += `<option value="${escapeHtml(blk)}">${escapeHtml(blk)}</option>`);
                 }
                 if (teacher.plan) {
                     const grades = [...new Set(teacher.plan.map(p => p.Class || p.class).filter(Boolean))];
-                    grades.sort().forEach(grd => gradeSelect.innerHTML += `<option value="${grd}">${grd}</option>`);
+                    grades.sort(sortByGradeNumber).forEach(grd => gradeSelect.innerHTML += `<option value="${escapeHtml(grd)}">${escapeHtml(grd)}</option>`);
                 }
                 renderTeacherData();
             } else {
@@ -1086,9 +1028,9 @@
             if (filteredAssignments.length > 0) {
                 workloadDiv.innerHTML = filteredAssignments.map(assign => `
                     <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-600 flex flex-col border border-slate-100 hover:shadow-md transition">
-                        <span class="font-extrabold text-slate-800 text-lg">${assign.subject}</span>
-                        <span class="text-xs text-blue-600 font-bold mb-1 tracking-wider uppercase">Block: ${assign.block}</span>
-                        <span class="text-xs font-semibold text-slate-500 bg-slate-50 p-1.5 rounded-md border border-slate-100 mt-1">${assign.classes.join(', ')}</span>
+                        <span class="font-extrabold text-slate-800 text-lg">${escapeHtml(assign.subject)}</span>
+                        <span class="text-xs text-blue-600 font-bold mb-1 tracking-wider uppercase">Block: ${escapeHtml(assign.block)}</span>
+                        <span class="text-xs font-semibold text-slate-500 bg-slate-50 p-1.5 rounded-md border border-slate-100 mt-1">${assign.classes.map(escapeHtml).join(', ')}</span>
                     </div>
                 `).join('');
             } else {
@@ -1116,7 +1058,7 @@
             noPlanMsg.style.display = 'none';
             let pendingCount = 0, completedCount = 0;
 
-            const safeTeacherName = teacher.name.replace(/'/g, "\\'");
+            const safeTeacherName = escapeHtml(teacher.name);
 
             filteredPlan.forEach((lesson) => {
                 const isComp = (lesson.Status === 'COMPLETED' || lesson.Status === 'Completed');
@@ -1147,13 +1089,13 @@
                 }).join('');
 
                 row.innerHTML = `
-                    <td class="py-4 px-5 font-bold text-indigo-950 bg-white/40 min-w-[100px] border-r border-slate-200/40">${lesson.Block || 'N/A'}</td>
-                    <td class="py-4 px-5 font-bold text-blue-900 bg-white/40 min-w-[120px] border-r border-slate-200/40">${lesson.Subject || 'N/A'}</td>
-                    <td class="py-4 px-5 font-black text-slate-700 min-w-[110px] border-r border-slate-200/40">${lesson.Class || lesson.class || 'N/A'}</td>
-                    <td class="py-4 px-5 font-semibold text-slate-600 min-w-[100px] border-r border-slate-200/40">${lesson.Month || ''}</td>
-                    <td class="py-4 px-6 text-slate-900 font-semibold min-w-[240px] border-r border-slate-200/40">${lesson.NCERT || ''}</td>
-                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] border-r border-slate-200/40">${lesson.Assessments || ''}</td>
-                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] border-r border-slate-200/40">${lesson.NEET || ''}</td>
+                    <td class="py-4 px-5 font-bold text-indigo-950 bg-white/40 min-w-[100px] border-r border-slate-200/40">${escapeHtml(lesson.Block || 'N/A')}</td>
+                    <td class="py-4 px-5 font-bold text-blue-900 bg-white/40 min-w-[120px] border-r border-slate-200/40">${escapeHtml(lesson.Subject || 'N/A')}</td>
+                    <td class="py-4 px-5 font-black text-slate-700 min-w-[110px] border-r border-slate-200/40">${escapeHtml(lesson.Class || lesson.class || 'N/A')}</td>
+                    <td class="py-4 px-5 font-semibold text-slate-600 min-w-[100px] border-r border-slate-200/40">${escapeHtml(lesson.Month || '')}</td>
+                    <td class="py-4 px-6 text-slate-900 font-semibold min-w-[240px] border-r border-slate-200/40">${escapeHtml(lesson.NCERT || '')}</td>
+                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] border-r border-slate-200/40">${escapeHtml(lesson.Assessments || '')}</td>
+                    <td class="py-4 px-6 text-slate-600 text-xs min-w-[240px] border-r border-slate-200/40">${escapeHtml(lesson.NEET || '')}</td>
                     ${sectionSelectsHTML}
                     <td class="py-4 px-6 min-w-[155px]">
                         <select onchange="updateInteractiveCell('${safeTeacherName}', ${lesson._originalIndex}, 'Status', this.value)" class="p-2 border ${cellSelectBg} rounded-xl font-extrabold cursor-pointer w-full bg-white text-slate-800 text-xs">
@@ -1181,7 +1123,6 @@
             }
         }
 
-        // --- DASHBOARD EXCEL EXPORT FUNCTION ---
         function exportToExcel() {
             const selectedName = document.getElementById('dashboardTeacherSelect').value;
             const selectedBlock = document.getElementById('dashboardBlockSelect').value; 
@@ -1203,7 +1144,6 @@
             generateWorkbookDownload(filteredPlan, selectedName, selectedBlock, selectedGrade);
         }
 
-        // --- STEP 3 EXCEL EXPORT FUNCTION ---
         function exportEditPlanToExcel() {
             const teacherName = document.getElementById('editTeacherSelect').value;
             const blockName = document.getElementById('editBlockSelect').value;
@@ -1240,7 +1180,6 @@
             generateWorkbookDownload(exportRows, teacherName, blockName, gradeName);
         }
 
-        // --- COMMON WORKBOOK GENERATOR ---
         function generateWorkbookDownload(planData, teacherName, blockName, gradeName) {
             const headers = [
                 "Block", "Subject", "Class/Grade", "Month", 
@@ -1287,7 +1226,6 @@
             XLSX.writeFile(workbook, `${safeTeacherName}_${safeBlock}_${safeGrade}_Tracker.xlsx`);
         }
 
-        // --- STEP 3: EDIT PLAN LOGIC ---
         function populateEditBlocks() {
             const teacherName = document.getElementById('editTeacherSelect').value;
             const blockSelect = document.getElementById('editBlockSelect');
@@ -1304,7 +1242,7 @@
             
             if (teacher && teacher.plan && teacher.plan.length > 0) {
                 const blocks = [...new Set(teacher.plan.map(p => p.Block).filter(Boolean))];
-                blocks.sort().forEach(blk => blockSelect.innerHTML += `<option value="${blk}">${blk}</option>`);
+                blocks.sort().forEach(blk => blockSelect.innerHTML += `<option value="${escapeHtml(blk)}">${escapeHtml(blk)}</option>`);
             }
         }
 
@@ -1323,7 +1261,7 @@
             
             if (teacher && teacher.plan && blockName) {
                 const subjects = [...new Set(teacher.plan.filter(p => p.Block === blockName).map(p => p.Subject).filter(Boolean))];
-                subjects.sort().forEach(sub => subSelect.innerHTML += `<option value="${sub}">${sub}</option>`);
+                subjects.sort().forEach(sub => subSelect.innerHTML += `<option value="${escapeHtml(sub)}">${escapeHtml(sub)}</option>`);
             }
         }
 
@@ -1356,7 +1294,7 @@
             });
 
             if (foundGrades.size > 0) {
-                Array.from(foundGrades).sort().forEach(grd => {
+                Array.from(foundGrades).sort(sortByGradeNumber).forEach(grd => {
                     const opt = document.createElement('option');
                     opt.value = grd; 
                     opt.textContent = grd;
@@ -1400,10 +1338,10 @@
 
             tbody.innerHTML = planToEdit.map((row, index) => `
                 <tr class="hover:bg-slate-50 border-b border-slate-200/60">
-                    <td class="p-2 min-w-[120px] border-r border-slate-100"><input type="text" data-col="Month" data-row="${index}" value="${row.Month || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-sm font-semibold bg-white"></td>
-                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NCERT" data-row="${index}" value="${row.NCERT || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-sm text-slate-700 bg-white"></td>
-                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="Assessments" data-row="${index}" value="${row.Assessments || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white"></td>
-                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NEET" data-row="${index}" value="${row.NEET || ''}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white"></td>
+                    <td class="p-2 min-w-[120px] border-r border-slate-100"><input type="text" data-col="Month" data-row="${index}" value="${escapeHtml(row.Month || '')}" class="w-full p-2 border border-slate-200 rounded-lg text-sm font-semibold bg-white"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NCERT" data-row="${index}" value="${escapeHtml(row.NCERT || '')}" class="w-full p-2 border border-slate-200 rounded-lg text-sm text-slate-700 bg-white"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="Assessments" data-row="${index}" value="${escapeHtml(row.Assessments || '')}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white"></td>
+                    <td class="p-2 min-w-[220px] border-r border-slate-100"><input type="text" data-col="NEET" data-row="${index}" value="${escapeHtml(row.NEET || '')}" class="w-full p-2 border border-slate-200 rounded-lg text-xs text-slate-500 bg-white"></td>
                     ${['Sec1', 'Sec2', 'Sec3', 'Sec4', 'Sec5', 'Sec6'].map(sec => `
                         <td class="p-2 min-w-[125px] border-r border-slate-100">${getDropdown(sec, row[sec] || 'X', index, ['X', 'NOT STARTED', 'IN PROGRESS', 'COMPLETED'])}</td>
                     `).join('')}
@@ -1454,7 +1392,6 @@
                 allTeachers[tIdx].plan = [...otherPlans, ...updatedRows];
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
                 
-                // RESET DROPDOWNS & VIEWS TO DEFAULT
                 populateTeacherDropdowns(true);
                 populateEditBlocks();
 
