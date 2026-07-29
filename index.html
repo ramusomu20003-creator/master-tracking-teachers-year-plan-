@@ -109,7 +109,13 @@
                     </button>
                 </div>
 
-                <button type="submit" id="regSubmitBtn" class="w-full bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg transition">Save Teacher Profile</button>
+                <div class="flex flex-col sm:flex-row gap-4 items-center justify-between pt-2">
+                    <button type="submit" id="regSubmitBtn" class="w-full sm:flex-grow bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg transition">Save Teacher Profile</button>
+                    <!-- Clear Form Button in Pink Color -->
+                    <button type="button" onclick="resetRegistrationForm()" class="w-full sm:w-auto px-6 py-4 bg-pink-500 hover:bg-pink-600 text-white font-extrabold rounded-xl shadow transition text-sm flex items-center justify-center gap-2 flex-shrink-0">
+                        🧹 Clear Form
+                    </button>
+                </div>
             </form>
             <div id="registerMsg" class="mt-4 text-center font-bold text-emerald-700 hidden bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm">Teacher profile configured successfully!</div>
         </div>
@@ -436,7 +442,7 @@
         const GENERAL_BIOLOGY_PRESET = {
             "Grade 6": [
                 { Month: "JUNE", NCERT: "The Wonderful world of Science", Assessments: "", NEET: "1. Eminent scientists in biology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
-                { Month: "JULY", NCERT: "1.The Wonderful world of Science.                                  2.Diversity in Living World-Introduction", Assessments: "Periodic Test - 1", NEET: "1. Eminent scientists in biology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                { Month: "JULY", NCERT: "1.The Wonderful world of Science.                                                           2.Diversity in Living World-Introduction", Assessments: "Periodic Test - 1", NEET: "1. Eminent scientists in biology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
                 { Month: "AUGUST", NCERT: "Diversity in Living World", Assessments: "", NEET: "1. Eminent scientists in biology", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
                 { Month: "SEPTEMBER", NCERT: "Diversity in Living World", Assessments: "Periodic Test - 2", NEET: "2. Equipment’s used by Scientists in Research Institutes", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
                 { Month: "OCTOBER", NCERT: "Mindful Eating", Assessments: "Summative Assessment - 1", NEET: "2. Equipment’s used by Scientists in Research Institutes", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
@@ -494,10 +500,7 @@
                 { Month: "OCTOBER", NCERT: "Our Environment", Assessments: "Spell - 2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
                 { Month: "NOVEMBER", NCERT: "==", Assessments: "Spell -3", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
                 { Month: "DECEMBER", NCERT: "==", Assessments: "Pre final -1", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
-                { Month: "JANUARY", NCERT: "==", Assessments: "Pre final -2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
-                { Month: "FEBRUARY", NCERT: "", Assessments: "Periodic Test - 3", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
-                { Month: "MARCH", NCERT: "", Assessments: "", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
-                { Month: "APRIL", NCERT: "", Assessments: "Summative Assessment - 2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" }
+                { Month: "JANUARY", NCERT: "==", Assessments: "Pre final -2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" }
             ]
         };
 
@@ -713,12 +716,13 @@
         }
 
         function resetRegistrationForm() {
-            document.getElementById('registrationForm').reset();
+            document.getElementById('teacherName').value = '';
             document.getElementById('assignments-container').innerHTML = '';
             addAssignmentRow(); 
             const submitBtn = document.getElementById('regSubmitBtn');
             submitBtn.innerText = "Save Teacher Profile";
-            submitBtn.className = "w-full bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg transition";
+            submitBtn.className = "w-full sm:flex-grow bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg transition";
+            document.getElementById('registerMsg').classList.add('hidden');
         }
 
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
@@ -757,11 +761,14 @@
             allTeachers.push({ name: name, assignments: assignmentsArray, plan: activePlans }); 
             localStorage.setItem(STORAGE_KEY, JSON.stringify(allTeachers));
 
-            document.getElementById('registerMsg').classList.remove('hidden');
-            setTimeout(() => { document.getElementById('registerMsg').classList.add('hidden'); }, 3000);
-            
-            resetRegistrationForm();
-            populateTeacherDropdowns(true);
+            const successMsg = document.getElementById('registerMsg');
+            successMsg.classList.remove('hidden');
+
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+                resetRegistrationForm();
+                populateTeacherDropdowns(true);
+            }, 1500);
         });
 
         function autoGenerateAndSavePlan(btnElement) {
@@ -929,7 +936,7 @@
 
             const submitBtn = document.getElementById('regSubmitBtn');
             submitBtn.innerText = `Update Profile Matrix (${escapeHtml(teacher.name)})`;
-            submitBtn.className = "w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl hover:from-amber-700 hover:to-amber-800 font-extrabold text-xl shadow-lg transition";
+            submitBtn.className = "w-full sm:flex-grow bg-gradient-to-r from-amber-600 to-amber-700 text-white py-4 rounded-xl hover:from-amber-700 hover:to-amber-800 font-extrabold text-xl shadow-lg transition";
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
