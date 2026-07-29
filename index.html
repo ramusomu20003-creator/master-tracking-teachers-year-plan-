@@ -78,12 +78,12 @@
             </button>
         </header>
 
-        <!-- NAVIGATION TABS -->
+        <!-- NAVIGATION TABS (Updated Order) -->
         <div id="tabNavigationStrip" class="flex flex-wrap justify-center gap-3 mb-10">
             <button onclick="switchTab('register')" id="btn-register" class="px-6 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-xl hover:bg-indigo-100 font-bold transition shadow-sm">1. 📋 Register Teacher</button>
-            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm">2. 📊 Dashboard & Tracking</button>
-            <button onclick="switchTab('teacherEdit')" id="btn-teacherEdit" class="px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm">3. ✏️ Update Year Plan</button>
-            <button onclick="switchTab('manageTeachers')" id="btn-manageTeachers" class="px-6 py-3 bg-orange-50 text-orange-700 border border-orange-200 rounded-xl hover:bg-orange-100 font-bold transition shadow-sm">4. 👥 Manage Teachers</button>
+            <button onclick="switchTab('teacherEdit')" id="btn-teacherEdit" class="px-6 py-3 bg-purple-50 text-purple-700 border border-purple-200 rounded-xl hover:bg-purple-100 font-bold transition shadow-sm">2. ✏️ Update Year Plan</button>
+            <button onclick="switchTab('manageTeachers')" id="btn-manageTeachers" class="px-6 py-3 bg-orange-50 text-orange-700 border border-orange-200 rounded-xl hover:bg-orange-100 font-bold transition shadow-sm">3. 👥 Manage Teachers</button>
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm">4. 📊 Dashboard & Tracking</button>
         </div>
 
         <!-- TAB 1: REGISTER TEACHER -->
@@ -289,17 +289,13 @@
             "dash_user": { pass: "dash123", tabs: ["dashboard"] },
             "edit_user": { pass: "edit123", tabs: ["register", "teacherEdit"] },
             "upload_user": { pass: "upload123", tabs: ["manageTeachers"] },
-            "admin_user": { pass: "admin123", tabs: ["register", "dashboard", "teacherEdit", "manageTeachers"] }
+            "admin_user": { pass: "admin123", tabs: ["register", "teacherEdit", "manageTeachers", "dashboard"] }
         };
 
         const TAB_STYLES = {
             register: {
                 active: "px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
                 inactive: "px-6 py-3 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-xl hover:bg-indigo-100 font-bold transition shadow-sm"
-            },
-            dashboard: {
-                active: "px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
-                inactive: "px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm"
             },
             teacherEdit: {
                 active: "px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
@@ -308,6 +304,10 @@
             manageTeachers: {
                 active: "px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
                 inactive: "px-6 py-3 bg-orange-50 text-orange-700 border border-orange-200 rounded-xl hover:bg-orange-100 font-bold transition shadow-sm"
+            },
+            dashboard: {
+                active: "px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold transition shadow-md transform scale-105 border border-transparent",
+                inactive: "px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-100 font-bold transition shadow-sm"
             }
         };
 
@@ -500,7 +500,10 @@
                 { Month: "OCTOBER", NCERT: "Our Environment", Assessments: "Spell - 2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
                 { Month: "NOVEMBER", NCERT: "==", Assessments: "Spell -3", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
                 { Month: "DECEMBER", NCERT: "==", Assessments: "Pre final -1", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "NOT STARTED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
-                { Month: "JANUARY", NCERT: "==", Assessments: "Pre final -2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" }
+                { Month: "JANUARY", NCERT: "==", Assessments: "Pre final -2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                { Month: "FEBRUARY", NCERT: "", Assessments: "Periodic Test - 3", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                { Month: "MARCH", NCERT: "", Assessments: "", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" },
+                { Month: "APRIL", NCERT: "", Assessments: "Summative Assessment - 2", NEET: "==", Sec1: "NOT STARTED", Sec2: "NOT STARTED", Sec3: "NOT STARTED", Sec4: "NOT STARTED", Sec5: "COMPLETED", Sec6: "NOT STARTED", Status: "NOT STARTED" }
             ]
         };
 
@@ -630,9 +633,9 @@
 
         function switchTab(tab) {
             document.getElementById('register-section').style.display = 'none';
-            document.getElementById('dashboard-section').style.display = 'none';
             document.getElementById('teacherEdit-section').style.display = 'none';
             document.getElementById('manageTeachers-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'none';
             
             Object.keys(TAB_STYLES).forEach(key => {
                 const btn = document.getElementById(`btn-${key}`);
