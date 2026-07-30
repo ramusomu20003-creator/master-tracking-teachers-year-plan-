@@ -23,42 +23,44 @@
 
     <!-- AUTHENTICATION SCREEN -->
     <div id="loginScreen" class="hidden min-h-screen flex flex-col justify-start items-center px-4 pt-2 md:pt-4 w-full">
-        <div class="w-full max-w-4xl bg-white/85 backdrop-blur-xl p-5 md:p-8 rounded-3xl shadow-[0_30px_70px_-15px_rgba(15,23,42,0.22)] border border-white/60 relative overflow-hidden mt-2">
-            <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600"></div>
-            
-            <div class="text-center mb-5">
-                <div class="flex items-center justify-center gap-3 sm:gap-5 max-w-full px-2">
-                    <img src="logo1.jpeg" alt="Montessori Indus Logo" class="h-12 sm:h-16 md:h-20 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
-                    <h2 class="text-lg sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent tracking-tight">
-                        Montessori Indus Residential School
-                    </h2>
-                    <img src="logo2.jpg" alt="Montessori Jubilee Logo" class="h-12 sm:h-16 md:h-20 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+        <div class="w-full max-w-4xl p-[3px] rounded-[30px] bg-gradient-to-r from-pink-500 via-blue-500 to-pink-500 shadow-[0_30px_70px_-15px_rgba(15,23,42,0.22)] mt-2">
+            <div class="w-full bg-white/95 backdrop-blur-xl p-5 md:p-8 rounded-[27px] border-2 border-blue-400 relative overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600"></div>
+                
+                <div class="text-center mb-5">
+                    <div class="flex items-center justify-center gap-3 sm:gap-5 max-w-full px-2">
+                        <img src="logo1.jpeg" alt="Montessori Indus Logo" class="h-12 sm:h-16 md:h-20 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                        <h2 class="text-lg sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 bg-clip-text text-transparent tracking-tight">
+                            Montessori Indus Residential School
+                        </h2>
+                        <img src="logo2.jpg" alt="Montessori Jubilee Logo" class="h-12 sm:h-16 md:h-20 w-auto object-contain flex-shrink-0 rounded-xl border border-indigo-200/50 shadow-md">
+                    </div>
+                    <div class="inline-block mt-2.5 px-4 py-1 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-full border border-indigo-100 shadow-sm">
+                        <p class="text-xs text-indigo-700 font-extrabold uppercase tracking-widest">
+                            Teachers year Plan Tracker
+                        </p>
+                    </div>
                 </div>
-                <div class="inline-block mt-2.5 px-4 py-1 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-full border border-indigo-100 shadow-sm">
-                    <p class="text-xs text-indigo-700 font-extrabold uppercase tracking-widest">
-                        Teachers year Plan Tracker
-                    </p>
-                </div>
-            </div>
 
-            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4 max-w-md mx-auto">
-                <div>
-                    <label class="block text-xs font-extrabold mb-1 text-slate-700 tracking-wider uppercase">User Name</label>
-                    <input type="text" id="username" required placeholder="Enter your username" class="w-full border border-slate-200 bg-white/70 p-3 pl-4 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-extrabold mb-1 text-slate-700 tracking-wider uppercase">Password</label>
-                    <input type="password" id="password" required placeholder="••••••••" class="w-full border border-slate-200 bg-white/70 p-3 pl-4 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition text-sm">
-                </div>
-                
-                <div id="loginError" class="text-rose-600 text-xs font-bold hidden bg-rose-50 border border-rose-100 p-2.5 rounded-xl text-center shadow-sm">
-                    ❌ Invalid credentials provided. Please check inputs.
-                </div>
-                
-                <button type="submit" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition text-sm tracking-wide uppercase mt-2">
-                    Sign In
-                </button>
-            </form>
+                <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4 max-w-md mx-auto">
+                    <div>
+                        <label class="block text-xs font-extrabold mb-1 text-slate-700 tracking-wider uppercase">User Name</label>
+                        <input type="text" id="username" required placeholder="Enter your username" class="w-full border border-slate-200 bg-white/70 p-3 pl-4 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-extrabold mb-1 text-slate-700 tracking-wider uppercase">Password</label>
+                        <input type="password" id="password" required placeholder="••••••••" class="w-full border border-slate-200 bg-white/70 p-3 pl-4 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 font-semibold text-slate-900 placeholder-slate-400 outline-none shadow-sm transition text-sm">
+                    </div>
+                    
+                    <div id="loginError" class="text-rose-600 text-xs font-bold hidden bg-rose-50 border border-rose-100 p-2.5 rounded-xl text-center shadow-sm">
+                        ❌ Invalid credentials provided. Please check inputs.
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition text-sm tracking-wide uppercase mt-2">
+                        Sign In
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
