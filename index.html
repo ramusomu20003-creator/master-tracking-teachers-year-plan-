@@ -111,7 +111,7 @@
 
                 <div class="flex flex-col sm:flex-row gap-4">
                     <button type="submit" id="regSubmitBtn" class="flex-grow bg-indigo-600 text-white py-4 rounded-xl hover:bg-indigo-700 font-extrabold text-xl shadow-lg transition">Save Teacher Profile</button>
-                    <button type="button" onclick="resetRegistrationForm()" class="px-8 bg-pink-600 text-white py-4 rounded-xl hover:bg-pink-700 font-extrabold text-lg shadow-lg transition flex items-center justify-center gap-2">🧹 Clear</button>
+                    <button type="button" onclick="resetRegistrationForm()" class="px-8 bg-rose-400 text-white py-4 rounded-xl hover:bg-rose-500 font-extrabold text-lg shadow-lg transition flex items-center justify-center gap-2">🧹 Clear Form</button>
                 </div>
             </form>
             <div id="registerMsg" class="mt-4 text-center font-bold text-emerald-700 hidden bg-emerald-50 p-3 rounded-xl border border-emerald-200 shadow-sm">Teacher profile configured successfully!</div>
@@ -1107,6 +1107,7 @@
 
             let exportRows = [];
             tableRows.forEach(row => {
+                if (!row.querySelector('[data-col="Month"]')) return;
                 exportRows.push({
                     Block: blockName,
                     Subject: subjectName,
@@ -1312,25 +1313,6 @@
             const tableRows = document.querySelectorAll('#existingPlanBody tr');
             let updatedRows = [];
             
-            tableRows.label && tableRows.forEach(row => {
-                const rowData = {
-                    Block: blockName, Subject: subjectName, Class: gradeName, 
-                    Month: row.querySelector('[data-col="Month"]').value,
-                    NCERT: row.querySelector('[data-col="NCERT"]').value,
-                    Assessments: row.querySelector('[data-col="Assessments"]').value,
-                    NEET: row.querySelector('[data-col="NEET"]').value,
-                    Sec1: row.querySelector('[data-col="Sec1"]').value,
-                    Sec2: row.querySelector('[data-col="Sec2"]').value,
-                    Sec3: row.querySelector('[data-col="Sec3"]').value,
-                    Sec4: row.querySelector('[data-col="Sec4"]').value,
-                    Sec5: row.querySelector('[data-col="Sec5"]').value,
-                    Sec6: row.querySelector('[data-col="Sec6"]').value,
-                    Status: row.querySelector('[data-col="Status"]').value
-                };
-                updatedRows.push(rowData);
-            });
-
-            // Fallback for standard loop if tableRows lacks label
             tableRows.forEach(row => {
                 if (!row.querySelector('[data-col="Month"]')) return;
                 const rowData = {
